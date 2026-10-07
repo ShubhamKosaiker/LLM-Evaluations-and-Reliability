@@ -1,0 +1,32 @@
+{
+  "zKAmsPHUZ78": {
+    "source": "https://www.aad.org/public/everyday-care/hair-scalp-care/scalp/treat-dandruff",
+    "corrections": [
+      {
+        "start": 28.24,
+        "old": "zinc p ion",
+        "new": "zinc pyrithione"
+      },
+      {
+        "start": 32.439,
+        "old": "cutic conazol",
+        "new": "ketoconazole"
+      },
+      {
+        "start": 36.44,
+        "old": "C tar",
+        "new": "coal tar"
+      }
+    ]
+  },
+  "_avTf7IoHCU": {
+    "source": "https://www.youtube.com/watch?v=_avTf7IoHCU",
+    "corrections": [
+      {
+        "start": 28.68,
+        "old": "some call",
+        "new": "some cough"
+      }
+    ]
+  }
+}

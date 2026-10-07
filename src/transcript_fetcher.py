@@ -28,7 +28,7 @@ def main():
             print(f"Fetching: {title}")
 
             try:
-                transcript = api.fetch(video_id)
+                transcript = api.fetch(video_id, languages=["en", "en-GB", "en-US"])
 
                 segments = [
                     {
