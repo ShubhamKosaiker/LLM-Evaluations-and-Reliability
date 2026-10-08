@@ -1,0 +1,437 @@
+{
+  "created_at_utc": "2026-10-08T15:49:05.714381+00:00",
+  "dataset_name": "medical_video_retrieval_pilot_v1",
+  "dataset_status": "draft_assistant_reviewed",
+  "goldens_sha256": "e641c8bbb6a9621a4ab413e18c8bc6a5a84cf088eee2192e4284250317f3824a",
+  "corpus_text_sha256": "aafdba755ca478809d70e3cc26782c6b0d0a1cd58740d708a6423b2de9c4d81a",
+  "git_head": "1433061c303ad9a5afaee23c30687aeb6f7d239c",
+  "retriever_source_sha256": "1c1014fa757fb925a14e245cbc5ac68378fbce96c7dd36a662492d95c3926ff6",
+  "evaluator_source_sha256": "8e1109c7d13a3d913ed8bd363f5e6d619220fd7700edfb1f149ecba245b16507",
+  "package_versions": {
+    "chromadb": "1.5.9",
+    "sentence-transformers": "6.1.0"
+  },
+  "top_k": 5,
+  "question_count": 20,
+  "summary": {
+    "Hit@1": 0.6,
+    "Hit@3": 1.0,
+    "Hit@5": 1.0,
+    "MRR@5": 0.7833333333333334
+  },
+  "cases": [
+    {
+      "id": "cough_01",
+      "topic": "cough",
+      "query": "According to the cough lecture, when should a patient with cough have a chest X-ray?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_9"
+      ],
+      "retrieved_ids": [
+        "LDMEtNXik-A_5",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_8",
+        "xNJ8ALMjZ7A_4"
+      ],
+      "first_relevant_rank_at_5": 2,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.5
+    },
+    {
+      "id": "cough_02",
+      "topic": "cough",
+      "query": "According to the cough lecture, what red flags in a patient with cough suggest serious pathology?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_5"
+      ],
+      "retrieved_ids": [
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_5",
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_3",
+        "LDMEtNXik-A_8"
+      ],
+      "first_relevant_rank_at_5": 2,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.5
+    },
+    {
+      "id": "cough_03",
+      "topic": "cough",
+      "query": "According to the cough lecture, what are the most common causes of acute cough?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_3",
+        "LDMEtNXik-A_8",
+        "LDMEtNXik-A_9"
+      ],
+      "retrieved_ids": [
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_0",
+        "LDMEtNXik-A_3",
+        "LDMEtNXik-A_1",
+        "LDMEtNXik-A_4"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "cough_04",
+      "topic": "cough",
+      "query": "According to the cough lecture, what are the most common causes of chronic cough?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_3",
+        "LDMEtNXik-A_8",
+        "LDMEtNXik-A_9"
+      ],
+      "retrieved_ids": [
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_3",
+        "LDMEtNXik-A_1",
+        "LDMEtNXik-A_0",
+        "LDMEtNXik-A_4"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "cough_05",
+      "topic": "cough",
+      "query": "According to the cough lecture, are antibiotics usually indicated for acute bronchitis, and what exception is mentioned?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_6"
+      ],
+      "retrieved_ids": [
+        "LDMEtNXik-A_1",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_6",
+        "LDMEtNXik-A_0",
+        "xNJ8ALMjZ7A_3"
+      ],
+      "first_relevant_rank_at_5": 3,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.3333333333333333
+    },
+    {
+      "id": "headache_01",
+      "topic": "headache",
+      "query": "According to the headache lecture, how are the location, severity, and sensation of tension headaches described?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_0"
+      ],
+      "retrieved_ids": [
+        "lcdtw93A3Zs_0",
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_3",
+        "lcdtw93A3Zs_6",
+        "lcdtw93A3Zs_1"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "headache_02",
+      "topic": "headache",
+      "query": "According to the headache lecture, what are the typical durations of tension headaches and migraines?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_0"
+      ],
+      "retrieved_ids": [
+        "lcdtw93A3Zs_0",
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_1",
+        "lcdtw93A3Zs_3",
+        "lcdtw93A3Zs_6"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "headache_03",
+      "topic": "headache",
+      "query": "According to the headache lecture, what visual disturbances can occur during a migraine aura?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_1"
+      ],
+      "retrieved_ids": [
+        "lcdtw93A3Zs_1",
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_6",
+        "lcdtw93A3Zs_5",
+        "lcdtw93A3Zs_9"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "headache_04",
+      "topic": "headache",
+      "query": "According to the headache lecture, what does thunderclap describe about a headache's onset?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_6"
+      ],
+      "retrieved_ids": [
+        "lcdtw93A3Zs_1",
+        "lcdtw93A3Zs_6",
+        "lcdtw93A3Zs_9",
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_0"
+      ],
+      "first_relevant_rank_at_5": 2,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.5
+    },
+    {
+      "id": "headache_05",
+      "topic": "headache",
+      "query": "According to the headache lecture, when do headaches associated with obstructive sleep apnea tend to occur?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_5"
+      ],
+      "retrieved_ids": [
+        "lcdtw93A3Zs_0",
+        "lcdtw93A3Zs_5",
+        "lcdtw93A3Zs_6",
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_9"
+      ],
+      "first_relevant_rank_at_5": 2,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.5
+    },
+    {
+      "id": "dyspnea_01",
+      "topic": "acute_dyspnea",
+      "query": "According to the acute dyspnea lecture, what minimum objective assessment is recommended initially?",
+      "relevant_chunk_ids": [
+        "xNJ8ALMjZ7A_2",
+        "xNJ8ALMjZ7A_3",
+        "xNJ8ALMjZ7A_7"
+      ],
+      "retrieved_ids": [
+        "xNJ8ALMjZ7A_0",
+        "xNJ8ALMjZ7A_7",
+        "xNJ8ALMjZ7A_6",
+        "xNJ8ALMjZ7A_3",
+        "LDMEtNXik-A_4"
+      ],
+      "first_relevant_rank_at_5": 2,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.5
+    },
+    {
+      "id": "dyspnea_02",
+      "topic": "acute_dyspnea",
+      "query": "According to the acute dyspnea lecture, does normal oxygen saturation rule out serious causes of shortness of breath?",
+      "relevant_chunk_ids": [
+        "xNJ8ALMjZ7A_6",
+        "xNJ8ALMjZ7A_7"
+      ],
+      "retrieved_ids": [
+        "xNJ8ALMjZ7A_0",
+        "xNJ8ALMjZ7A_7",
+        "xNJ8ALMjZ7A_1",
+        "xNJ8ALMjZ7A_4",
+        "xNJ8ALMjZ7A_6"
+      ],
+      "first_relevant_rank_at_5": 2,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.5
+    },
+    {
+      "id": "acute_abdominal_01",
+      "topic": "acute_abdominal_pain",
+      "query": "According to the acute abdominal pain lecture, where does appendicitis pain classically begin, and where does it move?",
+      "relevant_chunk_ids": [
+        "_PDOXlVGeuY_3",
+        "_PDOXlVGeuY_7"
+      ],
+      "retrieved_ids": [
+        "_PDOXlVGeuY_3",
+        "_PDOXlVGeuY_0",
+        "_PDOXlVGeuY_1",
+        "_PDOXlVGeuY_12",
+        "qfVHJQu-dfw_1"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "acute_abdominal_02",
+      "topic": "acute_abdominal_pain",
+      "query": "According to the acute abdominal pain lecture, what posture can relieve pancreatitis pain?",
+      "relevant_chunk_ids": [
+        "_PDOXlVGeuY_8"
+      ],
+      "retrieved_ids": [
+        "qfVHJQu-dfw_13",
+        "_PDOXlVGeuY_3",
+        "_PDOXlVGeuY_8",
+        "qfVHJQu-dfw_14",
+        "_PDOXlVGeuY_7"
+      ],
+      "first_relevant_rank_at_5": 3,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.3333333333333333
+    },
+    {
+      "id": "chronic_abdominal_01",
+      "topic": "chronic_abdominal_pain",
+      "query": "What duration threshold does the chronic abdominal pain lecture use, including recurrent episodes?",
+      "relevant_chunk_ids": [
+        "qfVHJQu-dfw_0"
+      ],
+      "retrieved_ids": [
+        "qfVHJQu-dfw_0",
+        "qfVHJQu-dfw_13",
+        "qfVHJQu-dfw_14",
+        "qfVHJQu-dfw_12",
+        "qfVHJQu-dfw_7"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "hemoptysis_01",
+      "topic": "hemoptysis",
+      "query": "According to the hemoptysis lecture, what are the most common causes of hemoptysis in developed countries?",
+      "relevant_chunk_ids": [
+        "mYecvkIBsoA_0",
+        "mYecvkIBsoA_1",
+        "mYecvkIBsoA_6"
+      ],
+      "retrieved_ids": [
+        "mYecvkIBsoA_1",
+        "mYecvkIBsoA_0",
+        "mYecvkIBsoA_6",
+        "mYecvkIBsoA_3",
+        "lcdtw93A3Zs_8"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "fever_01",
+      "topic": "childhood_fever",
+      "query": "According to the NHS childhood fever video, what temperature counts as a fever?",
+      "relevant_chunk_ids": [
+        "MIkO7oZZrtM_0"
+      ],
+      "retrieved_ids": [
+        "MIkO7oZZrtM_0",
+        "MIkO7oZZrtM_3",
+        "MIkO7oZZrtM_2",
+        "lcdtw93A3Zs_7",
+        "MIkO7oZZrtM_1"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "cold_flu_01",
+      "topic": "cold_and_flu",
+      "query": "According to the cold-versus-flu video, how do the usual symptoms of influenza differ from a common cold?",
+      "relevant_chunk_ids": [
+        "_avTf7IoHCU_0"
+      ],
+      "retrieved_ids": [
+        "_avTf7IoHCU_0",
+        "LDMEtNXik-A_6",
+        "LDMEtNXik-A_0",
+        "LDMEtNXik-A_1",
+        "LDMEtNXik-A_9"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "rash_01",
+      "topic": "adult_rash",
+      "query": "According to the adult rash video, what symptoms accompanying a rash may require emergency medical care?",
+      "relevant_chunk_ids": [
+        "ZB3xl6ULVnQ_0"
+      ],
+      "retrieved_ids": [
+        "ZB3xl6ULVnQ_0",
+        "MIkO7oZZrtM_3",
+        "MIkO7oZZrtM_2",
+        "mYecvkIBsoA_3",
+        "_PDOXlVGeuY_7"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    },
+    {
+      "id": "dandruff_01",
+      "topic": "dandruff",
+      "query": "According to the dandruff video, is dandruff caused by poor hygiene, and how can infrequent shampooing affect it?",
+      "relevant_chunk_ids": [
+        "zKAmsPHUZ78_0"
+      ],
+      "retrieved_ids": [
+        "zKAmsPHUZ78_0",
+        "xNJ8ALMjZ7A_4",
+        "xNJ8ALMjZ7A_1",
+        "mYecvkIBsoA_4",
+        "mYecvkIBsoA_1"
+      ],
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0
+    }
+  ]
+}

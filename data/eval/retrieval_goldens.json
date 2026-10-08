@@ -1,0 +1,385 @@
+{
+  "schema_version": "1.0",
+  "dataset_name": "medical_video_retrieval_pilot_v1",
+  "status": "draft_assistant_reviewed",
+  "purpose": "Development pilot for Hit@K and MRR; not a held-out test set or a clinical benchmark.",
+  "annotation_policy": "A relevant chunk must contain sufficient evidence to answer the whole question. Overlapping duplicate evidence is accepted. Questions and reference answers are source-relative. Labels were drafted by an assistant from all 70 supplied chunks and await user review. Evidence excerpts are literal review anchors, not necessarily the complete answer.",
+  "baseline_source_commit": "1433061",
+  "corpus_chunk_count": 70,
+  "corpus_text_sha256": "aafdba755ca478809d70e3cc26782c6b0d0a1cd58740d708a6423b2de9c4d81a",
+  "corpus_hash_method": "SHA256 of UTF-8 json.dumps({chunk_id: exact_text}, sort_keys=True, ensure_ascii=False, separators=(comma, colon)).",
+  "limitations": [
+    "20 answerable questions with uneven coverage of 10 videos.",
+    "Some transcripts contain ASR errors. Questions that depend on substantially damaged passages were avoided.",
+    "No unanswerable, multi-hop or adversarial cases yet.",
+    "No retrieval scores have been measured.",
+    "Reference answers summarize supplied sources; current clinical accuracy has not been independently validated."
+  ],
+  "cases": [
+    {
+      "id": "cough_01",
+      "topic": "cough",
+      "query": "According to the cough lecture, when should a patient with cough have a chest X-ray?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_9"
+      ],
+      "reference_answer": "A chronic cough or any red flag for serious pathology warrants a chest X-ray.",
+      "evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_4",
+          "text_excerpt": "If yes to either of these, a chest x-ray is warranted."
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_9",
+          "text_excerpt": "Patients presenting with a cough should have a chest x-ray if either the cough is chronic"
+        }
+      ]
+    },
+    {
+      "id": "cough_02",
+      "topic": "cough",
+      "query": "According to the cough lecture, what red flags in a patient with cough suggest serious pathology?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_5"
+      ],
+      "reference_answer": "Dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, significant smoking history, elderly age or aspiration risk, tachypnea, hypoxemia, abnormal cardiac or pulmonary examination, or sepsis.",
+      "evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_4",
+          "text_excerpt": "Well, concurrent dyspnea, hemoptysis, chest pain, weight loss"
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_5",
+          "text_excerpt": "Well, concurrent dyspnea, hemoptysis, chest pain, weight loss"
+        }
+      ]
+    },
+    {
+      "id": "cough_03",
+      "topic": "cough",
+      "query": "According to the cough lecture, what are the most common causes of acute cough?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_3",
+        "LDMEtNXik-A_8",
+        "LDMEtNXik-A_9"
+      ],
+      "reference_answer": "Upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia.",
+      "evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_3",
+          "text_excerpt": "The most common causes of an acute cough include"
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_8",
+          "text_excerpt": "The most common etiologies of an acute cough are"
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_9",
+          "text_excerpt": "The most common etiologies of an acute cough are"
+        }
+      ]
+    },
+    {
+      "id": "cough_04",
+      "topic": "cough",
+      "query": "According to the cough lecture, what are the most common causes of chronic cough?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_3",
+        "LDMEtNXik-A_8",
+        "LDMEtNXik-A_9"
+      ],
+      "reference_answer": "Upper airway cough syndrome, asthma/cough variant asthma, laryngopharyngeal reflux/GERD, ACE inhibitor side effects, and COPD, particularly among smokers.",
+      "evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_3",
+          "text_excerpt": "The most common causes of a chronic cough include"
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_8",
+          "text_excerpt": "The most common etiologies of a chronic cough are"
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_9",
+          "text_excerpt": "The most common etiologies of a chronic cough are"
+        }
+      ]
+    },
+    {
+      "id": "cough_05",
+      "topic": "cough",
+      "query": "According to the cough lecture, are antibiotics usually indicated for acute bronchitis, and what exception is mentioned?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_6"
+      ],
+      "reference_answer": "Usually no; suspected pertussis is the exception mentioned.",
+      "evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_6",
+          "text_excerpt": "antibiotics are usually not indicated unless the patient has suspected pertussis"
+        }
+      ]
+    },
+    {
+      "id": "headache_01",
+      "topic": "headache",
+      "query": "According to the headache lecture, how are the location, severity, and sensation of tension headaches described?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_0"
+      ],
+      "reference_answer": "Usually bilateral and symmetric, mild to moderate, with pressure, tightness, or a band-like sensation.",
+      "evidence": [
+        {
+          "chunk_id": "lcdtw93A3Zs_0",
+          "text_excerpt": "a pressure a tightness or like a band"
+        }
+      ]
+    },
+    {
+      "id": "headache_02",
+      "topic": "headache",
+      "query": "According to the headache lecture, what are the typical durations of tension headaches and migraines?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_0"
+      ],
+      "reference_answer": "Tension headaches: 30 minutes to 7 days. Migraines: 4 hours to 3 days.",
+      "evidence": [
+        {
+          "chunk_id": "lcdtw93A3Zs_0",
+          "text_excerpt": "30 minutes to 7 days"
+        }
+      ]
+    },
+    {
+      "id": "headache_03",
+      "topic": "headache",
+      "query": "According to the headache lecture, what visual disturbances can occur during a migraine aura?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_1"
+      ],
+      "reference_answer": "Flashes of light (photopsia), colored jagged lines (fortification spectra), and shimmering regions of reduced visual acuity (scintillating scotoma).",
+      "evidence": [
+        {
+          "chunk_id": "lcdtw93A3Zs_1",
+          "text_excerpt": "flashes of light called photopsia"
+        }
+      ]
+    },
+    {
+      "id": "headache_04",
+      "topic": "headache",
+      "query": "According to the headache lecture, what does thunderclap describe about a headache's onset?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_6"
+      ],
+      "reference_answer": "Very abrupt onset, with maximal pain intensity reached within seconds.",
+      "evidence": [
+        {
+          "chunk_id": "lcdtw93A3Zs_2",
+          "text_excerpt": "maximal intensity of pain typically occurring within seconds"
+        },
+        {
+          "chunk_id": "lcdtw93A3Zs_6",
+          "text_excerpt": "Pain's maximal intensity is reached within seconds"
+        }
+      ]
+    },
+    {
+      "id": "headache_05",
+      "topic": "headache",
+      "query": "According to the headache lecture, when do headaches associated with obstructive sleep apnea tend to occur?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_5"
+      ],
+      "reference_answer": "Upon waking in the morning.",
+      "evidence": [
+        {
+          "chunk_id": "lcdtw93A3Zs_5",
+          "text_excerpt": "obstructive sleep apnea in which the headaches tend to present upon waking up in the morning"
+        }
+      ]
+    },
+    {
+      "id": "dyspnea_01",
+      "topic": "acute_dyspnea",
+      "query": "According to the acute dyspnea lecture, what minimum objective assessment is recommended initially?",
+      "relevant_chunk_ids": [
+        "xNJ8ALMjZ7A_2",
+        "xNJ8ALMjZ7A_3",
+        "xNJ8ALMjZ7A_7"
+      ],
+      "reference_answer": "Vital signs; examination of the lungs, heart and extremities; and a chest X-ray.",
+      "evidence": [
+        {
+          "chunk_id": "xNJ8ALMjZ7A_2",
+          "text_excerpt": "the most important objective data will be the vital signs"
+        },
+        {
+          "chunk_id": "xNJ8ALMjZ7A_3",
+          "text_excerpt": "minimum data set for a patient presenting with dyspnea"
+        },
+        {
+          "chunk_id": "xNJ8ALMjZ7A_7",
+          "text_excerpt": "all patients presenting with acute dyspnea warrant assessment"
+        }
+      ]
+    },
+    {
+      "id": "dyspnea_02",
+      "topic": "acute_dyspnea",
+      "query": "According to the acute dyspnea lecture, does normal oxygen saturation rule out serious causes of shortness of breath?",
+      "relevant_chunk_ids": [
+        "xNJ8ALMjZ7A_6",
+        "xNJ8ALMjZ7A_7"
+      ],
+      "reference_answer": "No. Most causes can occur with or without hypoxemia; normal oxygen saturation cannot exclude them.",
+      "evidence": [
+        {
+          "chunk_id": "xNJ8ALMjZ7A_6",
+          "text_excerpt": "most causes of dyspnea can present either with or without hypoxemia"
+        },
+        {
+          "chunk_id": "xNJ8ALMjZ7A_7",
+          "text_excerpt": "most causes of dyspnea can present either with or without hypoxemia"
+        }
+      ]
+    },
+    {
+      "id": "acute_abdominal_01",
+      "topic": "acute_abdominal_pain",
+      "query": "According to the acute abdominal pain lecture, where does appendicitis pain classically begin, and where does it move?",
+      "relevant_chunk_ids": [
+        "_PDOXlVGeuY_3",
+        "_PDOXlVGeuY_7"
+      ],
+      "reference_answer": "It begins near the umbilicus and then localizes to the right lower quadrant.",
+      "evidence": [
+        {
+          "chunk_id": "_PDOXlVGeuY_3",
+          "text_excerpt": "but rather in the perio umbilical area"
+        },
+        {
+          "chunk_id": "_PDOXlVGeuY_7",
+          "text_excerpt": "right lower quadrant but often begins in the para umbilical region"
+        }
+      ]
+    },
+    {
+      "id": "acute_abdominal_02",
+      "topic": "acute_abdominal_pain",
+      "query": "According to the acute abdominal pain lecture, what posture can relieve pancreatitis pain?",
+      "relevant_chunk_ids": [
+        "_PDOXlVGeuY_8"
+      ],
+      "reference_answer": "Sitting up and leaning forward.",
+      "evidence": [
+        {
+          "chunk_id": "_PDOXlVGeuY_8",
+          "text_excerpt": "relieved by sitting up and leaning forward"
+        }
+      ]
+    },
+    {
+      "id": "chronic_abdominal_01",
+      "topic": "chronic_abdominal_pain",
+      "query": "What duration threshold does the chronic abdominal pain lecture use, including recurrent episodes?",
+      "relevant_chunk_ids": [
+        "qfVHJQu-dfw_0"
+      ],
+      "reference_answer": "At least two months, including recurrent episodes over that period; the lecturer describes the threshold as arbitrary.",
+      "evidence": [
+        {
+          "chunk_id": "qfVHJQu-dfw_0",
+          "text_excerpt": "at least two months including recurrent episodic pain"
+        }
+      ]
+    },
+    {
+      "id": "hemoptysis_01",
+      "topic": "hemoptysis",
+      "query": "According to the hemoptysis lecture, what are the most common causes of hemoptysis in developed countries?",
+      "relevant_chunk_ids": [
+        "mYecvkIBsoA_0",
+        "mYecvkIBsoA_1",
+        "mYecvkIBsoA_6"
+      ],
+      "reference_answer": "Acute bronchitis, bronchiectasis, and cancer (primary lung or endobronchial metastases).",
+      "evidence": [
+        {
+          "chunk_id": "mYecvkIBsoA_0",
+          "text_excerpt": "the most common causes of hemoptysis are acute bronchitis bronchiectasis and cancer"
+        },
+        {
+          "chunk_id": "mYecvkIBsoA_1",
+          "text_excerpt": "the most common causes of hemoptysis are acute bronchitis bronchiectasis and cancer"
+        },
+        {
+          "chunk_id": "mYecvkIBsoA_6",
+          "text_excerpt": "acute bronchitis bronchiectasis and cancer are the most common causes"
+        }
+      ]
+    },
+    {
+      "id": "fever_01",
+      "topic": "childhood_fever",
+      "query": "According to the NHS childhood fever video, what temperature counts as a fever?",
+      "relevant_chunk_ids": [
+        "MIkO7oZZrtM_0"
+      ],
+      "reference_answer": "38 degrees Celsius or more.",
+      "evidence": [
+        {
+          "chunk_id": "MIkO7oZZrtM_0",
+          "text_excerpt": "Fever is a high temperature of 38° centigrade or more."
+        }
+      ]
+    },
+    {
+      "id": "cold_flu_01",
+      "topic": "cold_and_flu",
+      "query": "According to the cold-versus-flu video, how do the usual symptoms of influenza differ from a common cold?",
+      "relevant_chunk_ids": [
+        "_avTf7IoHCU_0"
+      ],
+      "reference_answer": "Influenza more often causes systemic symptoms such as fever and body aches; a cold more often causes runny nose, sore throat, and possibly cough.",
+      "evidence": [
+        {
+          "chunk_id": "_avTf7IoHCU_0",
+          "text_excerpt": "influenza tends to cause what we call more systemic symptoms"
+        }
+      ]
+    },
+    {
+      "id": "rash_01",
+      "topic": "adult_rash",
+      "query": "According to the adult rash video, what symptoms accompanying a rash may require emergency medical care?",
+      "relevant_chunk_ids": [
+        "ZB3xl6ULVnQ_0"
+      ],
+      "reference_answer": "Trouble breathing or swallowing, or swelling of the eyes and lips.",
+      "evidence": [
+        {
+          "chunk_id": "ZB3xl6ULVnQ_0",
+          "text_excerpt": "trouble breathing or swallowing or your eyes and lips swell up"
+        }
+      ]
+    },
+    {
+      "id": "dandruff_01",
+      "topic": "dandruff",
+      "query": "According to the dandruff video, is dandruff caused by poor hygiene, and how can infrequent shampooing affect it?",
+      "relevant_chunk_ids": [
+        "zKAmsPHUZ78_0"
+      ],
+      "reference_answer": "Poor hygiene does not cause dandruff, but infrequent shampooing can make it more obvious.",
+      "evidence": [
+        {
+          "chunk_id": "zKAmsPHUZ78_0",
+          "text_excerpt": "dandruff is not caused by poor hygiene although infrequent shampooing can make dandruff more obvious"
+        }
+      ]
+    }
+  ]
+}
