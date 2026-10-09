@@ -1,0 +1,684 @@
+{
+  "schema_version": 1,
+  "run_type": "baseline_rag_answer_collection",
+  "created_at_utc": "2026-10-09T17:31:33.252450+00:00",
+  "dataset_name": "medical_video_retrieval_validation_v1",
+  "dataset_status": "draft_assistant_reviewed",
+  "evaluation_role": "development; previously inspected draft questions",
+  "goldens_sha256": "d83ba72a79a52f7f1996bc47b5c9a8ec15aa81404fdf3930e2f8c190c720e4ec",
+  "corpus_text_sha256": "aafdba755ca478809d70e3cc26782c6b0d0a1cd58740d708a6423b2de9c4d81a",
+  "git_head": "d1661dfe3a1418da38119bffb6a349d5b994e645",
+  "working_tree_dirty": true,
+  "source_sha256": {
+    "retriever.py": "1c1014fa757fb925a14e245cbc5ac68378fbce96c7dd36a662492d95c3926ff6",
+    "generator.py": "06d535b558e7c0203549192ddf2624a7bfc76817fe55529862f147b4850f5d07",
+    "eval_retriever.py": "8e1109c7d13a3d913ed8bd363f5e6d619220fd7700edfb1f149ecba245b16507"
+  },
+  "collector_source_sha256": "ff60b60a67a1ca9fe78f904938a16145bff1ff8a78f453214f0c0d5d875b2793",
+  "package_versions": {
+    "chromadb": "1.5.9",
+    "sentence-transformers": "6.1.0",
+    "groq": "1.7.0",
+    "python-dotenv": "1.2.4"
+  },
+  "configuration": {
+    "retrieval_method": "original_dense",
+    "top_k": 3,
+    "generator": {
+      "model": "openai/gpt-oss-20b",
+      "temperature": 0
+    }
+  },
+  "dataset_question_count": 10,
+  "selected_case_ids": [
+    "validation_cough_01",
+    "validation_headache_01",
+    "validation_dyspnea_01",
+    "validation_acute_abdominal_01",
+    "validation_hemoptysis_01",
+    "validation_chronic_abdominal_01",
+    "validation_fever_01",
+    "validation_cold_flu_01",
+    "validation_rash_01",
+    "validation_dandruff_01"
+  ],
+  "run_status": "completed",
+  "quality_evaluation_status": "not_scored",
+  "limitations": [
+    "Draft references require human review.",
+    "Successful generation does not establish answer correctness.",
+    "Timings are diagnostic, not a latency benchmark.",
+    "Only completed cases are checkpointed; report is not resumable."
+  ],
+  "cases": [
+    {
+      "id": "validation_cough_01",
+      "topic": "cough",
+      "query": "According to the cough lecture, what medication-class switch is described for a suspected ACE inhibitor cough?",
+      "reference_answer": "Switching from an ACE inhibitor to an angiotensin receptor blocker.",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_7",
+        "LDMEtNXik-A_8"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_7",
+          "text_excerpt": "switching the patient to an angiotensin receptor blocker is usually done."
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_8",
+          "text_excerpt": "switching the patient to an angiotensin receptor blocker is usually done."
+        }
+      ],
+      "status": "success",
+      "answer": "Switch the patient from an ACE inhibitor to an **angiotensin‑receptor blocker (ARB)**.",
+      "retrieved_ids": [
+        "LDMEtNXik-A_8",
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_9"
+      ],
+      "contexts": [
+        "and associated with diminished lung sounds and or hyperresonance to percussion, check PFTs to evaluate for COPD. At last, the use of an ACE inhibitor, particularly if the cough is non-productive, suggests the possibility of a drug side effect, and switching the patient to an angiotensin receptor blocker is usually done. Among those patients with a chronic cough, if it fails to improve despite a course of empiric treatment as a diagnostic trial, that would be the time to check a chest x-ray if not done so already, and to either try a course of empiric treatment for the next most likely diagnosis, or to proceed with more testing, such as a methacholine challenge to diagnose asthma, and esophageal pH monitoring to diagnose reflux. Depending on the severity of the cough, an ENT referral might be appropriate at this point as well. One last point is that if the patient is also presenting with hemoptysis, which is the symptom of coughing up blood, that warrants a similar, yet distinct, diagnostic workup, as such patients are more likely to have serious pathology requiring specialist referral. So, please consider checking out my other video on an approach to hemoptysis. That's an overview of an approach to cough. Key takeaway points for this topic. The most common etiologies of an acute cough are an upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia. The most common etiologies of a chronic cough are upper airway cough syndrome, colloquially known as postnasal drip, cough variant asthma, COPD, laryngopharyngeal reflux / GERD, and an ACE inhibitor side effect.",
+        "laryngopharyngeal reflux {slash} GERD, ACE inhibitors, and among smokers, COPD. So next, how do we evaluate a patient presenting with cough? First, consider what's relevant in the history, the duration and timing of the cough. One of the most common characteristics used in describing a cough is productive versus non-productive of phlegm. You should inquire as to the presence of other symptoms, particularly fever, dyspnea, chest pain, hemoptysis, heartburn, rhinorrhea, nasal congestion, and weight loss. Ask the patient about a history of chronic lung disease, immunosuppression, smoking, and use of an ACE inhibitor. Beyond the history, obviously assess the vitals. H E E N T and pulmonary exams will obviously be relevant, as well cardiac auscultation and assessment of the JVP. Lab tests are usually not helpful in most causes of a cough, particularly a chronic one, but consider checking a CBC if any form of infection is being considered. And last, consider a chest x-ray. With all this information, we enter the diagnostic algorithm with an initial question of whether or not to order an x-ray. Ordering an x-ray in a patient presenting with a cough depends on two very general factors. Is the cough chronic, and are there any red flags for serious pathology present? If yes to either of these, a chest x-ray is warranted. What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis.",
+        "The most common etiologies of an acute cough are an upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia. The most common etiologies of a chronic cough are upper airway cough syndrome, colloquially known as postnasal drip, cough variant asthma, COPD, laryngopharyngeal reflux / GERD, and an ACE inhibitor side effect. There's a lack of consensus regarding the naming and categorization of many cough ideologies. Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology. If serious pathology is felt to be unlikely, empiric treatment of the most probable diagnosis is an acceptable alternative to cumbersome, costly, insensitive, or non-specific diagnostic testing."
+      ],
+      "sources": [
+        {
+          "title": "An Approach to Cough",
+          "end": 806.88,
+          "start": 701.4,
+          "chunk_id": 8,
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "video_id": "LDMEtNXik-A",
+          "source": "Strong Medicine"
+        },
+        {
+          "title": "An Approach to Cough",
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "start": 351.6,
+          "source": "Strong Medicine",
+          "end": 473.92,
+          "chunk_id": 4,
+          "video_id": "LDMEtNXik-A"
+        },
+        {
+          "source": "Strong Medicine",
+          "chunk_id": 9,
+          "video_id": "LDMEtNXik-A",
+          "end": 835.88,
+          "start": 779.839,
+          "title": "An Approach to Cough",
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A"
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.017377299998770468,
+        "generation": 0.9215968999997131
+      },
+      "error": null
+    },
+    {
+      "id": "validation_headache_01",
+      "topic": "headache",
+      "query": "According to the headache lecture, what does a secondary headache mean?",
+      "reference_answer": "The headache itself is not the primary problem; it is secondary to another condition.",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_3"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "lcdtw93A3Zs_3",
+          "text_excerpt": "secondary headache which means that the headache itself is not the primary problem"
+        }
+      ],
+      "status": "error",
+      "answer": null,
+      "retrieved_ids": [
+        "lcdtw93A3Zs_3",
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_0"
+      ],
+      "contexts": [
+        "of headache onset here I also list trial neuralgia which sounds really similar to trigeminal autonomic calgas but is believed to be a distinct clinical entity trinal neuralgia manifests as paroxysms of sudden sharp superficial electric type pain in one or more of the three primary divisions of the trinal nerve usually without prominent autonomic symptoms headache experts classify trial neuralgia as a painful cranial neuropathy rather than a true primary headache syndrome but practically speaking all their clinicians approach it as a headache syndrome now I'll move on to the ideologies of secondary headache which means that the headache itself is not the primary problem these very generally present as either an Abrupt single episode that brings the patient to medical attention or a new onset of rapidly progressing ly worsening headaches in an older patient I make three categories here Mass occupying lesions other CNS pathology and disorders that are primarily external to the CNS the ideologies under Mass occupying lesions are straightforward Hemorrhage tumor either primary brain or metastatic to brain and abscess I want to discuss intracranial hemorrhage just a bit more with some quick clinical pearls hemorrage can be further classified based on its location moving outside in epidural subdural subarachnoid intra paranal and intraventricular each of these have slight differences in presentation and underlying causes very generally epidural hematomas are most often seen in adolescen and young adults following closed head trauma as might occur in a traffic accident an assault or from playing a suboral hematomas are also most often the result of trauma but typically from falls in the elderly particularly in those on anti-thrombotic medications patients with alcohol use disorder are also at a higher risk of subdural hematomas subdural hematomas are the only one of the five that can develop into headaches of a Subacute to Chronic nature if not recognized at onset subaco hemorrhages are almost always due to spontaneous rupture of",
+        "headaches the primary headache syndromes generally present as chronic and episodic I further divide them into common versus uncommon iies under Common Primary headache syndromes all the two I've already discussed tension headaches and migraine headaches migraine headaches can be even further divided into those without an aura also known as common migraine and those with an aura if the patient has a typical aura that is predominantly binocular visual symptoms it's referred to as a classic migraine migraines with different auras are labeled retinol migraines if visual symptoms are in just one eye hemiplegic migraines if focal motor weakness is the predominant feature and Basler type migraines if brain stem symptoms such as T arthria vertigo Axia and diplopia are predominant under uncommon primary headache syndromes exists a subcategory called the trigeminal autonomic sealas there are three main diagnoses here cluster headaches parisal hemicrania and short-lasting unilateral neuralgiform headache attacks abbreviated suned all three of these are characterized by incapacitating unilateral pain usually centered on the orbit forehead or Temple and associated with conjunctival injection lacrimation or tearing of the ipsilateral eye nasal congestion rhinorrhea and ipsilateral facial sweating the only main difference between them is their duration from cluster headaches lasting up to 3 hours while suned episodes can be as short as under a minute a particularly Troublesome diagnosis is primary Thunderclap headache in which there is an extremely severe headache of very abrupt onset mimicking a subarachnoid hemorrhage from a ruptured aneurysm but without any demonstr in cranial pathology on Imaging the word Thunderclap here refers to its acuity with maximal intensity of pain typically occurring within seconds of headache onset here I also list trial neuralgia which sounds really similar to trigeminal autonomic calgas but is believed to be a distinct clinical entity trinal neuralgia manifests as paroxysms of sudden sharp superficial electric type pain in one or more of the three primary divisions of the trinal",
+        "hello today I'll be discussing an approach to headache headache is a particularly challenging symptom to discuss because there are so many ideologies which run the full spectrum from completely benign to imminently life-threatening before jumping into the diagnostic framework I'd like to First compare and contrast the two most common causes of chronic headaches tension headaches versus migraine headaches tension headaches are the more common of the two the age of onset is typically between 20 and 50 the location of attenion headache is usually bilateral and symmetric severity is typically mild to moderate using such terms is obviously subjective but one way you can think of attention headache severity is that it's rarely so severe as to render the individual unable to function they can usually still get out of bed and get themselves dressed and in most cases drive to work to the doctor's office usually the typical duration of a attention headache is anywhere from 30 minutes to 7 days it's described most frequently as a pressure a tightness or like a band that's been stretched around the person's head when the manifestation of a primary headache syndrome tensin headaches have no Associated symptoms it's just a headache migraines on the other hand have a slightly younger age of onset of 10 to 40 they usually start as unilateral but a significant minority of migraines become bilateral their severity is better characterized as moderate to severe in that migraines can prevent a person from leaving the house or even leaving their bed their typical duration is 4 hours to 3 days most are described as throbbing or pounding and migraines have a ton of associated symptoms about 75% of patients experienced a prodrome of irritability specific food cravings yawning or fatigue that can start as long as 48 hours before the headache onset about 25% of patients will additionally experience something called an aura which consists of more specific"
+      ],
+      "sources": [
+        {
+          "source": "Strong Medicine",
+          "end": 512.039,
+          "chunk_id": 3,
+          "start": 363.12,
+          "url": "https://www.youtube.com/watch?v=lcdtw93A3Zs",
+          "video_id": "lcdtw93A3Zs",
+          "title": "An Approach to Headache"
+        },
+        {
+          "chunk_id": 2,
+          "source": "Strong Medicine",
+          "end": 388.4,
+          "url": "https://www.youtube.com/watch?v=lcdtw93A3Zs",
+          "video_id": "lcdtw93A3Zs",
+          "title": "An Approach to Headache",
+          "start": 231.28
+        },
+        {
+          "chunk_id": 0,
+          "title": "An Approach to Headache",
+          "video_id": "lcdtw93A3Zs",
+          "end": 140.36,
+          "start": 1.28,
+          "url": "https://www.youtube.com/watch?v=lcdtw93A3Zs",
+          "source": "Strong Medicine"
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.009624099999200553,
+        "generation": 5.857594300003257
+      },
+      "error": {
+        "stage": "generation",
+        "type": "ValueError"
+      }
+    },
+    {
+      "id": "validation_dyspnea_01",
+      "topic": "acute_dyspnea",
+      "query": "According to the acute dyspnea lecture, how does respiratory compensation respond to metabolic acidosis?",
+      "reference_answer": "Respiratory drive increases to lower arterial CO2 below normal and partially normalize pH.",
+      "relevant_chunk_ids": [
+        "xNJ8ALMjZ7A_1"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "xNJ8ALMjZ7A_1",
+          "text_excerpt": "respiratory drive increases with the goal of lowering arterial co2 below normal and partially normalizing pH"
+        }
+      ],
+      "status": "success",
+      "answer": "Respiratory compensation in metabolic acidosis is a reflex that **increases ventilation (respiratory drive) to blow off CO₂, thereby lowering arterial CO₂ below normal and partially correcting the lowered pH**.",
+      "retrieved_ids": [
+        "xNJ8ALMjZ7A_1",
+        "xNJ8ALMjZ7A_7",
+        "xNJ8ALMjZ7A_0"
+      ],
+      "contexts": [
+        "mucus moving on from isolated hypoxemia another general trigger for increasing ventilation is hypercapnia this can be from obstructive lung disease either COPD or severe asthma exacerbations or hypercapnia can be from acute neurologic and neuromuscular disease such as acute attacks of myasthenia gravis transverse myelitis and guillain-barre syndrome while generally speaking central hypoventilation from either drug overdose or obesity hypoventilation syndrome can leave the hypercapnia these causes of hypercapnia they don't cause dyspnea regarding acidemia shhhhh triggering of dyspnea this works synergistically with a dyspnea triggered by hypercapnia since hypercapnia necessarily lowers pH however acidemia can also occur in the absence of hypercapnia as seen with metabolic acidosis in this circumstance the body's natural response to the lowering of serum pH is so called respiratory compensation in which respiratory drive increases with the goal of lowering arterial co2 below normal and partially normalizing pH the causes of a metabolic acidosis that are most likely to cause dis mia via this mechanism are ketoacidosis and lactic acidosis beyond those three main peripheral chemoreceptors mediated triggers for dyspnea there are a few more to consider for oxygen delivery to peripheral tissues as a consequence of factors other than hypoxemia also can lead to dis BIA if you recall that oxygen delivery is proportional to both the hemoglobin concentration and to the cardiac output you will quickly deduce this category includes anemia low output heart failure and obstructive shock such as that seen from massive Pease tamponade and tension pneumothorax under miscellaneous causes there is myocardial ischemia which in some patients particularly the elderly and diabetics this can occur in the absence of chest pain exertional symptoms other than chest pain which are due to myocardial ischemia are often referred to as an engine equivalent because the approach to its diagnosis and management is the same as it would be for ischemic pain people can also present with acute dyspnea in the setting of upper airway",
+        "significant part of our framework but it turns out to be minimally diagnostically helpful since most causes of dyspnea can present either with or without hypoxemia you should never be saying to yourself this patient can't have such and such diagnosis because their Oh too sad is normal that is a common and dangerous fallacy however the opposite can be true where some diagnoses can be ruled out because they do not cause the low to sat's that are observed for instance anemia metabolic acidosis and of course anxiety finally keep in mind that acute dismay up is one of a handful of symptoms that always warrants emergent evaluation because of the significant frequency of imminently life-threatening diagnoses which are most notably a PE MI pneumothorax and tamponade so in summary ideologies of acute dyspnea can be categorized either by organ system in which case the lungs and heart are the most common general categories or by pathophysiologic mechanism in which case hypoxemia is the most common all patients presenting with acute dyspnea warrant assessment of their vitals a thorough cardiac pulmonary and extremity exam and the chest x-ray most but not all will also need some basic blood tests an ECG and the bedside ultrasound of the heart if available less frequently required tests include a CT scan either a conventional CT thorax looking for ILD or a CT angiogram if looking for a pulmonary embolism despite it being the most common mechanism leading to dis Nia the presence or absence of hypoxemia usually has minimal impact on the differential diagnosis and imminently life-threatening diagnoses that frequently present with acute dyspnea most notably include PE and an acute MI but also includes tamponade and a pneumothorax you",
+        "today I'll be talking about an approach to the patient with acute dyspnea also known as shortness of breath arbitrarily define acute as an onset over the course of anywhere between seconds to about a week but keep in mind that a patient with any classic cause of chronic progressive dyspnea can occasionally present after just a few days of symptom onset so consider checking out the approach to chronic dyspnea video as well regarding a diagnostic framework for dyspnea either acute or chronic as with most symptoms it's common to categorize causative diagnoses based upon organ systems for example grouping pneumonia pulmonary embolism and a pleural effusion under the heading of lung heart failure and ischemia under heart and so on and so forth that's perfectly fine to do and this is what I do for the chronic just me a video but for acute dyspnea both for a variety and because I actually think it's more instructive I'll construct the framework around the pathophysiologic mechanisms that can lead to the dyspnea sensation the most clear-cut physiologic trigger for dis neo is input from peripheral chemoreceptors in the carotid and a or tech bodies that the person is experiencing hypoxemia hypercapnia or acidemia so let's start with those categories focusing first on hypoxemia the most common causes of acute hypoxemia include pulmonary edema either cardiogenic or non cardiogenic pneumonia pulmonary embolism pleural effusion and a COPD exacerbation less common causes include interstitial lung disease pneumothorax atelectasis which is collapsed a part of a lung and mucous plugging which is when a large airway literally gets abruptly obstructed with mucus moving on from isolated hypoxemia another general trigger for increasing ventilation is hypercapnia this can be from obstructive lung disease either COPD or severe asthma exacerbations or hypercapnia can be from acute neurologic and neuromuscular disease such as acute attacks of myasthenia gravis transverse myelitis and guillain-barre syndrome while generally speaking central"
+      ],
+      "sources": [
+        {
+          "chunk_id": 1,
+          "title": "An Approach to Acute Dyspnea",
+          "video_id": "xNJ8ALMjZ7A",
+          "url": "https://www.youtube.com/watch?v=xNJ8ALMjZ7A",
+          "source": "Strong Medicine",
+          "end": 251.509,
+          "start": 108.38
+        },
+        {
+          "end": 934.66,
+          "start": 808.009,
+          "source": "Strong Medicine",
+          "title": "An Approach to Acute Dyspnea",
+          "url": "https://www.youtube.com/watch?v=xNJ8ALMjZ7A",
+          "chunk_id": 7,
+          "video_id": "xNJ8ALMjZ7A"
+        },
+        {
+          "end": 137.239,
+          "title": "An Approach to Acute Dyspnea",
+          "start": 0.65,
+          "url": "https://www.youtube.com/watch?v=xNJ8ALMjZ7A",
+          "source": "Strong Medicine",
+          "video_id": "xNJ8ALMjZ7A",
+          "chunk_id": 0
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.014329300000099465,
+        "generation": 14.03770340000483
+      },
+      "error": null
+    },
+    {
+      "id": "validation_acute_abdominal_01",
+      "topic": "acute_abdominal_pain",
+      "query": "According to the acute abdominal pain lecture, what physical examination finding is called Murphy's sign?",
+      "reference_answer": "Increased right upper quadrant tenderness during inspiration as the diaphragm pushes the liver and gallbladder into the examiner's stationary hands.",
+      "relevant_chunk_ids": [
+        "_PDOXlVGeuY_9"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "_PDOXlVGeuY_9",
+          "text_excerpt": "an increase in right upper quadrant tenderness on inspiration when the diaphragm descends pushing the liver and gallbladder into the examiners stationary hands this is known as Murphy's sign"
+        }
+      ],
+      "status": "success",
+      "answer": "I don't have enough information in the provided medical sources.",
+      "retrieved_ids": [
+        "qfVHJQu-dfw_13",
+        "qfVHJQu-dfw_14",
+        "_PDOXlVGeuY_8"
+      ],
+      "contexts": [
+        "accompanied by a constellation of flushing diarrhea rhinorrhea bronchoconstriction presyncope and hypotension that's highly suggestive of a mast cell disorder which can be diagnosed by comparing a baseline serum tryptase with one drawn shortly after onset of an episode so that's an overview of the etiologies and evaluation of chronic abdominal pain it's not going to explain every single patient presentation but it hopefully gives you a place to start one final point to make many cases of chronic abdominal pain start with a presentation of acute abdominal pain in other words the first one or two or more episodes of an eventually chronic disease are already severe enough to bring a patient in to seek medical attention unfortunately because there is so little overlap between the etiologies of chronic abdominal pain and the classically taught etiologies of acute abdominal pain most of these will be misdiagnosed sometimes it's because clinicians make a legitimate preventable mistake sometimes it's because the clinician wasn't taught the actual etiology during training because as i mentioned before many causes of chronic pain are underemphasized in school but i think that most often these diagnoses are just hard to make until there has been a sufficient amount of time to have elapsed before a pattern to the pain becomes evident or for additional symptoms to have developed this is a large part of the frustration with chronic abdominal pain that both clinicians and patients have like but you know i think the take-home message is that for any patients watching this if the cause of your pain hasn't been figured out yet you know don't despair or give up just because you haven't gotten a diagnosis yet doesn't mean that the correct diagnosis is not forthcoming the key takeaway points of the video common etiologies of chronic abdominal pain that are in the gi system include gastritis peptic ulcer disease constipation and ibs and those in the female reproductive",
+        "don't despair or give up just because you haven't gotten a diagnosis yet doesn't mean that the correct diagnosis is not forthcoming the key takeaway points of the video common etiologies of chronic abdominal pain that are in the gi system include gastritis peptic ulcer disease constipation and ibs and those in the female reproductive system include endometriosis ovarian cysts menstrual cramps and ovulation pain the history is the most important part of the evaluation but most patients will also receive ct and or ultrasound plus egd and or colonoscopy among patients lacking a diagnosis after routine labs imaging and endoscopy the history and rarely the exam will provide clues for additional specialized testing and last most patients with chronic abdominal pain will start with one or more presentations to the healthcare system for acute abdominal pain which will often be misdiagnosed until the chronicity pattern of episodes and associated symptoms are more clearly established that's it for this video on an approach to chronic abdominal pain consider checking out the accompanying video on an approach to acute abdominal pain and consider subscribing for more videos on a variety of medical topics",
+        "but less discussed findings such as Rob Zing's so s and obturator signs patients are often febrile and once again peritoneal signs suggest perforation significant labs in Penta situs include high white counts and an elevated CRP while an elevated CRP would be expected in some other abdominal diseases such as peritonitis and acute cholecystitis for some reason it's more discussed as a feature of appendicitis specifically there is also a clinical prediction rule called the Alvarado score which assigns points to various historical exam and lab features to give an overall probability of the diagnosis any patient with suspected appendicitis should undergo imaging which can be either CT or ultrasound the choice of which is institution clinician and situation dependent and then there is pancreatitis in which patients present with epigastric pain radiating to the back that's exacerbated by eating and relieved by sitting up and leaning forward it's usually associated with nausea and vomiting this mia is a more commonly associated symptom in pancreatitis than with the other diagnoses in this chart risk factors or ideologies for pancreatitis include alcohol and gall stones which together account for the majority of cases less common causes include ERCP hypertriglyceridemia and a variety of medications on exam severe cases can present with shock and parry umbilical or flank ecchymosis suggests hemorrhage secondary to pancreatic necrosis a particularly worrisome sign the most notable abnormal lab is in very elevated lipase typically more than three times the upper limit of normal while a CT scan is not considered necessary for the diagnosis it can assess for complications and help identify gall stones in the pancreatic duct as a potential causative factor now let's run through the illness scripts of four particularly important causes of right upper quadrant pain biliary colic acute cholecystitis acute cholangitis and acute hepatitis in biliary colic caused by gall stones within the gallbladder the pain is typically episodic lasting 30 minutes to"
+      ],
+      "sources": [
+        {
+          "url": "https://www.youtube.com/watch?v=qfVHJQu-dfw",
+          "end": 1623.2,
+          "title": "An Approach to Chronic Abdominal Pain",
+          "source": "Strong Medicine",
+          "video_id": "qfVHJQu-dfw",
+          "start": 1486.799,
+          "chunk_id": 13
+        },
+        {
+          "end": 1683.84,
+          "video_id": "qfVHJQu-dfw",
+          "start": 1595.6,
+          "source": "Strong Medicine",
+          "chunk_id": 14,
+          "title": "An Approach to Chronic Abdominal Pain",
+          "url": "https://www.youtube.com/watch?v=qfVHJQu-dfw"
+        },
+        {
+          "video_id": "_PDOXlVGeuY",
+          "source": "Strong Medicine",
+          "end": 1088.5300000000002,
+          "url": "https://www.youtube.com/watch?v=_PDOXlVGeuY",
+          "chunk_id": 8,
+          "title": "An Approach to Acute Abdominal Pain",
+          "start": 947.16
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.0182383999999729,
+        "generation": 9.432261299996753
+      },
+      "error": null
+    },
+    {
+      "id": "validation_hemoptysis_01",
+      "topic": "hemoptysis",
+      "query": "According to the hemoptysis lecture, does a normal chest CT necessarily rule out cancer?",
+      "reference_answer": "No. Cancer may not be excluded, especially with high-risk features. The lecture discusses further investigation or observation depending on risk.",
+      "relevant_chunk_ids": [
+        "mYecvkIBsoA_5",
+        "mYecvkIBsoA_6"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "mYecvkIBsoA_5",
+          "text_excerpt": "if the chest CT is normal it's critical to realize that malignancy has not necessarily been ruled out"
+        },
+        {
+          "chunk_id": "mYecvkIBsoA_6",
+          "text_excerpt": "a normal chest CT does not necessarily rule out cancer"
+        }
+      ],
+      "status": "success",
+      "answer": "No – a normal chest CT does **not** necessarily rule out cancer in a patient with hemoptysis.",
+      "retrieved_ids": [
+        "mYecvkIBsoA_6",
+        "mYecvkIBsoA_5",
+        "LDMEtNXik-A_5"
+      ],
+      "contexts": [
+        "upon how low the pretest probability of it had been so consider following up a normal CT with bronchoscopy and at the very least close observation that's an overview 2n approach to hemoptysis key takeaway points include as mitosis originates from the lungs by definition the most logical diagnostic framework categorizes ideologies but the parts of the lungs they affect acute bronchitis bronchiectasis and cancer are the most common causes of hemoptysis in a developed world Walter Buerkle osis and paragonimus westermani are significant causes of hemoptysis in the developing world if the initial workup does not indicate a probable infectious etiology most patients will warrant a chest CT and last a normal chest CT does not necessarily rule out cancer in a patient with hemoptysis particularly if there are high-risk features present such as a smoking history or weight loss you",
+        "these questions is yes then close observation can be considered but this will be a minority of patients one study found that about a quarter of patients presenting with hemoptysis due to malignancy initially had a normal chest x-ray so have a low threshold for ordering the CT and some clinicians would discuss with the page the benefits and harms of a CT even if they did meet all the considerations for a probable benign etiology and if the patient's history did have any high-risk features then you should definitely get a CT from the chest CT as with the x-ray before its results can be placed into several categories first if it shows probable infection our algorithm merges back up to here if it shows probable cancer a PET scan is appropriate to see if the mass is hypermetabolic and to see if there's evidence of distant disease these patients will also need a strategy for biopsy either bronchoscopy for central masses a CT guided transcutaneous approach by interventional radiology for peripheral masses or the biopsy of a distance hypermetabolic sites identified by pets which could both confirm cancer and confirm is that it's metastatic with a single procedure if the chest CT shows other findings working up as indicated including consideration of rare ideologies however the most common CT finding in this category is bronchiectasis which depending on the patient's history and the radiographic distribution of the bronchiectasis may or may not warrant additional workup and last if the chest CT is normal it's critical to realize that malignancy has not necessarily been ruled out depending upon how low the pretest probability of it had been so consider following up a normal CT with bronchoscopy and at the very least close observation that's an overview 2n approach to hemoptysis key takeaway points include as mitosis originates from the lungs by definition the most logical diagnostic framework categorizes ideologies but the",
+        "What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis. If an X-ray is ordered and found to be abnormal, it should of course be further worked up as indicated. Abnormalities that might be seen include focal alveolar opacifications consistent with pneumonia or aspiration, diffuse interstitial opacities consistent with ILD, hyperinflation and flattening of the diaphragms consistent with COPD, or lung nodule or masses consistent with cancer. For most patients presenting with a cough, particularly most patients with a chronic cough, the chest X-ray will be unremarkable. This will make serious pathology relatively unlikely, not impossible, just unlikely, and even if it's not likely to be serious, it's still important to diagnose correctly. So, work up any other symptoms and signs if they are present, and otherwise consider etiologies listed in this box to the right. Some etiologies that would be placed in this box do have confirmatory diagnostic tests, but in practice, unless otherwise specified, most doctors often instead to recommend a diagnostic trial of empiric treatment for the most likely diagnoses based on the clinically present factors. This is because the empiric treatments in question are usually benign, and the confirmatory diagnostic tests are either cumbersome, expensive, or have suboptimal positive and negative predictive values."
+      ],
+      "sources": [
+        {
+          "chunk_id": 6,
+          "source": "Strong Medicine",
+          "video_id": "mYecvkIBsoA",
+          "end": 715.77,
+          "start": 646.31,
+          "url": "https://www.youtube.com/watch?v=mYecvkIBsoA",
+          "title": "An Approach to Hemoptysis"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=mYecvkIBsoA",
+          "source": "Strong Medicine",
+          "title": "An Approach to Hemoptysis",
+          "video_id": "mYecvkIBsoA",
+          "start": 546.8,
+          "end": 674.639,
+          "chunk_id": 5
+        },
+        {
+          "end": 551.0,
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "start": 449.04,
+          "video_id": "LDMEtNXik-A",
+          "source": "Strong Medicine",
+          "chunk_id": 5,
+          "title": "An Approach to Cough"
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.016898799993214197,
+        "generation": 23.963515299998107
+      },
+      "error": null
+    },
+    {
+      "id": "validation_chronic_abdominal_01",
+      "topic": "chronic_abdominal_pain",
+      "query": "What test does the chronic abdominal pain lecture describe for diagnosing gastroparesis?",
+      "reference_answer": "A gastric emptying scan, tracking how long radioactive food takes to pass from the stomach to the small intestine.",
+      "relevant_chunk_ids": [
+        "qfVHJQu-dfw_11"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "qfVHJQu-dfw_11",
+          "text_excerpt": "gastroparesis which is diagnosed with a gastric emptying scan"
+        }
+      ],
+      "status": "success",
+      "answer": "The lecture states that gastroparesis is diagnosed with a **gastric emptying scan** (a test in which the patient eats radioactive food and the time it takes for the radioactivity to leave the stomach is measured).",
+      "retrieved_ids": [
+        "qfVHJQu-dfw_14",
+        "qfVHJQu-dfw_11",
+        "qfVHJQu-dfw_3"
+      ],
+      "contexts": [
+        "don't despair or give up just because you haven't gotten a diagnosis yet doesn't mean that the correct diagnosis is not forthcoming the key takeaway points of the video common etiologies of chronic abdominal pain that are in the gi system include gastritis peptic ulcer disease constipation and ibs and those in the female reproductive system include endometriosis ovarian cysts menstrual cramps and ovulation pain the history is the most important part of the evaluation but most patients will also receive ct and or ultrasound plus egd and or colonoscopy among patients lacking a diagnosis after routine labs imaging and endoscopy the history and rarely the exam will provide clues for additional specialized testing and last most patients with chronic abdominal pain will start with one or more presentations to the healthcare system for acute abdominal pain which will often be misdiagnosed until the chronicity pattern of episodes and associated symptoms are more clearly established that's it for this video on an approach to chronic abdominal pain consider checking out the accompanying video on an approach to acute abdominal pain and consider subscribing for more videos on a variety of medical topics",
+        "how do we diagnose the diagnoses that remain we need to use clues from the history to suggest specific diagnoses each of which has a relatively unique confirmatory diagnostic test of the diagnoses left on the screen i'm going to go through the dozen or so that i find to be the most commonly discussed the combination of diarrhea statoria which means greasy unusually foul-smelling stools and nutritional deficiencies suggest celiac disease which is diagnosed via a blood test for iga anti-tissue transglutaminase sometimes also with a small bowel biopsy taken during endoscopy prominent postprandial nausea and vomiting is suggestive of gastroparesis which is diagnosed with a gastric emptying scan in which patients literally eat radioactive food and then detectors time how long it takes the radioactivity to pass from the stomach into the small intestine any combination of dysmenorrhea dysparenia or painful intercourse infertility bowel and or bladder dysfunction and fatigue suggest endometriosis which is diagnosed via a combination of pelvic exam pelvic ultrasound and sometimes laparoscopy with biopsy if on exam the patient has maximal abdominal tenderness confined to a very small area along the edge of the rectus sheath importantly without any other potential gi symptoms it suggests anterior cutaneous nerve entrapment syndrome this is diagnosed with a physical exam maneuver called the carnet test along with a diagnostic trigger point injection if the pain and tenderness markedly improves after application of a local anesthetic it is highly consistent with a source of pain within the abdominal wall postprandial epigastric pain lasting for one to two hours accompanied by weight loss can suggest either chronic mesenteric ischemia or median arcuate ligament syndrome the major historical distinction between the two is that patients with the former tend to be older and have cardiovascular risk factors both of these can be diagnosed with either a ct angiogram or duplex ultrasound of the abdomen though be sure to specify the suspected disease at the",
+        "gastroparesis which is a lack of normal peristalsis within the stomach which presents with postprandial pain and nausea and vomiting it's commonly associated with diabetes but can also be idiopathic there is also chronic intestinal pseudo-obstruction a different motility disorder which mimics mechanical bowel obstruction last in this category are the functional disorders a functional disorder functional gi disorder is one in which chronic pain and or nausea and vomiting and or alterations in bowel habits occurs without any discernible objective findings on routine investigations such as routine labs imaging and endoscopy these are all therefore so-called clinical diagnoses there are literally dozens of separate distinct described entities in this category but by far the most commonly recognized is irritable bowel syndrome or ibs this presents with a combination of chronic pain often characterized as bloating or cramping in nature and altered bowel habits diary and some patients constipation and others and occasionally a mix of both other entities under functional gi disorders include functional dyspepsia and something called centrally mediated abdominal pain syndrome the clearest distinction between these two is that in the former symptoms are associated with meals whereas in the latter they are not narcotic bowel syndrome is also considered a functional diagnosis one that refers to the situation in which patients on chronic narcotics for pain control develop paradoxical worsening of their abdominal pain due to constipation and dysmotility moving to the other gi category we have chronic pancreatitis and something called a pancreatic pseudocyst which is a long-term consequence of an episode of acute pancreatitis there's a condition called primary sclerosing cholangitis which is characterized by inflammation and fibrosis of the medium and large biliary ducts it has a strong association with inflammatory bowel disease and last is sphincter of od dysfunction the sphincter of od controls the exit point from the common bile duct and pancreatic duct as they empty into the duodenum anatomic or functional problems with the"
+      ],
+      "sources": [
+        {
+          "title": "An Approach to Chronic Abdominal Pain",
+          "start": 1595.6,
+          "source": "Strong Medicine",
+          "chunk_id": 14,
+          "video_id": "qfVHJQu-dfw",
+          "url": "https://www.youtube.com/watch?v=qfVHJQu-dfw",
+          "end": 1683.84
+        },
+        {
+          "chunk_id": 11,
+          "start": 1251.28,
+          "url": "https://www.youtube.com/watch?v=qfVHJQu-dfw",
+          "end": 1391.12,
+          "title": "An Approach to Chronic Abdominal Pain",
+          "source": "Strong Medicine",
+          "video_id": "qfVHJQu-dfw"
+        },
+        {
+          "start": 326.68,
+          "source": "Strong Medicine",
+          "end": 461.68,
+          "video_id": "qfVHJQu-dfw",
+          "url": "https://www.youtube.com/watch?v=qfVHJQu-dfw",
+          "title": "An Approach to Chronic Abdominal Pain",
+          "chunk_id": 3
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.011927000006835442,
+        "generation": 0.6749898999987636
+      },
+      "error": null
+    },
+    {
+      "id": "validation_fever_01",
+      "topic": "childhood_fever",
+      "query": "What signs of dehydration does the NHS childhood fever video list?",
+      "reference_answer": "Dry mouth, few or no tears, sunken eyes, a sunken fontanelle, or appearing generally unwell.",
+      "relevant_chunk_ids": [
+        "MIkO7oZZrtM_1"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "MIkO7oZZrtM_1",
+          "text_excerpt": "Children with a fever may be becoming dehydrated if they have a dry mouth"
+        }
+      ],
+      "status": "success",
+      "answer": "The video lists the following signs that a child with fever may be becoming dehydrated:\n\n- **Dry mouth**  \n- **Crying only a few tears or no tears at all**  \n- **Eyes that look sunken**  \n- **A sunken fontanelle (the soft spot on a baby’s head)**  \n- **A general appearance of looking unwell**",
+      "retrieved_ids": [
+        "MIkO7oZZrtM_1",
+        "MIkO7oZZrtM_2",
+        "MIkO7oZZrtM_0"
+      ],
+      "contexts": [
+        "them down to cool them. Equally, do not cover them up in too many clothes or bed clothes. Encourage them to drink little and often to prevent them from becoming dehydrated. You may find it helpful to use a syringe. And children with sore throats often appreciate cold drinks or ice lollies. If you're breastfeeding your child, just carry on, but remember to keep well hydrated yourself. Children with a fever may be becoming dehydrated if they have a dry mouth, they are crying only a few tears or even none at all, they have eyes that look sunken, they have a sunken fontanelle, which is the soft spot on the top of a baby's head, or they generally look unwell. If your child has diarrhoea and/or vomiting, fluid intake is much more important than food. Again, encourage them to drink little and often to prevent them from becoming dehydrated, but not fruit juice or fizzy drinks as these can make the diarrhoea worse. Oral rehydration salt solution, sometimes called ORS solution, is good because it helps the body absorb fluid. The right dose for your child is shown in the packaging. Follow the instructions on the packet to make up the solution. For babies and young children, don't give them ORS solution unless advised by a medical professional. Check on your child during the night. They should respond to your touch as they normally do when asleep. Keep them away from others while they have a fever and tell their nursery or school that they're unwell. And maintain the best possible hygiene standards to prevent infection from spreading.",
+        "and young children, don't give them ORS solution unless advised by a medical professional. Check on your child during the night. They should respond to your touch as they normally do when asleep. Keep them away from others while they have a fever and tell their nursery or school that they're unwell. And maintain the best possible hygiene standards to prevent infection from spreading. It's also important to check your child for rashes. If they have a rash that doesn't fade when you press it firmly, this can sometimes be a sign of a serious condition. Sepsis is a life-threatening reaction to an infection when the immune system overreacts and starts to damage the body's tissues and organs. It can develop quickly, so needs to be identified and treated as an emergency. So, make sure you watch our film, Spotting the Signs of Sepsis, which explains when you might need to worry. You know your child best, so trust your instincts. If you see something you're worried about, speak to a healthcare professional. You should call your GP, 111, or for children aged 5 and over, visit 111.nhs.uk, if you feel your child is getting more unwell, you're becoming more worried, or you're distressed or concerned that you're unable to look after them. You should call 999 in an emergency, such as if your child has a fever and has a fit, or has a rash that doesn't fade when you press it. For more information, click the link to the NHS website.",
+        "Hi, I'm Dr. Ranj Singh. I'm an NHS children's doctor and I'm going to talk to you about looking after your child with fever. Fever is a high temperature of 38° centigrade or more. It's a natural response to an infection. It should normally take around 1 to 4 days for your child or baby's temperature to go down. Here are a few simple things that you can do at home to help them feel more comfortable. Check your child's temperature regularly. In many cases, you can give them either paracetamol or ibuprofen if they're distressed or uncomfortable. If one doesn't work, try the other, but don't use both or alternate them unless a health care professional tells you to. The right dose for your child is shown in the packaging. Make sure you don't exceed the maximum daily dose. However, paracetamol should not be given to a child under 2 months old and ibuprofen should not be given to a child if they're under 3 months old, they weigh under 5 kg, they have chickenpox, or they're dehydrated. Also, if your child has asthma, you shouldn't give them ibuprofen unless it's been recommended by a doctor. Don't undress your child or sponge them down to cool them. Equally, do not cover them up in too many clothes or bed clothes. Encourage them to drink little and often to prevent them from becoming dehydrated. You may find it helpful to use a syringe. And children with sore throats often appreciate cold drinks or ice lollies. If you're breastfeeding your child, just carry on, but remember to keep well hydrated yourself."
+      ],
+      "sources": [
+        {
+          "start": 79.28,
+          "url": "https://www.youtube.com/watch?v=MIkO7oZZrtM",
+          "source": "NHS",
+          "title": "Fever in children - Dr Ranj Singh",
+          "video_id": "MIkO7oZZrtM",
+          "chunk_id": 1,
+          "end": 182.72
+        },
+        {
+          "end": 255.76,
+          "video_id": "MIkO7oZZrtM",
+          "source": "NHS",
+          "start": 155.6,
+          "url": "https://www.youtube.com/watch?v=MIkO7oZZrtM",
+          "chunk_id": 2,
+          "title": "Fever in children - Dr Ranj Singh"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=MIkO7oZZrtM",
+          "end": 104.96,
+          "title": "Fever in children - Dr Ranj Singh",
+          "video_id": "MIkO7oZZrtM",
+          "start": 0.4,
+          "source": "NHS",
+          "chunk_id": 0
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.013571999996202067,
+        "generation": 18.10488179999811
+      },
+      "error": null
+    },
+    {
+      "id": "validation_cold_flu_01",
+      "topic": "cold_and_flu",
+      "query": "What self-care measures for a common cold are described in the cold-versus-flu video?",
+      "reference_answer": "Plenty of rest, plenty of fluids, and symptomatic relief with ibuprofen or acetaminophen while the body fights the infection.",
+      "relevant_chunk_ids": [
+        "_avTf7IoHCU_0"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "_avTf7IoHCU_0",
+          "text_excerpt": "plenty of rest to drink plenty of fluids"
+        }
+      ],
+      "status": "success",
+      "answer": "The video recommends the following self‑care measures for a common cold:\n\n1. **Get plenty of rest**  \n2. **Drink plenty of fluids**  \n3. **Use symptomatic relief** – such as ibuprofen or acetaminophen to ease discomfort while the body fights the virus.",
+      "retrieved_ids": [
+        "_avTf7IoHCU_0",
+        "LDMEtNXik-A_6",
+        "LDMEtNXik-A_0"
+      ],
+      "contexts": [
+        "influenza is a specific type of infection caused by a specific virus so that's usually influenza A or influenza B virus the cold on the other hand is caused by hundreds of different types of viruses the main difference that you would notice is that influenza tends to cause what we call more systemic symptoms so you are more likely to have fever body aches and pains than you are with the cold which tends to be usually just runny nose sore throat and possibly some cough the best things that we recommend for people who have the common cold are to get to plenty of rest to drink plenty of fluids and you can use kind of symptomatic relief methods in terms of ibuprofen or acetaminophen to help yourself feel better until your body is able to fight it off itself once you have a viral infection of any kind there is an increased chance that you might develop a superimposed bacterial infection so this can look like a few different things your infections can be an example of that your risk of developing a bacterial sinusitis could go up and your risk of developing pneumonia or a lung infection can go up as well however most commonly the virus just runs its course and doesn't cause any long-term issues",
+        "specified, most doctors often instead to recommend a diagnostic trial of empiric treatment for the most likely diagnoses based on the clinically present factors. This is because the empiric treatments in question are usually benign, and the confirmatory diagnostic tests are either cumbersome, expensive, or have suboptimal positive and negative predictive values. If the cough has been present for less than 1 week and is accompanied by other upper respiratory symptoms, the etiology is likely a viral URI, in which case symptomatic treatment can be offered. The only consideration here is during flu season, when a nasal swab for influenza should be considered, particularly if the patient also has a fever. If the duration of cough is less than 3 weeks, and the patient has no other notable symptoms, the patient probably has acute bronchitis, for which antibiotics are usually not indicated unless the patient has suspected pertussis. If the cough is acute and occurring either in a smoker or in a person known to have COPD, consider a possible COPD exacerbation. If there is no more likely diagnosis, consider empiric treatment with prednisone, inhaled bronchodilators such as albuterol and ipratropium, and plus or minus antibiotics. If the cough is subacute and was preceded by URI symptoms that are now resolved, that's probably a post-viral cough, but pertussis should also be considered. If the cough is chronic and accompanied by nasal congestion, rhinorrhea, sneezing, and or sinus pressure, consider empiric treatment for upper airway cough syndrome, which can include antihistamines, decongestants, and or nasal steroids, depending on the suspected subtype.",
+        "Hello. Today, I'll be discussing an approach to cough. I'll be combining acute and chronic cough into one general discussion, but we'll highlight along the way the points in which these two differ. The best diagnostic framework for the ideologies of cough is a combination of anatomic region and organ system, which the first category is usually referred to as H E E N T for head, ears, eyes, nose, and throat. However, in this context, it makes more sense to relabel this as upper airway. There are four major ideologies of cough in the upper airway. First is an acute upper respiratory infection, also known colloquially as a common cold, which is caused by viruses. There is also another entity formally called upper airway cough syndrome, but more commonly referred to as postnasal drip. This is an umbrella term that includes a variety of chronic conditions with overlapping presentations and treatments, including both allergic rhinitis, also known as hay fever, and nonallergic rhinitis. Chronic sinusitis also falls into this category. The conditions under upper airway cough syndrome all cause subacute to chronic nasal congestion, runny nose, also known as rhinorrhea, sneezing, sinus pressure, and of course cough. Their underlying mechanisms differ, but they can be difficult to distinguish clinically. The terminology and subclassification of upper airway cough syndrome also lacks current consensus. Additionally, under the general category of upper airway is something called postviral cough, which is when a viral infection triggers a temporary version of either upper airway cough syndrome, or less commonly cough variant asthma."
+      ],
+      "sources": [
+        {
+          "chunk_id": 0,
+          "source": "Mayo Clinic",
+          "url": "https://www.youtube.com/watch?v=_avTf7IoHCU",
+          "end": 73.46000000000001,
+          "title": "Infectious Diseases - Common cold or the flu?",
+          "start": 0.0,
+          "video_id": "_avTf7IoHCU"
+        },
+        {
+          "start": 527.64,
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "title": "An Approach to Cough",
+          "chunk_id": 6,
+          "source": "Strong Medicine",
+          "end": 635.92,
+          "video_id": "LDMEtNXik-A"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "title": "An Approach to Cough",
+          "end": 115.92,
+          "start": 1.24,
+          "source": "Strong Medicine",
+          "chunk_id": 0,
+          "video_id": "LDMEtNXik-A"
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.009213500001351349,
+        "generation": 0.6450838999953703
+      },
+      "error": null
+    },
+    {
+      "id": "validation_rash_01",
+      "topic": "adult_rash",
+      "query": "What signs suggest an infected rash in the adult rash video?",
+      "reference_answer": "Pus, yellow or golden crusts, pain, swelling or warmth; skin around the rash may look red, purple or brown, and fever or feeling very hot or cold may occur.",
+      "relevant_chunk_ids": [
+        "ZB3xl6ULVnQ_0"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "ZB3xl6ULVnQ_0",
+          "text_excerpt": "rashes can also get infected you might have pus yellow or golden crusts pain swelling or warmth"
+        }
+      ],
+      "status": "success",
+      "answer": "Signs that a rash may be infected include:\n\n- Presence of pus or yellow/golden crusts  \n- Pain, swelling, or warmth around the rash  \n- The surrounding skin looks red, purple, or brown  \n- Feeling very hot or cold, and/or having a fever  \n\nThese symptoms suggest the rash has become infected.",
+      "retrieved_ids": [
+        "ZB3xl6ULVnQ_0",
+        "MIkO7oZZrtM_2",
+        "MIkO7oZZrtM_3"
+      ],
+      "contexts": [
+        "[Music] rashes are common and having a rash isn't always something to worry about however some rashes can be a sign of a serious condition if you have a rash with any of these features board certified dermatologists recommend you get medical attention a rash over most of your body a rash that blisters or turns into open sores or raw skin fever or illness with a rash a rash that spreads rapidly a painful rash a rash that involves your eyes lips mouth or genital skin rashes can also get infected you might have pus yellow or golden crusts pain swelling or warmth the skin around an infected rash might look red purple or brown and you might feel very hot or cold and have a fever if you have a rash and have trouble breathing or swallowing or your eyes and lips swell up you may need emergency medical care if you have a rash and your symptoms aren't improving partner with a board certified [Music] dermatologist",
+        "and young children, don't give them ORS solution unless advised by a medical professional. Check on your child during the night. They should respond to your touch as they normally do when asleep. Keep them away from others while they have a fever and tell their nursery or school that they're unwell. And maintain the best possible hygiene standards to prevent infection from spreading. It's also important to check your child for rashes. If they have a rash that doesn't fade when you press it firmly, this can sometimes be a sign of a serious condition. Sepsis is a life-threatening reaction to an infection when the immune system overreacts and starts to damage the body's tissues and organs. It can develop quickly, so needs to be identified and treated as an emergency. So, make sure you watch our film, Spotting the Signs of Sepsis, which explains when you might need to worry. You know your child best, so trust your instincts. If you see something you're worried about, speak to a healthcare professional. You should call your GP, 111, or for children aged 5 and over, visit 111.nhs.uk, if you feel your child is getting more unwell, you're becoming more worried, or you're distressed or concerned that you're unable to look after them. You should call 999 in an emergency, such as if your child has a fever and has a fit, or has a rash that doesn't fade when you press it. For more information, click the link to the NHS website.",
+        "you're becoming more worried, or you're distressed or concerned that you're unable to look after them. You should call 999 in an emergency, such as if your child has a fever and has a fit, or has a rash that doesn't fade when you press it. For more information, click the link to the NHS website. Commissioned by Health Innovation Network South London, NHS England. In partnership with AskSniff. With special thanks to staff, families and volunteers at Sepsis Trust and St George's University Hospitals NHS Foundation Trust."
+      ],
+      "sources": [
+        {
+          "end": 82.799,
+          "video_id": "ZB3xl6ULVnQ",
+          "source": "American Academy of Dermatology",
+          "url": "https://www.youtube.com/watch?v=ZB3xl6ULVnQ",
+          "title": "Rash 101 in adults - When to seek medical treatment",
+          "chunk_id": 0,
+          "start": 1.88
+        },
+        {
+          "source": "NHS",
+          "end": 255.76,
+          "title": "Fever in children - Dr Ranj Singh",
+          "start": 155.6,
+          "chunk_id": 2,
+          "video_id": "MIkO7oZZrtM",
+          "url": "https://www.youtube.com/watch?v=MIkO7oZZrtM"
+        },
+        {
+          "chunk_id": 3,
+          "url": "https://www.youtube.com/watch?v=MIkO7oZZrtM",
+          "title": "Fever in children - Dr Ranj Singh",
+          "end": 265.76,
+          "start": 233.12,
+          "source": "NHS",
+          "video_id": "MIkO7oZZrtM"
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.013421200004813727,
+        "generation": 5.9562074999994365
+      },
+      "error": null
+    },
+    {
+      "id": "validation_dandruff_01",
+      "topic": "dandruff",
+      "query": "Which active ingredients does the dandruff video suggest looking for in a dandruff shampoo?",
+      "reference_answer": "Zinc pyrithione, salicylic acid, sulfur, selenium sulfide, ketoconazole, or coal tar.",
+      "relevant_chunk_ids": [
+        "zKAmsPHUZ78_0"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "zKAmsPHUZ78_0",
+          "text_excerpt": "zinc pyrithione salicylic acid sulfur selenium sulfide ketoconazole or coal tar"
+        }
+      ],
+      "status": "success",
+      "answer": "The video recommends looking for a dandruff shampoo that contains **one of the following active ingredients**:\n\n- Zinc pyrithione  \n- Salicylic acid  \n- Sulfur  \n- Selenium sulfide  \n- Ketoconazole  \n- Coal tar",
+      "retrieved_ids": [
+        "zKAmsPHUZ78_0",
+        "xNJ8ALMjZ7A_0",
+        "LDMEtNXik-A_6"
+      ],
+      "contexts": [
+        "[Music] have you noticed light flakes on your shoulders or in your hair you could have dandruff dandruff is not caused by poor hygiene although infrequent shampooing can make dandruff more obvious along with regularly washing your hair board certified dermatologists recommend these tips to treat dandruff at home choose a dandruff shampoo you can find these over the counter at your local drugstore look for a shampoo with one of these ingredients zinc pyrithione salicylic acid sulfur selenium sulfide ketoconazole or coal tar if one shampoo doesn't work try alternating between dandruff shampoos with different active ingredients follow the instructions on your dandruff shampoo bottle dandruff shampoos need to be lathered on your scalp you might need to let it sit on your scalp for up to 5 to 10 minutes before rinsing shampoo according to your hair type if you have fine or naturally straight hair or or an oily scalp wash your hair often for example shampoo daily and use your dandruff shampoo twice a week if you have course or naturally curly or coily hair wash your hair as needed and use your dandu shampoo on your scalp only about once a week if tolerated after rinsing out your dandruff shampoo you can use your regular shampoo and conditioner some dandruff shampoos make your scalp more sensitive to the sun protect your scalp from the Sun to prevent sun damage and increased flaking from sunburn seek shade wear Sun protective clothing like a wide brimmed hat and apply a broadspectrum water resistant sunscreen with an SPF of 30 or higher to your scalp try powder or spray sunscreen for easier application if your dandruff doesn't go away after following these tips partner with a board certified [Music] dermatologist",
+        "today I'll be talking about an approach to the patient with acute dyspnea also known as shortness of breath arbitrarily define acute as an onset over the course of anywhere between seconds to about a week but keep in mind that a patient with any classic cause of chronic progressive dyspnea can occasionally present after just a few days of symptom onset so consider checking out the approach to chronic dyspnea video as well regarding a diagnostic framework for dyspnea either acute or chronic as with most symptoms it's common to categorize causative diagnoses based upon organ systems for example grouping pneumonia pulmonary embolism and a pleural effusion under the heading of lung heart failure and ischemia under heart and so on and so forth that's perfectly fine to do and this is what I do for the chronic just me a video but for acute dyspnea both for a variety and because I actually think it's more instructive I'll construct the framework around the pathophysiologic mechanisms that can lead to the dyspnea sensation the most clear-cut physiologic trigger for dis neo is input from peripheral chemoreceptors in the carotid and a or tech bodies that the person is experiencing hypoxemia hypercapnia or acidemia so let's start with those categories focusing first on hypoxemia the most common causes of acute hypoxemia include pulmonary edema either cardiogenic or non cardiogenic pneumonia pulmonary embolism pleural effusion and a COPD exacerbation less common causes include interstitial lung disease pneumothorax atelectasis which is collapsed a part of a lung and mucous plugging which is when a large airway literally gets abruptly obstructed with mucus moving on from isolated hypoxemia another general trigger for increasing ventilation is hypercapnia this can be from obstructive lung disease either COPD or severe asthma exacerbations or hypercapnia can be from acute neurologic and neuromuscular disease such as acute attacks of myasthenia gravis transverse myelitis and guillain-barre syndrome while generally speaking central",
+        "specified, most doctors often instead to recommend a diagnostic trial of empiric treatment for the most likely diagnoses based on the clinically present factors. This is because the empiric treatments in question are usually benign, and the confirmatory diagnostic tests are either cumbersome, expensive, or have suboptimal positive and negative predictive values. If the cough has been present for less than 1 week and is accompanied by other upper respiratory symptoms, the etiology is likely a viral URI, in which case symptomatic treatment can be offered. The only consideration here is during flu season, when a nasal swab for influenza should be considered, particularly if the patient also has a fever. If the duration of cough is less than 3 weeks, and the patient has no other notable symptoms, the patient probably has acute bronchitis, for which antibiotics are usually not indicated unless the patient has suspected pertussis. If the cough is acute and occurring either in a smoker or in a person known to have COPD, consider a possible COPD exacerbation. If there is no more likely diagnosis, consider empiric treatment with prednisone, inhaled bronchodilators such as albuterol and ipratropium, and plus or minus antibiotics. If the cough is subacute and was preceded by URI symptoms that are now resolved, that's probably a post-viral cough, but pertussis should also be considered. If the cough is chronic and accompanied by nasal congestion, rhinorrhea, sneezing, and or sinus pressure, consider empiric treatment for upper airway cough syndrome, which can include antihistamines, decongestants, and or nasal steroids, depending on the suspected subtype."
+      ],
+      "sources": [
+        {
+          "start": 0.2,
+          "end": 121.84,
+          "source": "American Academy of Dermatology",
+          "title": "How to treat dandruff",
+          "url": "https://www.youtube.com/watch?v=zKAmsPHUZ78",
+          "video_id": "zKAmsPHUZ78",
+          "chunk_id": 0
+        },
+        {
+          "chunk_id": 0,
+          "start": 0.65,
+          "end": 137.239,
+          "url": "https://www.youtube.com/watch?v=xNJ8ALMjZ7A",
+          "source": "Strong Medicine",
+          "video_id": "xNJ8ALMjZ7A",
+          "title": "An Approach to Acute Dyspnea"
+        },
+        {
+          "end": 635.92,
+          "start": 527.64,
+          "chunk_id": 6,
+          "source": "Strong Medicine",
+          "video_id": "LDMEtNXik-A",
+          "title": "An Approach to Cough",
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A"
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.012814100002287887,
+        "generation": 21.818325499996718
+      },
+      "error": null
+    }
+  ],
+  "summary": {
+    "attempted": 10,
+    "successful": 9,
+    "errors": 1
+  },
+  "completed_at_utc": "2026-10-09T17:33:14.828635+00:00"
+}

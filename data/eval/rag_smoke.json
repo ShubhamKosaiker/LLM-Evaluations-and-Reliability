@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "run_type": "baseline_rag_answer_collection",
+  "created_at_utc": "2026-10-09T17:22:20.899519+00:00",
+  "dataset_name": "medical_video_retrieval_pilot_v1",
+  "dataset_status": "draft_assistant_reviewed",
+  "evaluation_role": "development; previously inspected draft questions",
+  "goldens_sha256": "e641c8bbb6a9621a4ab413e18c8bc6a5a84cf088eee2192e4284250317f3824a",
+  "corpus_text_sha256": "aafdba755ca478809d70e3cc26782c6b0d0a1cd58740d708a6423b2de9c4d81a",
+  "git_head": "d1661dfe3a1418da38119bffb6a349d5b994e645",
+  "working_tree_dirty": true,
+  "source_sha256": {
+    "retriever.py": "1c1014fa757fb925a14e245cbc5ac68378fbce96c7dd36a662492d95c3926ff6",
+    "generator.py": "06d535b558e7c0203549192ddf2624a7bfc76817fe55529862f147b4850f5d07",
+    "eval_retriever.py": "8e1109c7d13a3d913ed8bd363f5e6d619220fd7700edfb1f149ecba245b16507"
+  },
+  "collector_source_sha256": "ff60b60a67a1ca9fe78f904938a16145bff1ff8a78f453214f0c0d5d875b2793",
+  "package_versions": {
+    "chromadb": "1.5.9",
+    "sentence-transformers": "6.1.0",
+    "groq": "1.7.0",
+    "python-dotenv": "1.2.4"
+  },
+  "configuration": {
+    "retrieval_method": "original_dense",
+    "top_k": 3,
+    "generator": {
+      "model": "openai/gpt-oss-20b",
+      "temperature": 0
+    }
+  },
+  "dataset_question_count": 20,
+  "selected_case_ids": [
+    "cough_01",
+    "cough_02"
+  ],
+  "run_status": "completed",
+  "quality_evaluation_status": "not_scored",
+  "limitations": [
+    "Draft references require human review.",
+    "Successful generation does not establish answer correctness.",
+    "Timings are diagnostic, not a latency benchmark.",
+    "Only completed cases are checkpointed; report is not resumable."
+  ],
+  "cases": [
+    {
+      "id": "cough_01",
+      "topic": "cough",
+      "query": "According to the cough lecture, when should a patient with cough have a chest X-ray?",
+      "reference_answer": "A chronic cough or any red flag for serious pathology warrants a chest X-ray.",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_9"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_4",
+          "text_excerpt": "If yes to either of these, a chest x-ray is warranted."
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_9",
+          "text_excerpt": "Patients presenting with a cough should have a chest x-ray if either the cough is chronic"
+        }
+      ],
+      "status": "success",
+      "answer": "According to the lecture, a chest X‑ray is indicated for a patient with cough **if the cough is chronic or if any red‑flag signs of serious pathology are present** (e.g., dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, significant smoking history, tachypnea, hypoxemia, abnormal cardiac or pulmonary exam, or sepsis).",
+      "retrieved_ids": [
+        "LDMEtNXik-A_5",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_4"
+      ],
+      "contexts": [
+        "What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis. If an X-ray is ordered and found to be abnormal, it should of course be further worked up as indicated. Abnormalities that might be seen include focal alveolar opacifications consistent with pneumonia or aspiration, diffuse interstitial opacities consistent with ILD, hyperinflation and flattening of the diaphragms consistent with COPD, or lung nodule or masses consistent with cancer. For most patients presenting with a cough, particularly most patients with a chronic cough, the chest X-ray will be unremarkable. This will make serious pathology relatively unlikely, not impossible, just unlikely, and even if it's not likely to be serious, it's still important to diagnose correctly. So, work up any other symptoms and signs if they are present, and otherwise consider etiologies listed in this box to the right. Some etiologies that would be placed in this box do have confirmatory diagnostic tests, but in practice, unless otherwise specified, most doctors often instead to recommend a diagnostic trial of empiric treatment for the most likely diagnoses based on the clinically present factors. This is because the empiric treatments in question are usually benign, and the confirmatory diagnostic tests are either cumbersome, expensive, or have suboptimal positive and negative predictive values.",
+        "The most common etiologies of an acute cough are an upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia. The most common etiologies of a chronic cough are upper airway cough syndrome, colloquially known as postnasal drip, cough variant asthma, COPD, laryngopharyngeal reflux / GERD, and an ACE inhibitor side effect. There's a lack of consensus regarding the naming and categorization of many cough ideologies. Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology. If serious pathology is felt to be unlikely, empiric treatment of the most probable diagnosis is an acceptable alternative to cumbersome, costly, insensitive, or non-specific diagnostic testing.",
+        "laryngopharyngeal reflux {slash} GERD, ACE inhibitors, and among smokers, COPD. So next, how do we evaluate a patient presenting with cough? First, consider what's relevant in the history, the duration and timing of the cough. One of the most common characteristics used in describing a cough is productive versus non-productive of phlegm. You should inquire as to the presence of other symptoms, particularly fever, dyspnea, chest pain, hemoptysis, heartburn, rhinorrhea, nasal congestion, and weight loss. Ask the patient about a history of chronic lung disease, immunosuppression, smoking, and use of an ACE inhibitor. Beyond the history, obviously assess the vitals. H E E N T and pulmonary exams will obviously be relevant, as well cardiac auscultation and assessment of the JVP. Lab tests are usually not helpful in most causes of a cough, particularly a chronic one, but consider checking a CBC if any form of infection is being considered. And last, consider a chest x-ray. With all this information, we enter the diagnostic algorithm with an initial question of whether or not to order an x-ray. Ordering an x-ray in a patient presenting with a cough depends on two very general factors. Is the cough chronic, and are there any red flags for serious pathology present? If yes to either of these, a chest x-ray is warranted. What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis."
+      ],
+      "sources": [
+        {
+          "start": 449.04,
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "end": 551.0,
+          "chunk_id": 5,
+          "source": "Strong Medicine",
+          "title": "An Approach to Cough",
+          "video_id": "LDMEtNXik-A"
+        },
+        {
+          "title": "An Approach to Cough",
+          "source": "Strong Medicine",
+          "start": 779.839,
+          "end": 835.88,
+          "chunk_id": 9,
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "video_id": "LDMEtNXik-A"
+        },
+        {
+          "title": "An Approach to Cough",
+          "video_id": "LDMEtNXik-A",
+          "end": 473.92,
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "start": 351.6,
+          "chunk_id": 4,
+          "source": "Strong Medicine"
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.01613579999684589,
+        "generation": 0.9386121000061394
+      },
+      "error": null
+    },
+    {
+      "id": "cough_02",
+      "topic": "cough",
+      "query": "According to the cough lecture, what red flags in a patient with cough suggest serious pathology?",
+      "reference_answer": "Dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, significant smoking history, elderly age or aspiration risk, tachypnea, hypoxemia, abnormal cardiac or pulmonary examination, or sepsis.",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_5"
+      ],
+      "reference_evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_4",
+          "text_excerpt": "Well, concurrent dyspnea, hemoptysis, chest pain, weight loss"
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_5",
+          "text_excerpt": "Well, concurrent dyspnea, hemoptysis, chest pain, weight loss"
+        }
+      ],
+      "status": "success",
+      "answer": "The red flags that suggest serious pathology in a patient with cough are:\n\n- Concurrent dyspnea  \n- Hemoptysis  \n- Chest pain  \n- Weight loss  \n- Immunosuppression  \n- Significant smoking history  \n- Elderly age or other risk of aspiration  \n- Tachypnea  \n- Hypoxemia  \n- Abnormal cardiac or pulmonary exam  \n- Presentation with sepsis",
+      "retrieved_ids": [
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_5",
+        "LDMEtNXik-A_4"
+      ],
+      "contexts": [
+        "The most common etiologies of an acute cough are an upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia. The most common etiologies of a chronic cough are upper airway cough syndrome, colloquially known as postnasal drip, cough variant asthma, COPD, laryngopharyngeal reflux / GERD, and an ACE inhibitor side effect. There's a lack of consensus regarding the naming and categorization of many cough ideologies. Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology. If serious pathology is felt to be unlikely, empiric treatment of the most probable diagnosis is an acceptable alternative to cumbersome, costly, insensitive, or non-specific diagnostic testing.",
+        "What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis. If an X-ray is ordered and found to be abnormal, it should of course be further worked up as indicated. Abnormalities that might be seen include focal alveolar opacifications consistent with pneumonia or aspiration, diffuse interstitial opacities consistent with ILD, hyperinflation and flattening of the diaphragms consistent with COPD, or lung nodule or masses consistent with cancer. For most patients presenting with a cough, particularly most patients with a chronic cough, the chest X-ray will be unremarkable. This will make serious pathology relatively unlikely, not impossible, just unlikely, and even if it's not likely to be serious, it's still important to diagnose correctly. So, work up any other symptoms and signs if they are present, and otherwise consider etiologies listed in this box to the right. Some etiologies that would be placed in this box do have confirmatory diagnostic tests, but in practice, unless otherwise specified, most doctors often instead to recommend a diagnostic trial of empiric treatment for the most likely diagnoses based on the clinically present factors. This is because the empiric treatments in question are usually benign, and the confirmatory diagnostic tests are either cumbersome, expensive, or have suboptimal positive and negative predictive values.",
+        "laryngopharyngeal reflux {slash} GERD, ACE inhibitors, and among smokers, COPD. So next, how do we evaluate a patient presenting with cough? First, consider what's relevant in the history, the duration and timing of the cough. One of the most common characteristics used in describing a cough is productive versus non-productive of phlegm. You should inquire as to the presence of other symptoms, particularly fever, dyspnea, chest pain, hemoptysis, heartburn, rhinorrhea, nasal congestion, and weight loss. Ask the patient about a history of chronic lung disease, immunosuppression, smoking, and use of an ACE inhibitor. Beyond the history, obviously assess the vitals. H E E N T and pulmonary exams will obviously be relevant, as well cardiac auscultation and assessment of the JVP. Lab tests are usually not helpful in most causes of a cough, particularly a chronic one, but consider checking a CBC if any form of infection is being considered. And last, consider a chest x-ray. With all this information, we enter the diagnostic algorithm with an initial question of whether or not to order an x-ray. Ordering an x-ray in a patient presenting with a cough depends on two very general factors. Is the cough chronic, and are there any red flags for serious pathology present? If yes to either of these, a chest x-ray is warranted. What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis."
+      ],
+      "sources": [
+        {
+          "video_id": "LDMEtNXik-A",
+          "chunk_id": 9,
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "end": 835.88,
+          "title": "An Approach to Cough",
+          "source": "Strong Medicine",
+          "start": 779.839
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "start": 449.04,
+          "chunk_id": 5,
+          "end": 551.0,
+          "video_id": "LDMEtNXik-A",
+          "title": "An Approach to Cough",
+          "source": "Strong Medicine"
+        },
+        {
+          "chunk_id": 4,
+          "end": 473.92,
+          "url": "https://www.youtube.com/watch?v=LDMEtNXik-A",
+          "title": "An Approach to Cough",
+          "video_id": "LDMEtNXik-A",
+          "start": 351.6,
+          "source": "Strong Medicine"
+        }
+      ],
+      "timing_seconds": {
+        "retrieval": 0.009565200001816265,
+        "generation": 0.8285789000001387
+      },
+      "error": null
+    }
+  ],
+  "summary": {
+    "attempted": 2,
+    "successful": 2,
+    "errors": 0
+  },
+  "completed_at_utc": "2026-10-09T17:22:22.710824+00:00"
+}
