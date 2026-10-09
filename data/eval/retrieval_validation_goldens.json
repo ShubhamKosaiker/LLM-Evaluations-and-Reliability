@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0",
+  "dataset_name": "medical_video_retrieval_validation_v1",
+  "status": "draft_assistant_reviewed",
+  "purpose": "Fresh questions for validation of the fixed topic-preserving query transformation; results not yet observed.",
+  "annotation_policy": "A relevant chunk must contain sufficient evidence to answer the whole question. Overlapping duplicate evidence is accepted. Questions and reference answers are source-relative. Labels were drafted by an assistant from all 70 supplied chunks and await user review. Evidence excerpts are literal review anchors, not necessarily the complete answer.",
+  "corpus_chunk_count": 70,
+  "corpus_text_sha256": "aafdba755ca478809d70e3cc26782c6b0d0a1cd58740d708a6423b2de9c4d81a",
+  "corpus_hash_method": "SHA256 of UTF-8 json.dumps({chunk_id: exact_text}, sort_keys=True, ensure_ascii=False, separators=(comma, colon)).",
+  "frozen_query_rule_commit": "f4ea413",
+  "query_rule_source": "src/experiment_query_topic.py: search_query",
+  "planned_comparison": "Compare unmodified queries with the fixed topic-preserving rule on all cases and separately on the 5 modified cases. The 5 natural controls must remain identical.",
+  "predeclared_interpretation": "On this small validation set, require no loss of Hit@3 and inspect every regression before considering adoption. Higher MRR@5 alone is insufficient. Do not retune the rule using these results and continue describing this set as unseen.",
+  "limitations": [
+    "10 source-relative answerable questions, one per existing video.",
+    "New questions drawn from a corpus already inspected during development, not an independent clinical or external benchmark.",
+    "Assistant-drafted labels await human review before the first retrieval run.",
+    "5 source-prefixed queries test the transformation; 5 natural queries test unchanged behavior.",
+    "No retrieval results or answer-generation scores have been measured for these cases."
+  ],
+  "cases": [
+    {
+      "id": "validation_cough_01",
+      "topic": "cough",
+      "query": "According to the cough lecture, what medication-class switch is described for a suspected ACE inhibitor cough?",
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_7",
+        "LDMEtNXik-A_8"
+      ],
+      "reference_answer": "Switching from an ACE inhibitor to an angiotensin receptor blocker.",
+      "evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_7",
+          "text_excerpt": "switching the patient to an angiotensin receptor blocker is usually done."
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_8",
+          "text_excerpt": "switching the patient to an angiotensin receptor blocker is usually done."
+        }
+      ],
+      "query_group": "source_prefixed"
+    },
+    {
+      "id": "validation_headache_01",
+      "topic": "headache",
+      "query": "According to the headache lecture, what does a secondary headache mean?",
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_3"
+      ],
+      "reference_answer": "The headache itself is not the primary problem; it is secondary to another condition.",
+      "evidence": [
+        {
+          "chunk_id": "lcdtw93A3Zs_3",
+          "text_excerpt": "secondary headache which means that the headache itself is not the primary problem"
+        }
+      ],
+      "query_group": "source_prefixed"
+    },
+    {
+      "id": "validation_dyspnea_01",
+      "topic": "acute_dyspnea",
+      "query": "According to the acute dyspnea lecture, how does respiratory compensation respond to metabolic acidosis?",
+      "relevant_chunk_ids": [
+        "xNJ8ALMjZ7A_1"
+      ],
+      "reference_answer": "Respiratory drive increases to lower arterial CO2 below normal and partially normalize pH.",
+      "evidence": [
+        {
+          "chunk_id": "xNJ8ALMjZ7A_1",
+          "text_excerpt": "respiratory drive increases with the goal of lowering arterial co2 below normal and partially normalizing pH"
+        }
+      ],
+      "query_group": "source_prefixed"
+    },
+    {
+      "id": "validation_acute_abdominal_01",
+      "topic": "acute_abdominal_pain",
+      "query": "According to the acute abdominal pain lecture, what physical examination finding is called Murphy's sign?",
+      "relevant_chunk_ids": [
+        "_PDOXlVGeuY_9"
+      ],
+      "reference_answer": "Increased right upper quadrant tenderness during inspiration as the diaphragm pushes the liver and gallbladder into the examiner's stationary hands.",
+      "evidence": [
+        {
+          "chunk_id": "_PDOXlVGeuY_9",
+          "text_excerpt": "an increase in right upper quadrant tenderness on inspiration when the diaphragm descends pushing the liver and gallbladder into the examiners stationary hands this is known as Murphy's sign"
+        }
+      ],
+      "query_group": "source_prefixed"
+    },
+    {
+      "id": "validation_hemoptysis_01",
+      "topic": "hemoptysis",
+      "query": "According to the hemoptysis lecture, does a normal chest CT necessarily rule out cancer?",
+      "relevant_chunk_ids": [
+        "mYecvkIBsoA_5",
+        "mYecvkIBsoA_6"
+      ],
+      "reference_answer": "No. Cancer may not be excluded, especially with high-risk features. The lecture discusses further investigation or observation depending on risk.",
+      "evidence": [
+        {
+          "chunk_id": "mYecvkIBsoA_5",
+          "text_excerpt": "if the chest CT is normal it's critical to realize that malignancy has not necessarily been ruled out"
+        },
+        {
+          "chunk_id": "mYecvkIBsoA_6",
+          "text_excerpt": "a normal chest CT does not necessarily rule out cancer"
+        }
+      ],
+      "query_group": "source_prefixed"
+    },
+    {
+      "id": "validation_chronic_abdominal_01",
+      "topic": "chronic_abdominal_pain",
+      "query": "What test does the chronic abdominal pain lecture describe for diagnosing gastroparesis?",
+      "relevant_chunk_ids": [
+        "qfVHJQu-dfw_11"
+      ],
+      "reference_answer": "A gastric emptying scan, tracking how long radioactive food takes to pass from the stomach to the small intestine.",
+      "evidence": [
+        {
+          "chunk_id": "qfVHJQu-dfw_11",
+          "text_excerpt": "gastroparesis which is diagnosed with a gastric emptying scan"
+        }
+      ],
+      "query_group": "natural_control"
+    },
+    {
+      "id": "validation_fever_01",
+      "topic": "childhood_fever",
+      "query": "What signs of dehydration does the NHS childhood fever video list?",
+      "relevant_chunk_ids": [
+        "MIkO7oZZrtM_1"
+      ],
+      "reference_answer": "Dry mouth, few or no tears, sunken eyes, a sunken fontanelle, or appearing generally unwell.",
+      "evidence": [
+        {
+          "chunk_id": "MIkO7oZZrtM_1",
+          "text_excerpt": "Children with a fever may be becoming dehydrated if they have a dry mouth"
+        }
+      ],
+      "query_group": "natural_control"
+    },
+    {
+      "id": "validation_cold_flu_01",
+      "topic": "cold_and_flu",
+      "query": "What self-care measures for a common cold are described in the cold-versus-flu video?",
+      "relevant_chunk_ids": [
+        "_avTf7IoHCU_0"
+      ],
+      "reference_answer": "Plenty of rest, plenty of fluids, and symptomatic relief with ibuprofen or acetaminophen while the body fights the infection.",
+      "evidence": [
+        {
+          "chunk_id": "_avTf7IoHCU_0",
+          "text_excerpt": "plenty of rest to drink plenty of fluids"
+        }
+      ],
+      "query_group": "natural_control"
+    },
+    {
+      "id": "validation_rash_01",
+      "topic": "adult_rash",
+      "query": "What signs suggest an infected rash in the adult rash video?",
+      "relevant_chunk_ids": [
+        "ZB3xl6ULVnQ_0"
+      ],
+      "reference_answer": "Pus, yellow or golden crusts, pain, swelling or warmth; skin around the rash may look red, purple or brown, and fever or feeling very hot or cold may occur.",
+      "evidence": [
+        {
+          "chunk_id": "ZB3xl6ULVnQ_0",
+          "text_excerpt": "rashes can also get infected you might have pus yellow or golden crusts pain swelling or warmth"
+        }
+      ],
+      "query_group": "natural_control"
+    },
+    {
+      "id": "validation_dandruff_01",
+      "topic": "dandruff",
+      "query": "Which active ingredients does the dandruff video suggest looking for in a dandruff shampoo?",
+      "relevant_chunk_ids": [
+        "zKAmsPHUZ78_0"
+      ],
+      "reference_answer": "Zinc pyrithione, salicylic acid, sulfur, selenium sulfide, ketoconazole, or coal tar.",
+      "evidence": [
+        {
+          "chunk_id": "zKAmsPHUZ78_0",
+          "text_excerpt": "zinc pyrithione salicylic acid sulfur selenium sulfide ketoconazole or coal tar"
+        }
+      ],
+      "query_group": "natural_control"
+    }
+  ]
+}

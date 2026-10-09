@@ -1,0 +1,419 @@
+{
+  "created_at_utc": "2026-10-09T07:52:14.818683+00:00",
+  "experiment": "Replace source introduction with a short topic phrase",
+  "dataset_status": "draft_assistant_reviewed",
+  "goldens_sha256": "d83ba72a79a52f7f1996bc47b5c9a8ec15aa81404fdf3930e2f8c190c720e4ec",
+  "corpus_text_sha256": "aafdba755ca478809d70e3cc26782c6b0d0a1cd58740d708a6423b2de9c4d81a",
+  "baseline_report_sha256": "ed871ab0a64dc8bf49fd06b3140f73257713fc8a8c0a25bb211424051994058f",
+  "retriever_source_sha256": "1c1014fa757fb925a14e245cbc5ac68378fbce96c7dd36a662492d95c3926ff6",
+  "experiment_source_sha256": "948420fbf3202075991ba380c1f4e7898d850d0788291973e6f305b769b500d5",
+  "package_versions": {
+    "chromadb": "1.5.9",
+    "sentence-transformers": "6.1.0"
+  },
+  "original_rankings_reproduced": true,
+  "top_k": 5,
+  "question_count": 10,
+  "changed_query_count": 5,
+  "baseline_summary": {
+    "Hit@1": 0.8,
+    "Hit@3": 0.9,
+    "Hit@5": 0.9,
+    "MRR@5": 0.85
+  },
+  "summary": {
+    "Hit@1": 0.7,
+    "Hit@3": 0.9,
+    "Hit@5": 0.9,
+    "MRR@5": 0.8
+  },
+  "rank_changes": {
+    "improved": 0,
+    "worsened": 1,
+    "unchanged": 9
+  },
+  "cases": [
+    {
+      "id": "validation_cough_01",
+      "topic": "cough",
+      "original_query": "According to the cough lecture, what medication-class switch is described for a suspected ACE inhibitor cough?",
+      "search_query": "For cough, what medication-class switch is described for a suspected ACE inhibitor cough?",
+      "query_changed": true,
+      "relevant_chunk_ids": [
+        "LDMEtNXik-A_7",
+        "LDMEtNXik-A_8"
+      ],
+      "baseline_retrieved_ids": [
+        "LDMEtNXik-A_8",
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_6",
+        "LDMEtNXik-A_3"
+      ],
+      "retrieved_ids": [
+        "LDMEtNXik-A_8",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_4",
+        "LDMEtNXik-A_6",
+        "LDMEtNXik-A_3"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 1,
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 1.0
+      },
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    },
+    {
+      "id": "validation_headache_01",
+      "topic": "headache",
+      "original_query": "According to the headache lecture, what does a secondary headache mean?",
+      "search_query": "For headache, what does a secondary headache mean?",
+      "query_changed": true,
+      "relevant_chunk_ids": [
+        "lcdtw93A3Zs_3"
+      ],
+      "baseline_retrieved_ids": [
+        "lcdtw93A3Zs_3",
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_0",
+        "lcdtw93A3Zs_6",
+        "lcdtw93A3Zs_9"
+      ],
+      "retrieved_ids": [
+        "lcdtw93A3Zs_2",
+        "lcdtw93A3Zs_3",
+        "lcdtw93A3Zs_0",
+        "lcdtw93A3Zs_6",
+        "lcdtw93A3Zs_9"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 1,
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 1.0
+      },
+      "first_relevant_rank_at_5": 2,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.5,
+      "reciprocal_rank_delta": -0.5,
+      "outcome": "worsened"
+    },
+    {
+      "id": "validation_dyspnea_01",
+      "topic": "acute_dyspnea",
+      "original_query": "According to the acute dyspnea lecture, how does respiratory compensation respond to metabolic acidosis?",
+      "search_query": "For acute dyspnea, how does respiratory compensation respond to metabolic acidosis?",
+      "query_changed": true,
+      "relevant_chunk_ids": [
+        "xNJ8ALMjZ7A_1"
+      ],
+      "baseline_retrieved_ids": [
+        "xNJ8ALMjZ7A_1",
+        "xNJ8ALMjZ7A_7",
+        "xNJ8ALMjZ7A_0",
+        "LDMEtNXik-A_7",
+        "LDMEtNXik-A_4"
+      ],
+      "retrieved_ids": [
+        "xNJ8ALMjZ7A_1",
+        "xNJ8ALMjZ7A_7",
+        "xNJ8ALMjZ7A_0",
+        "LDMEtNXik-A_7",
+        "LDMEtNXik-A_4"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 1,
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 1.0
+      },
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    },
+    {
+      "id": "validation_acute_abdominal_01",
+      "topic": "acute_abdominal_pain",
+      "original_query": "According to the acute abdominal pain lecture, what physical examination finding is called Murphy's sign?",
+      "search_query": "For acute abdominal pain, what physical examination finding is called Murphy's sign?",
+      "query_changed": true,
+      "relevant_chunk_ids": [
+        "_PDOXlVGeuY_9"
+      ],
+      "baseline_retrieved_ids": [
+        "qfVHJQu-dfw_13",
+        "qfVHJQu-dfw_14",
+        "_PDOXlVGeuY_8",
+        "_PDOXlVGeuY_11",
+        "_PDOXlVGeuY_12"
+      ],
+      "retrieved_ids": [
+        "_PDOXlVGeuY_11",
+        "_PDOXlVGeuY_8",
+        "_PDOXlVGeuY_5",
+        "qfVHJQu-dfw_14",
+        "qfVHJQu-dfw_13"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": null,
+        "hit_at_1": 0,
+        "hit_at_3": 0,
+        "hit_at_5": 0,
+        "reciprocal_rank_at_5": 0.0
+      },
+      "first_relevant_rank_at_5": null,
+      "hit_at_1": 0,
+      "hit_at_3": 0,
+      "hit_at_5": 0,
+      "reciprocal_rank_at_5": 0.0,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    },
+    {
+      "id": "validation_hemoptysis_01",
+      "topic": "hemoptysis",
+      "original_query": "According to the hemoptysis lecture, does a normal chest CT necessarily rule out cancer?",
+      "search_query": "For hemoptysis, does a normal chest CT necessarily rule out cancer?",
+      "query_changed": true,
+      "relevant_chunk_ids": [
+        "mYecvkIBsoA_5",
+        "mYecvkIBsoA_6"
+      ],
+      "baseline_retrieved_ids": [
+        "mYecvkIBsoA_6",
+        "mYecvkIBsoA_5",
+        "LDMEtNXik-A_5",
+        "mYecvkIBsoA_2",
+        "xNJ8ALMjZ7A_4"
+      ],
+      "retrieved_ids": [
+        "mYecvkIBsoA_6",
+        "mYecvkIBsoA_5",
+        "LDMEtNXik-A_5",
+        "mYecvkIBsoA_2",
+        "mYecvkIBsoA_3"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 1,
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 1.0
+      },
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    },
+    {
+      "id": "validation_chronic_abdominal_01",
+      "topic": "chronic_abdominal_pain",
+      "original_query": "What test does the chronic abdominal pain lecture describe for diagnosing gastroparesis?",
+      "search_query": "What test does the chronic abdominal pain lecture describe for diagnosing gastroparesis?",
+      "query_changed": false,
+      "relevant_chunk_ids": [
+        "qfVHJQu-dfw_11"
+      ],
+      "baseline_retrieved_ids": [
+        "qfVHJQu-dfw_14",
+        "qfVHJQu-dfw_11",
+        "qfVHJQu-dfw_3",
+        "qfVHJQu-dfw_12",
+        "qfVHJQu-dfw_0"
+      ],
+      "retrieved_ids": [
+        "qfVHJQu-dfw_14",
+        "qfVHJQu-dfw_11",
+        "qfVHJQu-dfw_3",
+        "qfVHJQu-dfw_12",
+        "qfVHJQu-dfw_0"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 2,
+        "hit_at_1": 0,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 0.5
+      },
+      "first_relevant_rank_at_5": 2,
+      "hit_at_1": 0,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 0.5,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    },
+    {
+      "id": "validation_fever_01",
+      "topic": "childhood_fever",
+      "original_query": "What signs of dehydration does the NHS childhood fever video list?",
+      "search_query": "What signs of dehydration does the NHS childhood fever video list?",
+      "query_changed": false,
+      "relevant_chunk_ids": [
+        "MIkO7oZZrtM_1"
+      ],
+      "baseline_retrieved_ids": [
+        "MIkO7oZZrtM_1",
+        "MIkO7oZZrtM_2",
+        "MIkO7oZZrtM_0",
+        "MIkO7oZZrtM_3",
+        "mYecvkIBsoA_3"
+      ],
+      "retrieved_ids": [
+        "MIkO7oZZrtM_1",
+        "MIkO7oZZrtM_2",
+        "MIkO7oZZrtM_0",
+        "MIkO7oZZrtM_3",
+        "mYecvkIBsoA_3"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 1,
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 1.0
+      },
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    },
+    {
+      "id": "validation_cold_flu_01",
+      "topic": "cold_and_flu",
+      "original_query": "What self-care measures for a common cold are described in the cold-versus-flu video?",
+      "search_query": "What self-care measures for a common cold are described in the cold-versus-flu video?",
+      "query_changed": false,
+      "relevant_chunk_ids": [
+        "_avTf7IoHCU_0"
+      ],
+      "baseline_retrieved_ids": [
+        "_avTf7IoHCU_0",
+        "LDMEtNXik-A_6",
+        "LDMEtNXik-A_0",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_4"
+      ],
+      "retrieved_ids": [
+        "_avTf7IoHCU_0",
+        "LDMEtNXik-A_6",
+        "LDMEtNXik-A_0",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_4"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 1,
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 1.0
+      },
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    },
+    {
+      "id": "validation_rash_01",
+      "topic": "adult_rash",
+      "original_query": "What signs suggest an infected rash in the adult rash video?",
+      "search_query": "What signs suggest an infected rash in the adult rash video?",
+      "query_changed": false,
+      "relevant_chunk_ids": [
+        "ZB3xl6ULVnQ_0"
+      ],
+      "baseline_retrieved_ids": [
+        "ZB3xl6ULVnQ_0",
+        "MIkO7oZZrtM_2",
+        "MIkO7oZZrtM_3",
+        "mYecvkIBsoA_3",
+        "qfVHJQu-dfw_11"
+      ],
+      "retrieved_ids": [
+        "ZB3xl6ULVnQ_0",
+        "MIkO7oZZrtM_2",
+        "MIkO7oZZrtM_3",
+        "mYecvkIBsoA_3",
+        "qfVHJQu-dfw_11"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 1,
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 1.0
+      },
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    },
+    {
+      "id": "validation_dandruff_01",
+      "topic": "dandruff",
+      "original_query": "Which active ingredients does the dandruff video suggest looking for in a dandruff shampoo?",
+      "search_query": "Which active ingredients does the dandruff video suggest looking for in a dandruff shampoo?",
+      "query_changed": false,
+      "relevant_chunk_ids": [
+        "zKAmsPHUZ78_0"
+      ],
+      "baseline_retrieved_ids": [
+        "zKAmsPHUZ78_0",
+        "xNJ8ALMjZ7A_0",
+        "LDMEtNXik-A_6",
+        "xNJ8ALMjZ7A_1",
+        "xNJ8ALMjZ7A_3"
+      ],
+      "retrieved_ids": [
+        "zKAmsPHUZ78_0",
+        "xNJ8ALMjZ7A_0",
+        "LDMEtNXik-A_6",
+        "xNJ8ALMjZ7A_1",
+        "xNJ8ALMjZ7A_3"
+      ],
+      "baseline_scores": {
+        "first_relevant_rank_at_5": 1,
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "reciprocal_rank_at_5": 1.0
+      },
+      "first_relevant_rank_at_5": 1,
+      "hit_at_1": 1,
+      "hit_at_3": 1,
+      "hit_at_5": 1,
+      "reciprocal_rank_at_5": 1.0,
+      "reciprocal_rank_delta": 0.0,
+      "outcome": "unchanged"
+    }
+  ]
+}
