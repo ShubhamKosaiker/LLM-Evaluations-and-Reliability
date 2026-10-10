@@ -30,3 +30,32 @@ The retrieved passages are unrelated to the question.
 The generator appropriately refused given that context.
 The overall system failed to answer a corpus-answerable question.
 Retrieval needs investigation; the exact cause is not yet established.
+
+# Validation evaluation review
+
+Automated report: data/eval/answer_eval_baseline_validation_v2_2.json
+Automated results: 7 correct, 1 incorrect, 1 generation error, 1 judge error.
+These are provisional labels, not verified accuracy.
+
+The following assistant-proposed observations await human review.
+
+## validation_acute_abdominal_01
+Retrieval missed the passage defining Murphy's sign.
+The generator appropriately refused given the supplied context.
+The overall system failed to answer a corpus-answerable question.
+
+## validation_headache_01
+Generation failed with ValueError before producing an answer.
+The saved error lacks enough detail to establish the cause.
+Keep this execution failure separate from answer-quality scores.
+
+## validation_chronic_abdominal_01
+The gastric emptying scan answer appears supported by qfVHJQu-dfw_11.
+The judge inserted internal ellipses into its evidence quote.
+Keep the automated judge error recorded.
+
+## validation_fever_01
+The judge marked the answer correct but its faithfulness unsupported.
+All five listed signs are supported by retrieved passage MIkO7oZZrtM_1.
+Proposed review: supported; the automated faithfulness judgment is mistaken.
+This demonstrates that valid quote formatting does not ensure judge accuracy.
