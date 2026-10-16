@@ -59,3 +59,31 @@ The judge marked the answer correct but its faithfulness unsupported.
 All five listed signs are supported by retrieved passage MIkO7oZZrtM_1.
 Proposed review: supported; the automated faithfulness judgment is mistaken.
 This demonstrates that valid quote formatting does not ensure judge accuracy.
+
+## DeepEval faithfulness calibration — October 16, 2026
+
+Baseline:
+- DeepEval 4.2.8, Groq openai/gpt-oss-120b.
+- 29 of 30 cases evaluated; one generation error skipped.
+- All 29 evaluated cases received faithfulness = 1.0.
+- These scores are uncalibrated automated judgments.
+
+Controlled experiment:
+- Case: headache_01.
+- Intervention: added two deliberately unsupported claims
+  about bacterial infection and emergency brain surgery.
+- With penalize_ambiguous_claims=True: score = 0.667.
+- With penalize_ambiguous_claims=False: score = 0.833.
+- Both diagnostic runs extracted six claims:
+  four supported, one borderline, one contradicted.
+- An earlier corrupted-answer run scored 1.0;
+  its intermediate verdicts were not captured.
+
+Interpretation:
+- Penalizing ambiguous claims increased sensitivity
+  to unsupported statements in this example.
+- The initial perfect score remains unexplained.
+- These findings do not establish evaluator reliability.
+- Do not overwrite the original DeepEval baseline.
+- Next: calibrate against a small set of known-supported,
+  unsupported, contradicted, and refusal cases.
