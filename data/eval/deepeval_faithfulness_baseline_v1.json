@@ -1,0 +1,190 @@
+{
+  "metric": "deepeval_faithfulness",
+  "threshold": 0.7,
+  "model": "openai/gpt-oss-120b",
+  "sources": [
+    "data/eval/rag_baseline_pilot.json",
+    "data/eval/rag_baseline_validation.json"
+  ],
+  "results": {
+    "rag_baseline_pilot/cough_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/cough_02": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/cough_03": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/cough_04": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/cough_05": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the actual output fully aligns with the retrieval context, with no contradictions detected.",
+      "passed": true
+    },
+    "rag_baseline_pilot/headache_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/headache_02": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/headache_03": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/headache_04": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/headache_05": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/dyspnea_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/dyspnea_02": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the actual output fully aligns with the retrieval context, with no contradictions detected.",
+      "passed": true
+    },
+    "rag_baseline_pilot/acute_abdominal_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/acute_abdominal_02": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/chronic_abdominal_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/hemoptysis_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the actual output fully aligns with the retrieval context, with no contradictions detected.",
+      "passed": true
+    },
+    "rag_baseline_pilot/fever_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/cold_flu_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_pilot/rash_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the actual output fully aligns with the retrieval context, with no contradictions detected.",
+      "passed": true
+    },
+    "rag_baseline_pilot/dandruff_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_cough_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_headache_01": {
+      "status": "skipped_generation_error",
+      "source_status": "error"
+    },
+    "rag_baseline_validation/validation_dyspnea_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_acute_abdominal_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_hemoptysis_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_chronic_abdominal_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_fever_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_cold_flu_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_rash_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true
+    },
+    "rag_baseline_validation/validation_dandruff_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output aligns perfectly with the retrieval context.",
+      "passed": true
+    }
+  },
+  "updated_at_utc": "2026-10-16T11:28:33.947530+00:00"
+}
