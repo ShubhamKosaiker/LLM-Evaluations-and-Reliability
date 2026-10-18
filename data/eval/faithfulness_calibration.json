@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "purpose": "Controlled faithfulness evaluator calibration",
+  "expectation_status": "assistant_proposed_pending_human_review",
+  "source_report": "data/eval/rag_baseline_pilot.json",
+  "source_report_sha256": "8b692cb5ae74bb1e08f510b7090cfcfc076f7c491e4edd02b12bcf35d0bedf96",
+  "source_case_id": "headache_01",
+  "query": "According to the headache lecture, how are the location, severity, and sensation of tension headaches described?",
+  "retrieved_ids": [
+    "lcdtw93A3Zs_0",
+    "lcdtw93A3Zs_2",
+    "lcdtw93A3Zs_3"
+  ],
+  "contexts": [
+    "hello today I'll be discussing an approach to headache headache is a particularly challenging symptom to discuss because there are so many ideologies which run the full spectrum from completely benign to imminently life-threatening before jumping into the diagnostic framework I'd like to First compare and contrast the two most common causes of chronic headaches tension headaches versus migraine headaches tension headaches are the more common of the two the age of onset is typically between 20 and 50 the location of attenion headache is usually bilateral and symmetric severity is typically mild to moderate using such terms is obviously subjective but one way you can think of attention headache severity is that it's rarely so severe as to render the individual unable to function they can usually still get out of bed and get themselves dressed and in most cases drive to work to the doctor's office usually the typical duration of a attention headache is anywhere from 30 minutes to 7 days it's described most frequently as a pressure a tightness or like a band that's been stretched around the person's head when the manifestation of a primary headache syndrome tensin headaches have no Associated symptoms it's just a headache migraines on the other hand have a slightly younger age of onset of 10 to 40 they usually start as unilateral but a significant minority of migraines become bilateral their severity is better characterized as moderate to severe in that migraines can prevent a person from leaving the house or even leaving their bed their typical duration is 4 hours to 3 days most are described as throbbing or pounding and migraines have a ton of associated symptoms about 75% of patients experienced a prodrome of irritability specific food cravings yawning or fatigue that can start as long as 48 hours before the headache onset about 25% of patients will additionally experience something called an aura which consists of more specific",
+    "headaches the primary headache syndromes generally present as chronic and episodic I further divide them into common versus uncommon iies under Common Primary headache syndromes all the two I've already discussed tension headaches and migraine headaches migraine headaches can be even further divided into those without an aura also known as common migraine and those with an aura if the patient has a typical aura that is predominantly binocular visual symptoms it's referred to as a classic migraine migraines with different auras are labeled retinol migraines if visual symptoms are in just one eye hemiplegic migraines if focal motor weakness is the predominant feature and Basler type migraines if brain stem symptoms such as T arthria vertigo Axia and diplopia are predominant under uncommon primary headache syndromes exists a subcategory called the trigeminal autonomic sealas there are three main diagnoses here cluster headaches parisal hemicrania and short-lasting unilateral neuralgiform headache attacks abbreviated suned all three of these are characterized by incapacitating unilateral pain usually centered on the orbit forehead or Temple and associated with conjunctival injection lacrimation or tearing of the ipsilateral eye nasal congestion rhinorrhea and ipsilateral facial sweating the only main difference between them is their duration from cluster headaches lasting up to 3 hours while suned episodes can be as short as under a minute a particularly Troublesome diagnosis is primary Thunderclap headache in which there is an extremely severe headache of very abrupt onset mimicking a subarachnoid hemorrhage from a ruptured aneurysm but without any demonstr in cranial pathology on Imaging the word Thunderclap here refers to its acuity with maximal intensity of pain typically occurring within seconds of headache onset here I also list trial neuralgia which sounds really similar to trigeminal autonomic calgas but is believed to be a distinct clinical entity trinal neuralgia manifests as paroxysms of sudden sharp superficial electric type pain in one or more of the three primary divisions of the trinal",
+    "of headache onset here I also list trial neuralgia which sounds really similar to trigeminal autonomic calgas but is believed to be a distinct clinical entity trinal neuralgia manifests as paroxysms of sudden sharp superficial electric type pain in one or more of the three primary divisions of the trinal nerve usually without prominent autonomic symptoms headache experts classify trial neuralgia as a painful cranial neuropathy rather than a true primary headache syndrome but practically speaking all their clinicians approach it as a headache syndrome now I'll move on to the ideologies of secondary headache which means that the headache itself is not the primary problem these very generally present as either an Abrupt single episode that brings the patient to medical attention or a new onset of rapidly progressing ly worsening headaches in an older patient I make three categories here Mass occupying lesions other CNS pathology and disorders that are primarily external to the CNS the ideologies under Mass occupying lesions are straightforward Hemorrhage tumor either primary brain or metastatic to brain and abscess I want to discuss intracranial hemorrhage just a bit more with some quick clinical pearls hemorrage can be further classified based on its location moving outside in epidural subdural subarachnoid intra paranal and intraventricular each of these have slight differences in presentation and underlying causes very generally epidural hematomas are most often seen in adolescen and young adults following closed head trauma as might occur in a traffic accident an assault or from playing a suboral hematomas are also most often the result of trauma but typically from falls in the elderly particularly in those on anti-thrombotic medications patients with alcohol use disorder are also at a higher risk of subdural hematomas subdural hematomas are the only one of the five that can develop into headaches of a Subacute to Chronic nature if not recognized at onset subaco hemorrhages are almost always due to spontaneous rupture of"
+  ],
+  "notes": [
+    "Unsupported means absent from these passages, not a medical truth judgment.",
+    "Expected claims are semantic targets; judge claim splitting may differ.",
+    "No exact numeric scores are prescribed."
+  ],
+  "variants": [
+    {
+      "id": "A",
+      "answer": "According to the lecture, tension headaches are described as:\n\n- **Location:** Usually **bilateral and symmetric** around the head.  \n- **Severity:** Typically **mild to moderate**, rarely severe enough to prevent the person from functioning (they can still get out of bed, dress, and drive).  \n- **Sensation:** Most frequently described as a **pressure or tightness**—like a band stretched around the head.",
+      "expected_claims": [
+        {
+          "claim": "Usually bilateral and symmetric",
+          "expected": "supported"
+        },
+        {
+          "claim": "Typically mild to moderate",
+          "expected": "supported"
+        },
+        {
+          "claim": "Rarely prevents normal functioning",
+          "expected": "supported"
+        },
+        {
+          "claim": "Pressure, tightness, or a band-like sensation",
+          "expected": "supported"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "answer": "According to the lecture, tension headaches are described as:\n\n- **Location:** Usually **bilateral and symmetric** around the head.  \n- **Severity:** Typically **mild to moderate**, rarely severe enough to prevent the person from functioning (they can still get out of bed, dress, and drive).  \n- **Sensation:** Most frequently described as a **pressure or tightness**—like a band stretched around the head.\n\nTension headaches are caused by a bacterial infection.",
+      "expected_claims": [
+        {
+          "claim": "Usually bilateral and symmetric",
+          "expected": "supported"
+        },
+        {
+          "claim": "Typically mild to moderate",
+          "expected": "supported"
+        },
+        {
+          "claim": "Rarely prevents normal functioning",
+          "expected": "supported"
+        },
+        {
+          "claim": "Pressure, tightness, or a band-like sensation",
+          "expected": "supported"
+        },
+        {
+          "claim": "Tension headaches are caused by a bacterial infection.",
+          "expected": "unsupported"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "answer": "According to the lecture, tension headaches are described as:\n\n- **Location:** Usually **bilateral and symmetric** around the head.  \n- **Severity:** Always **severe** and prevents normal functioning.  \n- **Sensation:** Most frequently described as a **pressure or tightness**—like a band stretched around the head.",
+      "expected_claims": [
+        {
+          "claim": "Usually bilateral and symmetric",
+          "expected": "supported"
+        },
+        {
+          "claim": "Pressure, tightness, or a band-like sensation",
+          "expected": "supported"
+        },
+        {
+          "claim": "Always severe",
+          "expected": "contradicted"
+        },
+        {
+          "claim": "Prevents normal functioning",
+          "expected": "contradicted"
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "answer": "According to the lecture, tension headaches are described as:\n\n- **Location:** Usually **bilateral and symmetric** around the head.  \n- **Severity:** Typically **mild to moderate**, rarely severe enough to prevent the person from functioning (they can still get out of bed, dress, and drive).  \n- **Sensation:** Most frequently described as a **pressure or tightness**—like a band stretched around the head.\n\nTension headaches are caused by a bacterial infection.\nEvery patient with tension headaches requires emergency brain surgery.",
+      "expected_claims": [
+        {
+          "claim": "Usually bilateral and symmetric",
+          "expected": "supported"
+        },
+        {
+          "claim": "Typically mild to moderate",
+          "expected": "supported"
+        },
+        {
+          "claim": "Rarely prevents normal functioning",
+          "expected": "supported"
+        },
+        {
+          "claim": "Pressure, tightness, or a band-like sensation",
+          "expected": "supported"
+        },
+        {
+          "claim": "Tension headaches are caused by a bacterial infection.",
+          "expected": "unsupported"
+        },
+        {
+          "claim": "Every patient with tension headaches requires emergency brain surgery.",
+          "expected": "unsupported"
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "answer": "I don't have enough information in the provided medical sources.",
+      "expected_claims": [],
+      "expected_refusal_appropriate": false,
+      "note": "Faithfulness alone may not detect an inappropriate refusal."
+    }
+  ]
+}

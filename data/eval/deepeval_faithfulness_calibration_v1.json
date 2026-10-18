@@ -1,0 +1,148 @@
+{
+  "metric": "deepeval_faithfulness_calibration",
+  "source_case_id": "headache_01",
+  "input_sha256": "6ad38c580980aea9a59511c6dab621bae7c2886710dab5d4517db560cb3e1433",
+  "source_report_sha256": "8b692cb5ae74bb1e08f510b7090cfcfc076f7c491e4edd02b12bcf35d0bedf96",
+  "configuration": {
+    "model": "openai/gpt-oss-120b",
+    "threshold": 0.7,
+    "penalize_ambiguous_claims": true,
+    "async_mode": false,
+    "include_reason": true,
+    "request_interval_seconds": 60
+  },
+  "expectation_status": "assistant_proposed_pending_human_review",
+  "results": {
+    "A": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because there are no contradictions; the actual output fully aligns with the retrieval context.",
+      "passed": true,
+      "claims": [
+        "According to the lecture, tension headaches are described as usually bilateral and symmetric around the head.",
+        "According to the lecture, tension headaches are described as typically mild to moderate in severity, rarely severe enough to prevent the person from functioning (they can still get out of bed, dress, and drive).",
+        "According to the lecture, tension headaches are described as most frequently described as a pressure or tightness—like a band stretched around the head."
+      ],
+      "verdicts": [
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "B": {
+      "status": "evaluated",
+      "score": 0.75,
+      "reason": "The score is 0.75 because the actual output incorrectly claims tension headaches are caused by a bacterial infection, but the retrieval context provides no information about any cause, making this statement unsupported.",
+      "passed": true,
+      "claims": [
+        "Tension headaches are usually bilateral and symmetric around the head.",
+        "Tension headaches are typically mild to moderate in severity, rarely severe enough to prevent the person from functioning (they can still get out of bed, dress, and drive).",
+        "Tension headaches are most frequently described as a pressure or tightness—like a band stretched around the head.",
+        "Tension headaches are caused by a bacterial infection."
+      ],
+      "verdicts": [
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "borderline",
+          "reason": "The retrieval context provides no information about the cause of tension headaches, so the claim that they are caused by a bacterial infection is not supported."
+        }
+      ]
+    },
+    "C": {
+      "status": "evaluated",
+      "score": 0.6666666666666666,
+      "reason": "The score is 0.67 because the actual output claims tension headaches are always severe and prevent normal functioning, which directly contradicts the retrieval context that describes them as typically mild to moderate and rarely severe enough to impede functioning.",
+      "passed": false,
+      "claims": [
+        "According to the lecture, tension headaches are described as having a location that is usually bilateral and symmetric around the head.",
+        "According to the lecture, tension headaches are described as having a severity that is always severe and prevents normal functioning.",
+        "According to the lecture, tension headaches are described as having a sensation that is most frequently described as a pressure or tightness—like a band stretched around the head."
+      ],
+      "verdicts": [
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "no",
+          "reason": "The context states tension headaches are typically mild to moderate and rarely severe enough to prevent functioning, which directly contradicts the claim that they are always severe and prevent normal functioning."
+        },
+        {
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "D": {
+      "status": "evaluated",
+      "score": 0.6,
+      "reason": "The score is 0.60 because the output asserts that tension headaches are caused by a bacterial infection—a claim unsupported by the retrieval context—and also states that every patient needs emergency brain surgery, which contradicts the context describing these headaches as mild to moderate and rarely disabling.",
+      "passed": false,
+      "claims": [
+        "According to the lecture, tension headaches are described as having a location that is usually bilateral and symmetric around the head.",
+        "According to the lecture, tension headaches are described as having a severity that is typically mild to moderate, rarely severe enough to prevent the person from functioning (they can still get out of bed, dress, and drive).",
+        "According to the lecture, tension headaches are described as having a sensation that is most frequently described as a pressure or tightness—like a band stretched around the head.",
+        "Tension headaches are caused by a bacterial infection.",
+        "Every patient with tension headaches requires emergency brain surgery."
+      ],
+      "verdicts": [
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "verdict": "borderline",
+          "reason": "The retrieval context does not provide information about the cause of tension headaches, so the claim that they are caused by a bacterial infection is not supported."
+        },
+        {
+          "verdict": "no",
+          "reason": "The context describes tension headaches as mild to moderate and rarely disabling, with patients able to function, which contradicts the claim that every patient requires emergency brain surgery."
+        }
+      ]
+    },
+    "E": {
+      "status": "evaluated",
+      "score": 0.0,
+      "reason": "The score is 0.00 because the actual output incorrectly claims there is not enough information, even though the retrieval context provides extensive details on tension headaches, migraines, and related syndromes.",
+      "passed": false,
+      "claims": [
+        "I don't have enough information in the provided medical sources."
+      ],
+      "verdicts": [
+        {
+          "verdict": "no",
+          "reason": "The retrieval context provides extensive details on tension headaches, migraines, and related headache syndromes, offering sufficient medical information; thus the claim that there is not enough information is directly contradicted."
+        }
+      ]
+    }
+  },
+  "updated_at_utc": "2026-10-18T06:41:37.820066+00:00"
+}
