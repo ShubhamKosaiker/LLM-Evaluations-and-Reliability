@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "run_type": "contextual_relevance_smoke",
+  "source": "data/eval/rag_baseline_pilot.json",
+  "source_sha256": "8b692cb5ae74bb1e08f510b7090cfcfc076f7c491e4edd02b12bcf35d0bedf96",
+  "runner_sha256": "cede1354525a62655f1a219218c320ba32b6bd6a7c9204c5c54c7c1c5f125315",
+  "adapter_sha256": "b05b99f8ad2ed2b851adc9536634e2363b93a11e30e13c6b8384a7bee7659235",
+  "configuration": {
+    "metric": "ContextualRelevancyMetric",
+    "model": "openai/gpt-oss-120b",
+    "threshold": 0.7,
+    "threshold_status": "provisional_not_a_validated_quality_gate",
+    "eval_mode": "llm",
+    "async_mode": false,
+    "strict_mode": false,
+    "include_reason": true,
+    "request_interval_seconds": 60
+  },
+  "package_versions": {
+    "deepeval": "4.2.8",
+    "groq": "1.7.0",
+    "pydantic": "2.14.0"
+  },
+  "selected_case_ids": [
+    "cough_01",
+    "dandruff_01"
+  ],
+  "cases": [
+    {
+      "id": "cough_01",
+      "query": "According to the cough lecture, when should a patient with cough have a chest X-ray?",
+      "contexts": [
+        "What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis. If an X-ray is ordered and found to be abnormal, it should of course be further worked up as indicated. Abnormalities that might be seen include focal alveolar opacifications consistent with pneumonia or aspiration, diffuse interstitial opacities consistent with ILD, hyperinflation and flattening of the diaphragms consistent with COPD, or lung nodule or masses consistent with cancer. For most patients presenting with a cough, particularly most patients with a chronic cough, the chest X-ray will be unremarkable. This will make serious pathology relatively unlikely, not impossible, just unlikely, and even if it's not likely to be serious, it's still important to diagnose correctly. So, work up any other symptoms and signs if they are present, and otherwise consider etiologies listed in this box to the right. Some etiologies that would be placed in this box do have confirmatory diagnostic tests, but in practice, unless otherwise specified, most doctors often instead to recommend a diagnostic trial of empiric treatment for the most likely diagnoses based on the clinically present factors. This is because the empiric treatments in question are usually benign, and the confirmatory diagnostic tests are either cumbersome, expensive, or have suboptimal positive and negative predictive values.",
+        "The most common etiologies of an acute cough are an upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia. The most common etiologies of a chronic cough are upper airway cough syndrome, colloquially known as postnasal drip, cough variant asthma, COPD, laryngopharyngeal reflux / GERD, and an ACE inhibitor side effect. There's a lack of consensus regarding the naming and categorization of many cough ideologies. Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology. If serious pathology is felt to be unlikely, empiric treatment of the most probable diagnosis is an acceptable alternative to cumbersome, costly, insensitive, or non-specific diagnostic testing.",
+        "laryngopharyngeal reflux {slash} GERD, ACE inhibitors, and among smokers, COPD. So next, how do we evaluate a patient presenting with cough? First, consider what's relevant in the history, the duration and timing of the cough. One of the most common characteristics used in describing a cough is productive versus non-productive of phlegm. You should inquire as to the presence of other symptoms, particularly fever, dyspnea, chest pain, hemoptysis, heartburn, rhinorrhea, nasal congestion, and weight loss. Ask the patient about a history of chronic lung disease, immunosuppression, smoking, and use of an ACE inhibitor. Beyond the history, obviously assess the vitals. H E E N T and pulmonary exams will obviously be relevant, as well cardiac auscultation and assessment of the JVP. Lab tests are usually not helpful in most causes of a cough, particularly a chronic one, but consider checking a CBC if any form of infection is being considered. And last, consider a chest x-ray. With all this information, we enter the diagnostic algorithm with an initial question of whether or not to order an x-ray. Ordering an x-ray in a patient presenting with a cough depends on two very general factors. Is the cough chronic, and are there any red flags for serious pathology present? If yes to either of these, a chest x-ray is warranted. What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis."
+      ],
+      "retrieved_ids": [
+        "LDMEtNXik-A_5",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_4"
+      ]
+    },
+    {
+      "id": "dandruff_01",
+      "query": "According to the dandruff video, is dandruff caused by poor hygiene, and how can infrequent shampooing affect it?",
+      "contexts": [
+        "the patient's medications occupational environmental and animal exposures and the chest CT looking for specific radiographic patterns which aren't discernible on plain films unilaterally decreased breath sounds and a pleural effusion on x-ray is of course diagnostic of that condition determining the etiology of pleural effusions often but not always requires a diagnostic thoracentesis remember that there may or may not be in additional pathology hiding beneath that effusion unilaterally decreased breath sounds and a pneumothorax on x-ray is diagnostic of that additional diagnostic workup for a first-time primary spontaneous pneumothorax is usually not necessary bilaterally decreased breath sounds wheezing and an x-ray without any opacities suggests the possibility of an asthma exacerbation or particularly in heavy smokers a COPD exacerbation although COPD can occur in non-smokers as well additional supportive features include a previously established diagnosis of asthma or COPD hypercapnia on ABG and hyperinflation on the chest x-ray asthma and COPD exacerbation czar so-called clinical diagnosis which means there are no specific diagnostic tests that rule them in or out definitively but rather a diagnosis is based upon a combination of history exam measures a peak expiratory flow for asthma specifically and the exclusion of alternative explanations sometimes bronchodilators and steroids will be prescribed empirically as part of a diagnostic trial however a number of other causes of dyspnea can also respond to this therapy now what to do if the lung exam and chest x-ray are both normal but the patient is hypoxemic the main consideration here is a pulmonary embolism particularly if the disc is accompanied by pleuritic chest pain risk factors for PE such as cancer recent hospitalization or prior venous thromboembolism or science of a deep vein thrombosis on either exam or ultrasound the possibility of a PE can be further evaluated with either a serum d-dimer or a CT angiogram of the thorax depending upon the clinical suspicion and a specific clinical prediction rule",
+        "mucus moving on from isolated hypoxemia another general trigger for increasing ventilation is hypercapnia this can be from obstructive lung disease either COPD or severe asthma exacerbations or hypercapnia can be from acute neurologic and neuromuscular disease such as acute attacks of myasthenia gravis transverse myelitis and guillain-barre syndrome while generally speaking central hypoventilation from either drug overdose or obesity hypoventilation syndrome can leave the hypercapnia these causes of hypercapnia they don't cause dyspnea regarding acidemia shhhhh triggering of dyspnea this works synergistically with a dyspnea triggered by hypercapnia since hypercapnia necessarily lowers pH however acidemia can also occur in the absence of hypercapnia as seen with metabolic acidosis in this circumstance the body's natural response to the lowering of serum pH is so called respiratory compensation in which respiratory drive increases with the goal of lowering arterial co2 below normal and partially normalizing pH the causes of a metabolic acidosis that are most likely to cause dis mia via this mechanism are ketoacidosis and lactic acidosis beyond those three main peripheral chemoreceptors mediated triggers for dyspnea there are a few more to consider for oxygen delivery to peripheral tissues as a consequence of factors other than hypoxemia also can lead to dis BIA if you recall that oxygen delivery is proportional to both the hemoglobin concentration and to the cardiac output you will quickly deduce this category includes anemia low output heart failure and obstructive shock such as that seen from massive Pease tamponade and tension pneumothorax under miscellaneous causes there is myocardial ischemia which in some patients particularly the elderly and diabetics this can occur in the absence of chest pain exertional symptoms other than chest pain which are due to myocardial ischemia are often referred to as an engine equivalent because the approach to its diagnosis and management is the same as it would be for ischemic pain people can also present with acute dyspnea in the setting of upper airway",
+        "ICU admission alcohol abuse a failure to improve with conventional antibiotics or the concurrent presence of a pleural effusion on the other hand if the onset of illness was sub acute to chronic is associated with weight loss the patient is immunosuppressed has relevant travel history and the x-ray shows cavitary and/or nodular lesions these are more consistent with micro bacterial or fungal pneumonia keep in mind that TB can also present with a low bar infiltrates and/or pleural effusion on chest x-ray if TB is a consideration the patient should be placed on respiratory isolation with serial sputum samples for AFB smear and culture non-tuberculous mycobacteria also require AFB smears and cultures and if fungal pneumonia is a consideration diagnosis is usually based on a combination of direct examination of sputum under microscopy culturing the fungus from sputum and testing for specific antibodies in the serum which is best done in consultation with infectious disease specialist or your facility's microbiology lab and any patient falling into this category of sub acute to chronic pneumonia should also have an HIV test if not already recently done now going back to the chest x-ray if it shows a lung mass or some other finding that is not strongly suggestive of infection the next step is a chest CT and if the initial x-ray is normal consider whether the patient's history is suggestive of acute bronchitis for example is there a hemoptysis mild and from a single self-limited episode are there no systemic symptoms like fatigue night sweats or fever and is the patient a nonsmoker if the answer to all of these questions is yes then close observation can be considered but this will be a minority of patients one study found that about a quarter of patients presenting with hemoptysis due to malignancy initially had a normal chest x-ray so have a low threshold for ordering the CT and some clinicians"
+      ],
+      "retrieved_ids": [
+        "xNJ8ALMjZ7A_4",
+        "xNJ8ALMjZ7A_1",
+        "mYecvkIBsoA_4"
+      ]
+    }
+  ],
+  "results": {
+    "cough_01": {
+      "status": "evaluated",
+      "score": 0.25,
+      "reason": "The score is 0.25 because the majority of retrieved statements are unrelated to the timing of a chest X‑ray (e.g., \"The statement only describes what to do after an abnormal X‑ray...\" and \"The statement lists possible X‑ray findings...\"), while only a few statements directly answer the question, such as \"Patients presenting with a cough should have a chest x‑ray if either the cough is chronic or if it's associated with a red flag for serious pathology.\" and \"Ordering an X‑ray depends on two factors: chronic cough or presence of red flags; if yes to either, a chest X‑ray is warranted.\"",
+      "passed": false,
+      "passages": [
+        {
+          "context_index": 0,
+          "context_id": "LDMEtNXik-A_5",
+          "statement_verdicts": [
+            {
+              "statement": "Red flags in a patient with cough include concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, elderly or at risk of aspiration, tachypnea, hypoxemia, abnormal cardiac or pulmonary exam, or presenting with sepsis.",
+              "verdict": "yes",
+              "reason": null
+            },
+            {
+              "statement": "If an X-ray is ordered and found to be abnormal, it should of course be further worked up as indicated.",
+              "verdict": "no",
+              "reason": "The statement only describes what to do after an abnormal X-ray ('If an X-ray is ordered and found to be abnormal, it should of course be further worked up as indicated') and does not address when a chest X-ray should be performed."
+            },
+            {
+              "statement": "Abnormalities that might be seen on chest X-ray include focal alveolar opacifications consistent with pneumonia or aspiration, diffuse interstitial opacities consistent with ILD, hyperinflation and flattening of the diaphragms consistent with COPD, or lung nodules or masses consistent with cancer.",
+              "verdict": "no",
+              "reason": "This statement lists possible X‑ray findings ('Abnormalities that might be seen on chest X-ray include...') but does not indicate the circumstances for ordering the X‑ray."
+            },
+            {
+              "statement": "For most patients presenting with a cough, particularly chronic cough, the chest X-ray will be unremarkable.",
+              "verdict": "no",
+              "reason": "The statement describes the typical result of a chest X‑ray ('the chest X-ray will be unremarkable') rather than when it should be ordered."
+            },
+            {
+              "statement": "Serious pathology is relatively unlikely based on an unremarkable chest X-ray, but it is still important to diagnose correctly.",
+              "verdict": "no",
+              "reason": "This comment discusses the likelihood of serious disease after an X‑ray ('Serious pathology is relatively unlikely...') and does not specify the indication for ordering the X‑ray."
+            },
+            {
+              "statement": "Other symptoms and signs should be worked up if present, otherwise consider etiologies listed in the box.",
+              "verdict": "no",
+              "reason": "The statement focuses on managing other symptoms ('Other symptoms and signs should be worked up if present') and does not address when to obtain a chest X‑ray."
+            },
+            {
+              "statement": "Some etiologies have confirmatory diagnostic tests, but doctors often recommend empiric treatment instead.",
+              "verdict": "no",
+              "reason": "This sentence discusses the preference for empiric treatment ('doctors often recommend empiric treatment instead') and does not relate to the timing of a chest X‑ray."
+            },
+            {
+              "statement": "Empiric treatments are usually benign, and confirmatory tests are cumbersome, expensive, or have suboptimal predictive values.",
+              "verdict": "no",
+              "reason": "The statement addresses the nature of empiric treatments and diagnostic tests ('Empiric treatments are usually benign...') and does not provide guidance on when to order a chest X‑ray."
+            }
+          ]
+        },
+        {
+          "context_index": 1,
+          "context_id": "LDMEtNXik-A_9",
+          "statement_verdicts": [
+            {
+              "statement": "Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology.",
+              "verdict": "yes",
+              "reason": null
+            },
+            {
+              "statement": "The most common etiologies of an acute cough are an upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia.",
+              "verdict": "no",
+              "reason": "The statement only lists acute cough causes (\"upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia\") and does not address when to obtain a chest X-ray."
+            },
+            {
+              "statement": "The most common etiologies of a chronic cough are upper airway cough syndrome, colloquially known as postnasal drip, cough variant asthma, COPD, laryngopharyngeal reflux / GERD, and an ACE inhibitor side effect.",
+              "verdict": "no",
+              "reason": "The statement lists chronic cough causes (\"upper airway cough syndrome, postnasal drip, cough variant asthma, COPD, laryngopharyngeal reflux / GERD, and an ACE inhibitor side effect\") but does not specify the timing for a chest X-ray."
+            },
+            {
+              "statement": "There's a lack of consensus regarding the naming and categorization of many cough ideologies.",
+              "verdict": "no",
+              "reason": "The statement discusses naming consensus (\"lack of consensus regarding the naming and categorization of many cough ideologies\") which is unrelated to chest X-ray timing."
+            },
+            {
+              "statement": "If serious pathology is felt to be unlikely, empiric treatment of the most probable diagnosis is an acceptable alternative to cumbersome, costly, insensitive, or non-specific diagnostic testing.",
+              "verdict": "no",
+              "reason": "The statement addresses treatment alternatives (\"empiric treatment of the most probable diagnosis is an acceptable alternative\") rather than when a chest X-ray should be performed."
+            }
+          ]
+        },
+        {
+          "context_index": 2,
+          "context_id": "LDMEtNXik-A_4",
+          "statement_verdicts": [
+            {
+              "statement": "Laryngopharyngeal reflux / GERD, ACE inhibitors, and among smokers, COPD are causes of cough.",
+              "verdict": "no",
+              "reason": "The statement \"Laryngopharyngeal reflux / GERD, ACE inhibitors, and among smokers, COPD are causes of cough\" does not address when a chest X-ray should be performed."
+            },
+            {
+              "statement": "History should include duration and timing of the cough.",
+              "verdict": "no",
+              "reason": "The statement \"History should include duration and timing of the cough\" does not specify criteria for ordering a chest X-ray."
+            },
+            {
+              "statement": "Cough can be described as productive versus non‑productive of phlegm.",
+              "verdict": "no",
+              "reason": "The statement \"Cough can be described as productive versus non‑productive of phlegm\" is unrelated to the decision to obtain a chest X‑ray."
+            },
+            {
+              "statement": "Inquire about other symptoms such as fever, dyspnea, chest pain, hemoptysis, heartburn, rhinorrhea, nasal congestion, and weight loss.",
+              "verdict": "no",
+              "reason": "The statement \"Inquire about other symptoms such as fever, dyspnea, chest pain, hemoptysis, heartburn, rhinorrhea, nasal congestion, and weight loss\" lists symptoms but does not state when a chest X‑ray is indicated."
+            },
+            {
+              "statement": "Ask about chronic lung disease, immunosuppression, smoking, and ACE inhibitor use.",
+              "verdict": "no",
+              "reason": "The statement \"Ask about chronic lung disease, immunosuppression, smoking, and ACE inhibitor use\" does not directly indicate the timing for a chest X‑ray."
+            },
+            {
+              "statement": "Assess vitals and perform HEENT, pulmonary, cardiac exams, and JVP assessment.",
+              "verdict": "no",
+              "reason": "The statement \"Assess vitals and perform HEENT, pulmonary, cardiac exams, and JVP assessment\" describes examination steps but does not specify when to order a chest X‑ray."
+            },
+            {
+              "statement": "Lab tests are usually not helpful, but consider CBC if infection is considered.",
+              "verdict": "no",
+              "reason": "The statement \"Lab tests are usually not helpful, but consider CBC if infection is considered\" does not relate to the criteria for obtaining a chest X‑ray."
+            },
+            {
+              "statement": "Consider a chest X‑ray as part of the evaluation.",
+              "verdict": "yes",
+              "reason": null
+            },
+            {
+              "statement": "The diagnostic algorithm starts with the question of whether or not to order an X‑ray.",
+              "verdict": "yes",
+              "reason": null
+            },
+            {
+              "statement": "Ordering an X‑ray depends on two factors: chronic cough or presence of red flags; if yes to either, a chest X‑ray is warranted.",
+              "verdict": "yes",
+              "reason": null
+            },
+            {
+              "statement": "Red flags include dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, significant smoking history, elderly/aspiration risk, tachypnea, hypoxemia, abnormal cardiac or pulmonary exam, or sepsis.",
+              "verdict": "yes",
+              "reason": null
+            }
+          ]
+        }
+      ]
+    },
+    "dandruff_01": {
+      "status": "evaluated",
+      "score": 0.0,
+      "reason": "The score is 0.00 because all retrieved statements are about pulmonary and critical care topics—e.g., \"patient exposures and chest CT imaging,\" \"unilaterally decreased breath sounds and a pleural effusion on x-ray,\" and \"asthma/COPD exacerbations\"—which have no connection to dandruff, poor hygiene, or shampoo frequency, and there are no relevant statements in the context.",
+      "passed": false,
+      "passages": [
+        {
+          "context_index": 0,
+          "context_id": "xNJ8ALMjZ7A_4",
+          "statement_verdicts": [
+            {
+              "statement": "the patient's medications occupational environmental and animal exposures and the chest CT looking for specific radiographic patterns which aren't discernible on plain films",
+              "verdict": "no",
+              "reason": "The statement discusses patient exposures and chest CT imaging, which are unrelated to dandruff causes or shampooing."
+            },
+            {
+              "statement": "unilaterally decreased breath sounds and a pleural effusion on x-ray is of course diagnostic of that condition determining the etiology of pleural effusions often but not always requires a diagnostic thoracentesis",
+              "verdict": "no",
+              "reason": "It refers to \"unilaterally decreased breath sounds and a pleural effusion on x-ray,\" a pulmonary finding, not to dandruff or hygiene."
+            },
+            {
+              "statement": "remember that there may or may not be in additional pathology hiding beneath that effusion",
+              "verdict": "no",
+              "reason": "The statement concerns hidden pathology beneath a pleural effusion, which is irrelevant to dandruff."
+            },
+            {
+              "statement": "unilaterally decreased breath sounds and a pneumothorax on x-ray is diagnostic of that additional diagnostic workup for a first-time primary spontaneous pneumothorax is usually not necessary",
+              "verdict": "no",
+              "reason": "It mentions \"pneumothorax on x-ray\" and diagnostic workup, topics unrelated to dandruff causes."
+            },
+            {
+              "statement": "bilaterally decreased breath sounds wheezing and an x-ray without any opacities suggests the possibility of an asthma exacerbation or particularly in heavy smokers a COPD exacerbation although COPD can occur in non-smokers as well",
+              "verdict": "no",
+              "reason": "The statement addresses asthma and COPD exacerbations, which have no connection to dandruff or shampooing."
+            },
+            {
+              "statement": "additional supportive features include a previously established diagnosis of asthma or COPD hypercapnia on ABG and hyperinflation on the chest x-ray",
+              "verdict": "no",
+              "reason": "It discusses supportive features for asthma/COPD, not dandruff."
+            },
+            {
+              "statement": "asthma and COPD exacerbation czar so-called clinical diagnosis which means there are no specific diagnostic tests that rule them in or out definitively but rather a diagnosis is based upon a combination of history exam measures a peak expiratory flow for asthma specifically and the exclusion of alternative explanations",
+              "verdict": "no",
+              "reason": "The content focuses on clinical diagnosis of asthma/COPD, unrelated to dandruff hygiene."
+            },
+            {
+              "statement": "sometimes bronchodilators and steroids will be prescribed empirically as part of a diagnostic trial",
+              "verdict": "no",
+              "reason": "Mentions bronchodilators and steroids for respiratory conditions, not dandruff."
+            },
+            {
+              "statement": "however a number of other causes of dyspnea can also respond to this therapy",
+              "verdict": "no",
+              "reason": "Refers to dyspnea causes and therapy, which are irrelevant to dandruff."
+            },
+            {
+              "statement": "now what to do if the lung exam and chest x-ray are both normal but the patient is hypoxemic the main consideration here is a pulmonary embolism particularly if the disc is accompanied by pleuritic chest pain",
+              "verdict": "no",
+              "reason": "Discusses pulmonary embolism evaluation, not dandruff or shampooing."
+            },
+            {
+              "statement": "risk factors for PE such as cancer recent hospitalization or prior venous thromboembolism or science of a deep vein thrombosis on either exam or ultrasound",
+              "verdict": "no",
+              "reason": "Lists risk factors for pulmonary embolism, which have no bearing on dandruff."
+            },
+            {
+              "statement": "the possibility of a PE can be further evaluated with either a serum d-dimer or a CT angiogram of the thorax depending upon the clinical suspicion and a specific clinical prediction rule",
+              "verdict": "no",
+              "reason": "Describes PE diagnostic testing, unrelated to dandruff causes or shampoo frequency."
+            }
+          ]
+        },
+        {
+          "context_index": 1,
+          "context_id": "xNJ8ALMjZ7A_1",
+          "statement_verdicts": [
+            {
+              "statement": "Hypercapnia can be from obstructive lung disease either COPD or severe asthma exacerbations.",
+              "verdict": "no",
+              "reason": "The statement mentions \"hypercapnia\" and \"obstructive lung disease\" which are unrelated to dandruff, poor hygiene, or shampooing."
+            },
+            {
+              "statement": "Hypercapnia can be from acute neurologic and neuromuscular disease such as acute attacks of myasthenia gravis, transverse myelitis and Guillain‑Barre syndrome.",
+              "verdict": "no",
+              "reason": "The statement refers to \"acute neurologic and neuromuscular disease\" and \"hypercapnia\", topics that have nothing to do with dandruff or hygiene."
+            },
+            {
+              "statement": "Central hypoventilation from either drug overdose or obesity hypoventilation syndrome can lead to hypercapnia.",
+              "verdict": "no",
+              "reason": "The statement discusses \"central hypoventilation\" and \"obesity hypoventilation syndrome\", which are irrelevant to dandruff or shampooing."
+            },
+            {
+              "statement": "Acidemia can occur in the absence of hypercapnia as seen with metabolic acidosis.",
+              "verdict": "no",
+              "reason": "The statement mentions \"acidemia\" and \"metabolic acidosis\", which are unrelated to the question about dandruff and hygiene."
+            },
+            {
+              "statement": "Respiratory compensation increases respiratory drive to lower arterial CO₂ and normalize pH.",
+              "verdict": "no",
+              "reason": "The statement focuses on \"respiratory compensation\" and \"arterial CO₂\", topics that do not pertain to dandruff or shampoo frequency."
+            },
+            {
+              "statement": "Metabolic acidosis causes such as ketoacidosis and lactic acidosis can trigger respiratory compensation.",
+              "verdict": "no",
+              "reason": "The statement references \"ketoacidosis\" and \"lactic acidosis\", which are unrelated to dandruff, poor hygiene, or shampooing."
+            },
+            {
+              "statement": "Peripheral chemoreceptor‑mediated triggers for dyspnea include anemia, low‑output heart failure, and obstructive shock.",
+              "verdict": "no",
+              "reason": "The statement lists conditions like \"anemia\" and \"obstructive shock\", which have no connection to dandruff or hair‑care practices."
+            },
+            {
+              "statement": "Myocardial ischemia can occur without chest pain, especially in elderly and diabetics.",
+              "verdict": "no",
+              "reason": "The statement discusses \"myocardial ischemia\" and \"elderly and diabetics\", which are irrelevant to the dandruff topic."
+            }
+          ]
+        },
+        {
+          "context_index": 2,
+          "context_id": "mYecvkIBsoA_4",
+          "statement_verdicts": [
+            {
+              "statement": "ICU admission, alcohol abuse, failure to improve with conventional antibiotics, presence of pleural effusion, sub‑acute to chronic illness associated with weight loss, immunosuppression, travel history, and chest X‑ray findings of cavitary or nodular lesions suggest bacterial or fungal pneumonia; TB can present similarly and requires respiratory isolation and AFB testing.",
+              "verdict": "no",
+              "reason": "The statement references \"ICU admission\", \"alcohol abuse\", \"pneumonia\", \"TB\", and related diagnostic steps, which have no connection to dandruff, its causes, or shampooing frequency."
+            },
+            {
+              "statement": "If the chest X‑ray shows a lung mass or other non‑infectious finding, the next step is a chest CT; even with a normal X‑ray, hemoptysis may warrant CT because malignancy can be present.",
+              "verdict": "no",
+              "reason": "The statement discusses \"chest CT\", \"lung mass\", and \"hemoptysis\", topics unrelated to dandruff, hygiene, or shampooing."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "review_status": "automated_unreviewed",
+  "run_status": "completed",
+  "updated_at_utc": "2026-10-22T11:55:45.120727+00:00"
+}
