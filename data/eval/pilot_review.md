@@ -87,3 +87,15 @@ Interpretation:
 - Do not overwrite the original DeepEval baseline.
 - Next: calibrate against a small set of known-supported,
   unsupported, contradicted, and refusal cases.
+## Answer relevance smoke findings
+
+Report: data/eval/deepeval_answer_relevance_smoke_v1.json
+
+- cough_01 scored 1.0: 2 yes verdicts and 10 borderline verdicts.
+  DeepEval 4.2.8 counts borderline verdicts toward the score.
+- dandruff_01 scored 1.0 despite providing only a refusal.
+  The judge incorrectly explained that it answered the dandruff question.
+- Preserve both automated scores. They are not verified answer quality.
+  Answer relevance must be assessed alongside correctness, completeness
+  and dedicated refusal evaluation.
+- Both smoke cases completed. No baseline answers were regenerated.

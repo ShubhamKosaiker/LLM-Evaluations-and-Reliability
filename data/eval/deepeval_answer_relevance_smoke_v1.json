@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "run_type": "answer_relevance_smoke",
+  "source": "data/eval/rag_baseline_pilot.json",
+  "source_sha256": "8b692cb5ae74bb1e08f510b7090cfcfc076f7c491e4edd02b12bcf35d0bedf96",
+  "runner_sha256": "f78bcfc69b336f7a7accf964702833f679971b9e785f1bcd03d5e879d8e51ba6",
+  "adapter_sha256": "b05b99f8ad2ed2b851adc9536634e2363b93a11e30e13c6b8384a7bee7659235",
+  "configuration": {
+    "metric": "AnswerRelevancyMetric",
+    "model": "openai/gpt-oss-120b",
+    "threshold": 0.7,
+    "threshold_status": "provisional_not_a_validated_quality_gate",
+    "eval_mode": "llm",
+    "async_mode": false,
+    "strict_mode": false,
+    "include_reason": true,
+    "request_interval_seconds": 60,
+    "borderline_counts_as_relevant": true
+  },
+  "package_versions": {
+    "deepeval": "4.2.8",
+    "groq": "1.7.0",
+    "pydantic": "2.14.0"
+  },
+  "selected_case_ids": [
+    "cough_01",
+    "dandruff_01"
+  ],
+  "cases": [
+    {
+      "id": "cough_01",
+      "query": "According to the cough lecture, when should a patient with cough have a chest X-ray?",
+      "answer": "According to the lecture, a chest X‑ray is indicated for a patient with cough **if the cough is chronic or if any red‑flag signs of serious pathology are present** (e.g., dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, significant smoking history, tachypnea, hypoxemia, abnormal cardiac or pulmonary exam, or sepsis)."
+    },
+    {
+      "id": "dandruff_01",
+      "query": "According to the dandruff video, is dandruff caused by poor hygiene, and how can infrequent shampooing affect it?",
+      "answer": "I don't have enough information in the provided medical sources."
+    }
+  ],
+  "results": {
+    "cough_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about when a patient with cough should get a chest X-ray, with no irrelevant material.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "According to the lecture, a chest X‑ray is indicated for a patient with cough if the cough is chronic.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "According to the lecture, a chest X‑ray is indicated for a patient with cough if any red‑flag signs of serious pathology are present.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include dyspnea.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (dyspnea) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include hemoptysis.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (hemoptysis) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include chest pain.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (chest pain) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include weight loss.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (weight loss) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include immunosuppression.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (immunosuppression) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include significant smoking history.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (significant smoking history) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include tachypnea.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (tachypnea) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include hypoxemia.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (hypoxemia) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include abnormal cardiac or pulmonary exam.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (abnormal cardiac or pulmonary exam) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include sepsis.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (sepsis) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        }
+      ]
+    },
+    "dandruff_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about dandruff causes and shampooing frequency with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "I don't have enough information in the provided medical sources.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    }
+  },
+  "review_status": "automated_unreviewed",
+  "run_status": "completed",
+  "updated_at_utc": "2026-10-22T15:10:01.941332+00:00"
+}

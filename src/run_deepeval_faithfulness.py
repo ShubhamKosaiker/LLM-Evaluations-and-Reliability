@@ -12,11 +12,12 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from importlib.metadata import version
 from datetime import datetime, timezone
 from pathlib import Path
 
-from deepeval.metrics import FaithfulnessMetric, ContextualRelevancyMetric
+from deepeval.metrics import FaithfulnessMetric, ContextualRelevancyMetric, AnswerRelevancyMetric
 from deepeval.test_case import LLMTestCase
 
 from src.deepeval_groq_adapter import GroqDeepEvalJudge
@@ -533,6 +534,146 @@ def run_contextual_smoke(preview=False, full=False, max_cases=None):
     print("Automated judgments require review.", flush=True)
 
 
+
+ANSWER_RELEVANCE_OUTPUT = Path(
+    "data/eval/deepeval_answer_relevance_smoke_v1.json"
+)
+ANSWER_RELEVANCE_CASE_IDS = ("cough_01", "dandruff_01")
+
+
+def answer_relevance_verdicts(metric):
+    """Keep the statement order and validate DeepEval 4.2.8's score."""
+    if not metric.statements or len(metric.statements) != len(metric.verdicts):
+        raise ValueError("Missing statements or mismatched answer verdicts")
+    checks = []
+    for statement, verdict in zip(metric.statements, metric.verdicts):
+        label = verdict.verdict.value if hasattr(verdict.verdict, "value") else str(verdict.verdict)
+        if label not in ("yes", "no", "borderline") or not statement.strip():
+            raise ValueError("Invalid answer relevance verdict")
+        checks.append({"statement": statement, "verdict": label, "reason": verdict.reason})
+    # In this pinned version, borderline counts as passing, unlike strict yes-only scoring.
+    expected = sum(v["verdict"] != "no" for v in checks) / len(checks)
+    if (not isinstance(metric.score, (int, float)) or not math.isfinite(metric.score)
+            or not math.isclose(metric.score, expected, abs_tol=1e-9)):
+        raise ValueError("Answer relevance score does not match its verdicts")
+    return checks
+
+
+def run_answer_relevance_smoke(preview=False, max_cases=None):
+    """Evaluate saved question/answer pairs without retrieval or generation."""
+    if max_cases is not None and max_cases < 1:
+        raise ValueError("max_cases must be positive")
+    source = Path(SOURCES[0])
+    data = json.loads(source.read_text(encoding="utf-8-sig"))
+    cases = []
+    for cid in ANSWER_RELEVANCE_CASE_IDS:
+        matches = [c for c in data["cases"] if c["id"] == cid]
+        if len(matches) != 1:
+            raise ValueError(f"Expected one saved answer: {cid}")
+        case = matches[0]
+        if (case.get("status") != "success"
+                or any(not isinstance(case.get(k), str) or not case[k].strip()
+                       for k in ("query", "answer"))):
+            raise ValueError(f"Missing successful saved answer: {cid}")
+        cases.append({"id": cid, "query": case["query"], "answer": case["answer"]})
+    packages = {name: version(name) for name in ("deepeval", "groq", "pydantic")}
+    if packages["deepeval"] != "4.2.8":
+        raise ValueError("This experiment requires DeepEval 4.2.8")
+    configuration = {
+        "metric": "AnswerRelevancyMetric", "model": "openai/gpt-oss-120b",
+        "threshold": THRESHOLD,
+        "threshold_status": "provisional_not_a_validated_quality_gate",
+        "eval_mode": "llm", "async_mode": False, "strict_mode": False,
+        "include_reason": True, "request_interval_seconds": REQUEST_INTERVAL,
+        "borderline_counts_as_relevant": True,
+    }
+    identity = {
+        "schema_version": 1, "run_type": "answer_relevance_smoke",
+        "source": source.as_posix(), "source_sha256": file_sha256(source),
+        "runner_sha256": file_sha256(Path(__file__)),
+        "adapter_sha256": file_sha256(Path(__file__).with_name("deepeval_groq_adapter.py")),
+        "configuration": configuration, "package_versions": packages,
+        "selected_case_ids": list(ANSWER_RELEVANCE_CASE_IDS), "cases": cases,
+    }
+    output = ANSWER_RELEVANCE_OUTPUT
+    if output.exists():
+        report = json.loads(output.read_text(encoding="utf-8"))
+        if any(report.get(k) != value for k, value in identity.items()):
+            raise ValueError("Inputs, code or configuration changed; refusing to resume")
+        results = report.get("results")
+        if not isinstance(results, dict) or set(results) - set(ANSWER_RELEVANCE_CASE_IDS):
+            raise ValueError("Unexpected saved answer relevance results")
+        if any(r.get("status") != "evaluated" for r in results.values()):
+            raise ValueError("Prior evaluation error needs review; no automatic retry")
+    else:
+        report = {**identity, "results": {}, "review_status": "automated_unreviewed"}
+    print("Answer relevance smoke: saved questions and answers only", flush=True)
+    print("Output:", output, flush=True)
+    print(f"Selected: {len(cases)}; already evaluated: {len(report['results'])}; "
+          f"pending: {len(cases) - len(report['results'])}", flush=True)
+    for case in cases:
+        print(f"{case['id']}:\n  Question: {case['query']}\n  Answer: {case['answer']}", flush=True)
+    print("This metric does not establish correctness or refusal appropriateness.", flush=True)
+    if preview:
+        print("PREVIEW: no judge client, API calls or report writes.", flush=True)
+        return
+    report["run_status"] = "in_progress"
+    save(report, output)
+    judge = None
+    attempted = 0
+    for case in cases:
+        cid = case["id"]
+        if cid in report["results"]:
+            print("Skipping completed case:", cid, flush=True)
+            continue
+        if max_cases is not None and attempted >= max_cases:
+            break
+        attempted += 1
+        try:
+            if judge is None:
+                judge = GroqDeepEvalJudge(model=configuration["model"], interval=REQUEST_INTERVAL)
+            metric = AnswerRelevancyMetric(
+                model=judge, threshold=THRESHOLD, eval_mode="llm",
+                include_reason=True, async_mode=False, strict_mode=False,
+            )
+            metric.measure(LLMTestCase(input=case["query"], actual_output=case["answer"]))
+            checks = answer_relevance_verdicts(metric)
+            report["results"][cid] = {
+                "status": "evaluated", "score": metric.score,
+                "reason": metric.reason, "passed": metric.is_successful(),
+                "statement_verdicts": checks,
+            }
+            save(report, output)
+            print(f"{cid}: score={metric.score:.4f}; provisional_pass={metric.is_successful()}", flush=True)
+            print("  Why:", metric.reason, flush=True)
+            for check in checks:
+                print(f"  {check['verdict']}: {check['statement']}", flush=True)
+        except Exception as exc:
+            error = {"status": "evaluation_error", "error_type": type(exc).__name__}
+            if type(exc).__name__ == "RateLimitError":
+                detail = re.sub(r"(?:gsk_|org_)[A-Za-z0-9_-]+", "[redacted]", str(exc))
+                error["detail"] = detail[:2000]
+                response = getattr(exc, "response", None)
+                error["retry_after"] = response.headers.get("retry-after") if response is not None else None
+                print("  Rate limit:", error["detail"], flush=True)
+                print("  Retry-after:", error["retry_after"], flush=True)
+            report["results"][cid] = error
+            report["run_status"] = "stopped_evaluation_error"
+            save(report, output)
+            print(f"{cid}: EVALUATION ERROR ({type(exc).__name__}); stopped.", flush=True)
+            return
+        except KeyboardInterrupt:
+            report["run_status"] = "paused_user"
+            save(report, output)
+            print("Interrupted; completed answer relevance cases saved.", flush=True)
+            return
+    report["run_status"] = ("completed" if len(report["results"]) == len(cases)
+                            else "paused_batch_limit")
+    save(report, output)
+    print("Run status:", report["run_status"], flush=True)
+    print("Automated judgments require review.", flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Evaluate saved RAG answers with DeepEval."
@@ -541,21 +682,25 @@ def main():
     parser.add_argument(
         "--mode",
         choices=["baseline", "calibration", "contextual-relevance-smoke",
-                 "contextual-relevance-baseline"],
+                 "contextual-relevance-baseline", "answer-relevance-smoke"],
         required=True,
         help="Explicitly select the evaluation workflow.",
     )
 
     parser.add_argument("--preview", action="store_true",
-                        help="Inspect contextual inputs without API calls.")
+                        help="Inspect relevance inputs without API calls.")
     parser.add_argument("--max-cases", type=int, default=None,
-                        help="Limit new contextual evaluations; rerun the same command to resume.")
+                        help="Limit new relevance evaluations; rerun the same command to resume.")
     args = parser.parse_args()
     contextual_mode = args.mode.startswith("contextual-relevance-")
-    if (args.preview or args.max_cases is not None) and not contextual_mode:
-        parser.error("--preview and --max-cases require a contextual-relevance mode")
+    relevance_mode = contextual_mode or args.mode == "answer-relevance-smoke"
+    if (args.preview or args.max_cases is not None) and not relevance_mode:
+        parser.error("--preview and --max-cases require a relevance mode")
     if args.max_cases is not None and args.max_cases < 1:
         parser.error("--max-cases must be positive")
+    if args.mode == "answer-relevance-smoke":
+        run_answer_relevance_smoke(preview=args.preview, max_cases=args.max_cases)
+        return
     if contextual_mode:
         run_contextual_smoke(preview=args.preview,
                              full=args.mode == "contextual-relevance-baseline",
@@ -570,4 +715,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
