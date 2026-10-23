@@ -99,3 +99,21 @@ Report: data/eval/deepeval_answer_relevance_smoke_v1.json
   Answer relevance must be assessed alongside correctness, completeness
   and dedicated refusal evaluation.
 - Both smoke cases completed. No baseline answers were regenerated.
+
+## Answer relevance baseline (2026-10-23)
+
+Report: data/eval/deepeval_answer_relevance_baseline_v1.json
+
+- Completed 29 eligible answers: 20 pilot and 9 validation.
+- validation_headache_01 was skipped because generation failed.
+- Mean automated relevance score: pilot 1.0000; validation 0.8889.
+- 28 answers scored 1.0; one scored 0.0.
+- Scores agree with 107 statement verdicts:
+  92 yes, 14 borderline, and 1 no.
+- DeepEval 4.2.8 counts borderline verdicts toward relevance.
+- Identical refusal text received 1.0 for dandruff_01 and 0.0 for
+  validation_acute_abdominal_01, across different questions.
+  Relevance scores alone cannot establish successful answering.
+- Both smoke results were reused unchanged. The daily-token-limit
+  interruption is retained in retry_history.
+- These are automated observations, not verified accuracy.

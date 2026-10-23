@@ -559,23 +559,97 @@ def answer_relevance_verdicts(metric):
     return checks
 
 
-def run_answer_relevance_smoke(preview=False, max_cases=None):
+
+ANSWER_RELEVANCE_BASELINE_OUTPUT = Path(
+    "data/eval/deepeval_answer_relevance_baseline_v1.json"
+)
+
+
+def answer_relevance_cases(full=False):
+    """Select saved successful answers; record generation failures separately."""
+    cases, skipped, seen = [], [], set()
+    for filename in SOURCES if full else SOURCES[:1]:
+        data = json.loads(Path(filename).read_text(encoding="utf-8-sig"))
+        selected = data["cases"] if full else [
+            c for cid in ANSWER_RELEVANCE_CASE_IDS for c in data["cases"] if c["id"] == cid
+        ]
+        for case in selected:
+            cid = case["id"]
+            if cid in seen or not isinstance(case.get("query"), str) or not case["query"].strip():
+                raise ValueError("Duplicate case ID or invalid saved question")
+            seen.add(cid)
+            if full and case.get("status") == "error":
+                skipped.append({"id": cid, "query": case["query"],
+                                "status": "skipped_generation_error", "error": case.get("error")})
+                continue
+            if (case.get("status") != "success" or not isinstance(case.get("answer"), str)
+                    or not case["answer"].strip()):
+                raise ValueError(f"Missing successful saved answer: {cid}")
+            cases.append({"id": cid, "query": case["query"], "answer": case["answer"]})
+    if full and len(seen) != 30:
+        raise ValueError("Expected the preserved 30-case answer dataset")
+    if not full and [c["id"] for c in cases] != list(ANSWER_RELEVANCE_CASE_IDS):
+        raise ValueError("Missing or duplicate smoke cases")
+    return cases, skipped
+
+
+def answer_relevance_seed(cases, configuration, packages):
+    """Reuse the completed smoke pair only with matching inputs and settings."""
+    smoke = json.loads(ANSWER_RELEVANCE_OUTPUT.read_text(encoding="utf-8"))
+    expected = [next(c for c in cases if c["id"] == cid) for cid in ANSWER_RELEVANCE_CASE_IDS]
+    if (smoke.get("run_type") != "answer_relevance_smoke" or smoke.get("run_status") != "completed"
+            or smoke.get("source") != SOURCES[0]
+            or smoke.get("source_sha256") != file_sha256(Path(SOURCES[0]))
+            or smoke.get("adapter_sha256") != file_sha256(Path(__file__).with_name("deepeval_groq_adapter.py"))
+            or smoke.get("configuration") != configuration or smoke.get("package_versions") != packages
+            or smoke.get("cases") != expected
+            or smoke.get("selected_case_ids") != list(ANSWER_RELEVANCE_CASE_IDS)
+            or set(smoke.get("results", {})) != set(ANSWER_RELEVANCE_CASE_IDS)):
+        raise ValueError("Smoke inputs, configuration or adapter differ; cannot reuse")
+    for result in smoke["results"].values():
+        checks = result.get("statement_verdicts", [])
+        if (result.get("status") != "evaluated" or not checks
+                or any(c.get("verdict") not in ("yes", "no", "borderline")
+                       or not isinstance(c.get("statement"), str) or not c["statement"].strip()
+                       for c in checks)):
+            raise ValueError("Incomplete cached answer verdicts")
+        score = sum(c["verdict"] != "no" for c in checks) / len(checks)
+        if (not isinstance(result.get("score"), (int, float))
+                or not math.isclose(result["score"], score, abs_tol=1e-9)
+                or result.get("passed") != (score >= configuration["threshold"])):
+            raise ValueError("Cached answer score does not match verdicts")
+    return smoke["results"], {
+        "report": ANSWER_RELEVANCE_OUTPUT.as_posix(),
+        "report_sha256": file_sha256(ANSWER_RELEVANCE_OUTPUT),
+        "original_runner_sha256": smoke["runner_sha256"],
+        "case_ids": list(ANSWER_RELEVANCE_CASE_IDS),
+    }
+
+
+def save_answer_relevance(report, output):
+    """Aggregate pilot and validation separately, excluding missing scores."""
+    report["summary"] = {}
+    for name, validation in (("pilot", False), ("validation", True)):
+        ids = [c["id"] for c in report["cases"] if c["id"].startswith("validation_") == validation]
+        skipped = sum(c["id"].startswith("validation_") == validation
+                      for c in report.get("skipped_generation_errors", []))
+        rows = [report["results"][cid] for cid in ids if cid in report["results"]]
+        scores = [r["score"] for r in rows if r["status"] == "evaluated"]
+        report["summary"][name] = {
+            "selected": len(ids) + skipped, "eligible": len(ids), "evaluated": len(scores),
+            "skipped_generation_errors": skipped,
+            "errors": sum(r["status"] == "evaluation_error" for r in rows),
+            "pending": len(ids) - len(rows),
+            "mean_score": sum(scores) / len(scores) if scores else None,
+        }
+    save(report, output)
+
+
+def run_answer_relevance_smoke(preview=False, max_cases=None, full=False):
     """Evaluate saved question/answer pairs without retrieval or generation."""
     if max_cases is not None and max_cases < 1:
         raise ValueError("max_cases must be positive")
-    source = Path(SOURCES[0])
-    data = json.loads(source.read_text(encoding="utf-8-sig"))
-    cases = []
-    for cid in ANSWER_RELEVANCE_CASE_IDS:
-        matches = [c for c in data["cases"] if c["id"] == cid]
-        if len(matches) != 1:
-            raise ValueError(f"Expected one saved answer: {cid}")
-        case = matches[0]
-        if (case.get("status") != "success"
-                or any(not isinstance(case.get(k), str) or not case[k].strip()
-                       for k in ("query", "answer"))):
-            raise ValueError(f"Missing successful saved answer: {cid}")
-        cases.append({"id": cid, "query": case["query"], "answer": case["answer"]})
+    cases, skipped = answer_relevance_cases(full=full)
     packages = {name: version(name) for name in ("deepeval", "groq", "pydantic")}
     if packages["deepeval"] != "4.2.8":
         raise ValueError("This experiment requires DeepEval 4.2.8")
@@ -588,37 +662,47 @@ def run_answer_relevance_smoke(preview=False, max_cases=None):
         "borderline_counts_as_relevant": True,
     }
     identity = {
-        "schema_version": 1, "run_type": "answer_relevance_smoke",
-        "source": source.as_posix(), "source_sha256": file_sha256(source),
+        "schema_version": 1, "run_type": "answer_relevance_baseline" if full else "answer_relevance_smoke",
+        "source": SOURCES if full else SOURCES[0],
+        "source_sha256": ({p: file_sha256(Path(p)) for p in SOURCES}
+                          if full else file_sha256(Path(SOURCES[0]))),
         "runner_sha256": file_sha256(Path(__file__)),
         "adapter_sha256": file_sha256(Path(__file__).with_name("deepeval_groq_adapter.py")),
         "configuration": configuration, "package_versions": packages,
-        "selected_case_ids": list(ANSWER_RELEVANCE_CASE_IDS), "cases": cases,
+        "selected_case_ids": [c["id"] for c in cases], "cases": cases,
     }
-    output = ANSWER_RELEVANCE_OUTPUT
+    output = ANSWER_RELEVANCE_BASELINE_OUTPUT if full else ANSWER_RELEVANCE_OUTPUT
+    seeded = {}
+    if full:
+        seeded, provenance = answer_relevance_seed(cases, configuration, packages)
+        identity["reused_smoke"] = provenance
+        identity["skipped_generation_errors"] = skipped
     if output.exists():
         report = json.loads(output.read_text(encoding="utf-8"))
         if any(report.get(k) != value for k, value in identity.items()):
             raise ValueError("Inputs, code or configuration changed; refusing to resume")
         results = report.get("results")
-        if not isinstance(results, dict) or set(results) - set(ANSWER_RELEVANCE_CASE_IDS):
+        if not isinstance(results, dict) or set(results) - set(identity["selected_case_ids"]):
             raise ValueError("Unexpected saved answer relevance results")
         if any(r.get("status") != "evaluated" for r in results.values()):
             raise ValueError("Prior evaluation error needs review; no automatic retry")
     else:
-        report = {**identity, "results": {}, "review_status": "automated_unreviewed"}
-    print("Answer relevance smoke: saved questions and answers only", flush=True)
+        report = {**identity, "results": seeded, "review_status": "automated_unreviewed"}
+    print("Answer relevance: saved questions and answers only", flush=True)
     print("Output:", output, flush=True)
     print(f"Selected: {len(cases)}; already evaluated: {len(report['results'])}; "
           f"pending: {len(cases) - len(report['results'])}", flush=True)
-    for case in cases:
+    if full:
+        print("Reused smoke cases:", ", ".join(ANSWER_RELEVANCE_CASE_IDS), flush=True)
+        print("Skipped generation errors:", ", ".join(c["id"] for c in skipped), flush=True)
+    for case in ([] if full else cases):
         print(f"{case['id']}:\n  Question: {case['query']}\n  Answer: {case['answer']}", flush=True)
     print("This metric does not establish correctness or refusal appropriateness.", flush=True)
     if preview:
         print("PREVIEW: no judge client, API calls or report writes.", flush=True)
         return
     report["run_status"] = "in_progress"
-    save(report, output)
+    save_answer_relevance(report, output)
     judge = None
     attempted = 0
     for case in cases:
@@ -643,7 +727,7 @@ def run_answer_relevance_smoke(preview=False, max_cases=None):
                 "reason": metric.reason, "passed": metric.is_successful(),
                 "statement_verdicts": checks,
             }
-            save(report, output)
+            save_answer_relevance(report, output)
             print(f"{cid}: score={metric.score:.4f}; provisional_pass={metric.is_successful()}", flush=True)
             print("  Why:", metric.reason, flush=True)
             for check in checks:
@@ -659,17 +743,17 @@ def run_answer_relevance_smoke(preview=False, max_cases=None):
                 print("  Retry-after:", error["retry_after"], flush=True)
             report["results"][cid] = error
             report["run_status"] = "stopped_evaluation_error"
-            save(report, output)
+            save_answer_relevance(report, output)
             print(f"{cid}: EVALUATION ERROR ({type(exc).__name__}); stopped.", flush=True)
             return
         except KeyboardInterrupt:
             report["run_status"] = "paused_user"
-            save(report, output)
+            save_answer_relevance(report, output)
             print("Interrupted; completed answer relevance cases saved.", flush=True)
             return
     report["run_status"] = ("completed" if len(report["results"]) == len(cases)
                             else "paused_batch_limit")
-    save(report, output)
+    save_answer_relevance(report, output)
     print("Run status:", report["run_status"], flush=True)
     print("Automated judgments require review.", flush=True)
 
@@ -682,7 +766,7 @@ def main():
     parser.add_argument(
         "--mode",
         choices=["baseline", "calibration", "contextual-relevance-smoke",
-                 "contextual-relevance-baseline", "answer-relevance-smoke"],
+                 "contextual-relevance-baseline", "answer-relevance-smoke", "answer-relevance-baseline"],
         required=True,
         help="Explicitly select the evaluation workflow.",
     )
@@ -693,13 +777,14 @@ def main():
                         help="Limit new relevance evaluations; rerun the same command to resume.")
     args = parser.parse_args()
     contextual_mode = args.mode.startswith("contextual-relevance-")
-    relevance_mode = contextual_mode or args.mode == "answer-relevance-smoke"
+    relevance_mode = contextual_mode or args.mode.startswith("answer-relevance-")
     if (args.preview or args.max_cases is not None) and not relevance_mode:
         parser.error("--preview and --max-cases require a relevance mode")
     if args.max_cases is not None and args.max_cases < 1:
         parser.error("--max-cases must be positive")
-    if args.mode == "answer-relevance-smoke":
-        run_answer_relevance_smoke(preview=args.preview, max_cases=args.max_cases)
+    if args.mode.startswith("answer-relevance-"):
+        run_answer_relevance_smoke(preview=args.preview, max_cases=args.max_cases,
+                                   full=args.mode == "answer-relevance-baseline")
         return
     if contextual_mode:
         run_contextual_smoke(preview=args.preview,
@@ -715,5 +800,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 

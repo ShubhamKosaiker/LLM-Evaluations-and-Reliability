@@ -1,0 +1,1034 @@
+{
+  "schema_version": 1,
+  "run_type": "answer_relevance_baseline",
+  "source": [
+    "data/eval/rag_baseline_pilot.json",
+    "data/eval/rag_baseline_validation.json"
+  ],
+  "source_sha256": {
+    "data/eval/rag_baseline_pilot.json": "8b692cb5ae74bb1e08f510b7090cfcfc076f7c491e4edd02b12bcf35d0bedf96",
+    "data/eval/rag_baseline_validation.json": "c17935a703699cbc7bb85ab6b087944c08f545e1dc79c039f69e2bef93fa39dd"
+  },
+  "runner_sha256": "2419d3ab7b388f7185c1b73d98a114fab316ee87bcf494fc61f3f94aedb9b5d6",
+  "adapter_sha256": "b05b99f8ad2ed2b851adc9536634e2363b93a11e30e13c6b8384a7bee7659235",
+  "configuration": {
+    "metric": "AnswerRelevancyMetric",
+    "model": "openai/gpt-oss-120b",
+    "threshold": 0.7,
+    "threshold_status": "provisional_not_a_validated_quality_gate",
+    "eval_mode": "llm",
+    "async_mode": false,
+    "strict_mode": false,
+    "include_reason": true,
+    "request_interval_seconds": 60,
+    "borderline_counts_as_relevant": true
+  },
+  "package_versions": {
+    "deepeval": "4.2.8",
+    "groq": "1.7.0",
+    "pydantic": "2.14.0"
+  },
+  "selected_case_ids": [
+    "cough_01",
+    "cough_02",
+    "cough_03",
+    "cough_04",
+    "cough_05",
+    "headache_01",
+    "headache_02",
+    "headache_03",
+    "headache_04",
+    "headache_05",
+    "dyspnea_01",
+    "dyspnea_02",
+    "acute_abdominal_01",
+    "acute_abdominal_02",
+    "chronic_abdominal_01",
+    "hemoptysis_01",
+    "fever_01",
+    "cold_flu_01",
+    "rash_01",
+    "dandruff_01",
+    "validation_cough_01",
+    "validation_dyspnea_01",
+    "validation_acute_abdominal_01",
+    "validation_hemoptysis_01",
+    "validation_chronic_abdominal_01",
+    "validation_fever_01",
+    "validation_cold_flu_01",
+    "validation_rash_01",
+    "validation_dandruff_01"
+  ],
+  "cases": [
+    {
+      "id": "cough_01",
+      "query": "According to the cough lecture, when should a patient with cough have a chest X-ray?",
+      "answer": "According to the lecture, a chest X‑ray is indicated for a patient with cough **if the cough is chronic or if any red‑flag signs of serious pathology are present** (e.g., dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, significant smoking history, tachypnea, hypoxemia, abnormal cardiac or pulmonary exam, or sepsis)."
+    },
+    {
+      "id": "cough_02",
+      "query": "According to the cough lecture, what red flags in a patient with cough suggest serious pathology?",
+      "answer": "The red flags that suggest serious pathology in a patient with cough are:\n\n- Concurrent dyspnea  \n- Hemoptysis  \n- Chest pain  \n- Weight loss  \n- Immunosuppression  \n- Significant smoking history  \n- Elderly age or other risk of aspiration  \n- Tachypnea  \n- Hypoxemia  \n- Abnormal cardiac or pulmonary exam  \n- Presentation with sepsis"
+    },
+    {
+      "id": "cough_03",
+      "query": "According to the cough lecture, what are the most common causes of acute cough?",
+      "answer": "The most common causes of an acute cough are:\n\n1. Upper respiratory infection (common cold)  \n2. Post‑viral cough  \n3. Acute bronchitis  \n4. Pneumonia"
+    },
+    {
+      "id": "cough_04",
+      "query": "According to the cough lecture, what are the most common causes of chronic cough?",
+      "answer": "According to the lecture, the most common causes of chronic cough are:\n\n1. Upper airway cough syndrome (post‑nasal drip)  \n2. Cough‑variant asthma (or asthma)  \n3. Chronic obstructive pulmonary disease (COPD) – especially in smokers  \n4. Laryngopharyngeal reflux / gastro‑esophageal reflux disease (GERD)  \n5. ACE‑inhibitor side effect"
+    },
+    {
+      "id": "cough_05",
+      "query": "According to the cough lecture, are antibiotics usually indicated for acute bronchitis, and what exception is mentioned?",
+      "answer": "Antibiotics are **not usually indicated** for acute bronchitis.  \nThe exception noted is that antibiotics may be considered if **pertussis is suspected**."
+    },
+    {
+      "id": "headache_01",
+      "query": "According to the headache lecture, how are the location, severity, and sensation of tension headaches described?",
+      "answer": "According to the lecture, tension headaches are described as:\n\n- **Location:** Usually **bilateral and symmetric** around the head.  \n- **Severity:** Typically **mild to moderate**, rarely severe enough to prevent the person from functioning (they can still get out of bed, dress, and drive).  \n- **Sensation:** Most frequently described as a **pressure or tightness**—like a band stretched around the head."
+    },
+    {
+      "id": "headache_02",
+      "query": "According to the headache lecture, what are the typical durations of tension headaches and migraines?",
+      "answer": "- **Tension headaches:** typically last **30 minutes to 7 days**.  \n- **Migraines:** typically last **4 hours to 3 days**."
+    },
+    {
+      "id": "headache_03",
+      "query": "According to the headache lecture, what visual disturbances can occur during a migraine aura?",
+      "answer": "The lecture lists the following visual disturbances that can occur during a migraine aura:\n\n- **Flashes of light (photopsia)**\n- **Colored jagged lines in the vision (fortification spectra)**\n- **Scintillating scotoma**\n- **Unusually shaped, shimmering regions of decreased acuity**"
+    },
+    {
+      "id": "headache_04",
+      "query": "According to the headache lecture, what does thunderclap describe about a headache's onset?",
+      "answer": "A thunderclap headache is one in which the pain reaches its maximum intensity within seconds of the headache’s onset."
+    },
+    {
+      "id": "headache_05",
+      "query": "According to the headache lecture, when do headaches associated with obstructive sleep apnea tend to occur?",
+      "answer": "Headaches linked to obstructive sleep apnea typically appear when the patient wakes up in the morning."
+    },
+    {
+      "id": "dyspnea_01",
+      "query": "According to the acute dyspnea lecture, what minimum objective assessment is recommended initially?",
+      "answer": "The lecture recommends that the first objective assessment for any patient with acute dyspnea includes:\n\n1. **Vital signs** (heart rate, blood pressure, respiratory rate, oxygen saturation, temperature).  \n2. **A thorough physical exam** focusing on the cardiac, pulmonary, and extremity systems.  \n3. **A chest X‑ray** (if available).  \n\nThese steps constitute the minimum objective work‑up that should be performed initially."
+    },
+    {
+      "id": "dyspnea_02",
+      "query": "According to the acute dyspnea lecture, does normal oxygen saturation rule out serious causes of shortness of breath?",
+      "answer": "No. The lecture stresses that a normal oxygen saturation does **not** rule out serious causes of shortness of breath.  Even life‑threatening conditions such as pulmonary embolism, myocardial infarction, tamponade, or pneumothorax can present with a normal O₂ sat, so clinicians should not dismiss these diagnoses based solely on saturation."
+    },
+    {
+      "id": "acute_abdominal_01",
+      "query": "According to the acute abdominal pain lecture, where does appendicitis pain classically begin, and where does it move?",
+      "answer": "Appendicitis pain classically starts in the **periumbilical (around the navel)** area and then **migrates to the right lower quadrant** as the inflammation progresses."
+    },
+    {
+      "id": "acute_abdominal_02",
+      "query": "According to the acute abdominal pain lecture, what posture can relieve pancreatitis pain?",
+      "answer": "Sitting up and leaning forward."
+    },
+    {
+      "id": "chronic_abdominal_01",
+      "query": "What duration threshold does the chronic abdominal pain lecture use, including recurrent episodes?",
+      "answer": "The lecture defines chronic abdominal pain as pain that has been present for **at least two months**, including recurrent episodic pain that has occurred over that time period."
+    },
+    {
+      "id": "hemoptysis_01",
+      "query": "According to the hemoptysis lecture, what are the most common causes of hemoptysis in developed countries?",
+      "answer": "The lecture states that in developed countries the most common causes of hemoptysis are:\n\n1. **Acute bronchitis**  \n2. **Bronchiectasis**  \n3. **Lung cancer** (both primary lung cancer and metastatic disease to the lung)"
+    },
+    {
+      "id": "fever_01",
+      "query": "According to the NHS childhood fever video, what temperature counts as a fever?",
+      "answer": "A fever is defined as a temperature of **38 °C (centigrade) or higher**."
+    },
+    {
+      "id": "cold_flu_01",
+      "query": "According to the cold-versus-flu video, how do the usual symptoms of influenza differ from a common cold?",
+      "answer": "Influenza typically produces more **systemic** symptoms—fever, body aches, and pains—whereas a common cold usually presents with **local** upper‑airway symptoms such as a runny nose, sore throat, and sometimes a cough."
+    },
+    {
+      "id": "rash_01",
+      "query": "According to the adult rash video, what symptoms accompanying a rash may require emergency medical care?",
+      "answer": "According to the adult rash video, you should seek emergency medical care if a rash is accompanied by:\n\n* Trouble breathing or swallowing  \n* Swelling of the eyes and/or lips  \n\nThese symptoms indicate that the rash may be part of a serious condition requiring urgent attention."
+    },
+    {
+      "id": "dandruff_01",
+      "query": "According to the dandruff video, is dandruff caused by poor hygiene, and how can infrequent shampooing affect it?",
+      "answer": "I don't have enough information in the provided medical sources."
+    },
+    {
+      "id": "validation_cough_01",
+      "query": "According to the cough lecture, what medication-class switch is described for a suspected ACE inhibitor cough?",
+      "answer": "Switch the patient from an ACE inhibitor to an **angiotensin‑receptor blocker (ARB)**."
+    },
+    {
+      "id": "validation_dyspnea_01",
+      "query": "According to the acute dyspnea lecture, how does respiratory compensation respond to metabolic acidosis?",
+      "answer": "Respiratory compensation in metabolic acidosis is a reflex that **increases ventilation (respiratory drive) to blow off CO₂, thereby lowering arterial CO₂ below normal and partially correcting the lowered pH**."
+    },
+    {
+      "id": "validation_acute_abdominal_01",
+      "query": "According to the acute abdominal pain lecture, what physical examination finding is called Murphy's sign?",
+      "answer": "I don't have enough information in the provided medical sources."
+    },
+    {
+      "id": "validation_hemoptysis_01",
+      "query": "According to the hemoptysis lecture, does a normal chest CT necessarily rule out cancer?",
+      "answer": "No – a normal chest CT does **not** necessarily rule out cancer in a patient with hemoptysis."
+    },
+    {
+      "id": "validation_chronic_abdominal_01",
+      "query": "What test does the chronic abdominal pain lecture describe for diagnosing gastroparesis?",
+      "answer": "The lecture states that gastroparesis is diagnosed with a **gastric emptying scan** (a test in which the patient eats radioactive food and the time it takes for the radioactivity to leave the stomach is measured)."
+    },
+    {
+      "id": "validation_fever_01",
+      "query": "What signs of dehydration does the NHS childhood fever video list?",
+      "answer": "The video lists the following signs that a child with fever may be becoming dehydrated:\n\n- **Dry mouth**  \n- **Crying only a few tears or no tears at all**  \n- **Eyes that look sunken**  \n- **A sunken fontanelle (the soft spot on a baby’s head)**  \n- **A general appearance of looking unwell**"
+    },
+    {
+      "id": "validation_cold_flu_01",
+      "query": "What self-care measures for a common cold are described in the cold-versus-flu video?",
+      "answer": "The video recommends the following self‑care measures for a common cold:\n\n1. **Get plenty of rest**  \n2. **Drink plenty of fluids**  \n3. **Use symptomatic relief** – such as ibuprofen or acetaminophen to ease discomfort while the body fights the virus."
+    },
+    {
+      "id": "validation_rash_01",
+      "query": "What signs suggest an infected rash in the adult rash video?",
+      "answer": "Signs that a rash may be infected include:\n\n- Presence of pus or yellow/golden crusts  \n- Pain, swelling, or warmth around the rash  \n- The surrounding skin looks red, purple, or brown  \n- Feeling very hot or cold, and/or having a fever  \n\nThese symptoms suggest the rash has become infected."
+    },
+    {
+      "id": "validation_dandruff_01",
+      "query": "Which active ingredients does the dandruff video suggest looking for in a dandruff shampoo?",
+      "answer": "The video recommends looking for a dandruff shampoo that contains **one of the following active ingredients**:\n\n- Zinc pyrithione  \n- Salicylic acid  \n- Sulfur  \n- Selenium sulfide  \n- Ketoconazole  \n- Coal tar"
+    }
+  ],
+  "reused_smoke": {
+    "report": "data/eval/deepeval_answer_relevance_smoke_v1.json",
+    "report_sha256": "d079708222e089b95799ef2afb7c46267ac99581d907a65650cc554a6b18f36b",
+    "original_runner_sha256": "f78bcfc69b336f7a7accf964702833f679971b9e785f1bcd03d5e879d8e51ba6",
+    "case_ids": [
+      "cough_01",
+      "dandruff_01"
+    ]
+  },
+  "skipped_generation_errors": [
+    {
+      "id": "validation_headache_01",
+      "query": "According to the headache lecture, what does a secondary headache mean?",
+      "status": "skipped_generation_error",
+      "error": {
+        "stage": "generation",
+        "type": "ValueError"
+      }
+    }
+  ],
+  "results": {
+    "cough_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about when a patient with cough should get a chest X-ray, with no irrelevant material.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "According to the lecture, a chest X‑ray is indicated for a patient with cough if the cough is chronic.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "According to the lecture, a chest X‑ray is indicated for a patient with cough if any red‑flag signs of serious pathology are present.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include dyspnea.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (dyspnea) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include hemoptysis.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (hemoptysis) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include chest pain.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (chest pain) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include weight loss.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (weight loss) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include immunosuppression.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (immunosuppression) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include significant smoking history.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (significant smoking history) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include tachypnea.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (tachypnea) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include hypoxemia.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (hypoxemia) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include abnormal cardiac or pulmonary exam.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (abnormal cardiac or pulmonary exam) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        },
+        {
+          "statement": "Red‑flag signs of serious pathology include sepsis.",
+          "verdict": "borderline",
+          "reason": "Lists a red‑flag sign (sepsis) that supports the criteria for ordering a chest X‑ray but does not directly answer the question."
+        }
+      ]
+    },
+    "dandruff_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about dandruff causes and shampooing frequency with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "I don't have enough information in the provided medical sources.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "cough_02": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about cough red flags with no irrelevant content, demonstrating perfect relevance.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The red flags that suggest serious pathology in a patient with cough are:",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Concurrent dyspnea",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Hemoptysis",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Chest pain",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Weight loss",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Immunosuppression",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Significant smoking history",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Elderly age or other risk of aspiration",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Tachypnea",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Hypoxemia",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Abnormal cardiac or pulmonary exam",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Presentation with sepsis",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "cough_03": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about common causes of acute cough with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Upper respiratory infection (common cold) is a common cause of an acute cough.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Post‑viral cough is a common cause of an acute cough.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Acute bronchitis is a common cause of an acute cough.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Pneumonia is a common cause of an acute cough.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "cough_04": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about common causes of chronic cough with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Upper airway cough syndrome (post‑nasal drip) is a common cause of chronic cough.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Cough‑variant asthma (or asthma) is a common cause of chronic cough.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Chronic obstructive pulmonary disease (COPD), especially in smokers, is a common cause of chronic cough.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Laryngopharyngeal reflux / gastro‑esophageal reflux disease (GERD) is a common cause of chronic cough.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "ACE‑inhibitor side effect is a common cause of chronic cough.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "cough_05": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about antibiotic use in acute bronchitis and the exception, with no irrelevant material.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Antibiotics are not usually indicated for acute bronchitis.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Antibiotics may be considered if pertussis is suspected.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "headache_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly and completely answered the question about tension headache location, severity, and sensation with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "According to the lecture, tension headaches are described as follows.",
+          "verdict": "borderline",
+          "reason": "Generic introductory statement that does not provide specific details about location, severity, or sensation."
+        },
+        {
+          "statement": "Tension headaches are usually bilateral and symmetric around the head.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Tension headaches are typically mild to moderate in severity, rarely severe enough to prevent the person from functioning.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "People with tension headaches can still get out of bed, dress, and drive.",
+          "verdict": "borderline",
+          "reason": "Describes functional ability rather than directly stating severity; only indirectly supports severity description."
+        },
+        {
+          "statement": "The sensation of tension headaches is most frequently described as a pressure or tightness, like a band stretched around the head.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "headache_02": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about typical durations of tension headaches and migraines with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Tension headaches typically last 30 minutes to 7 days.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Migraines typically last 4 hours to 3 days.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "headache_03": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about migraine aura visual disturbances with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The lecture lists the following visual disturbances that can occur during a migraine aura.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Flashes of light (photopsia).",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Colored jagged lines in the vision (fortification spectra).",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Scintillating scotoma.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Unusually shaped, shimmering regions of decreased acuity.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "headache_04": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about thunderclap headache onset with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "A thunderclap headache is one in which the pain reaches its maximum intensity within seconds of the headache’s onset.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "headache_05": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about when headaches associated with obstructive sleep apnea occur, with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Headaches linked to obstructive sleep apnea typically appear when the patient wakes up in the morning.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "dyspnea_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about the recommended minimum objective assessment for acute dyspnea with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The lecture recommends that the first objective assessment for any patient with acute dyspnea includes vital signs (heart rate, blood pressure, respiratory rate, oxygen saturation, temperature).",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "The first objective assessment includes a thorough physical exam focusing on the cardiac, pulmonary, and extremity systems.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "The first objective assessment includes a chest X‑ray if available.",
+          "verdict": "borderline",
+          "reason": "Chest X‑ray may be optional and not part of the minimal initial assessment, making its relevance ambiguous."
+        },
+        {
+          "statement": "These steps constitute the minimum objective work‑up that should be performed initially.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "dyspnea_02": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about oxygen saturation and serious causes of shortness of breath with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The lecture stresses that a normal oxygen saturation does not rule out serious causes of shortness of breath.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Even life‑threatening conditions such as pulmonary embolism, myocardial infarction, tamponade, or pneumothorax can present with a normal O₂ sat.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Clinicians should not dismiss these diagnoses based solely on saturation.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "acute_abdominal_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about the classic onset and migration of appendicitis pain with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Appendicitis pain classically starts in the periumbilical (around the navel) area.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "It then migrates to the right lower quadrant as the inflammation progresses.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "acute_abdominal_02": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about the posture that relieves pancreatitis pain with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Sitting up and leaning forward.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "chronic_abdominal_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question with no irrelevant statements, fully meeting the query.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Chronic abdominal pain is defined as pain that has been present for at least two months.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "It includes recurrent episodic pain that has occurred over that time period.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "hemoptysis_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about common causes of hemoptysis in developed countries with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The lecture states that in developed countries the most common causes of hemoptysis are acute bronchitis, bronchiectasis, and lung cancer.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Acute bronchitis is a common cause of hemoptysis in developed countries.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Bronchiectasis is a common cause of hemoptysis in developed countries.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Lung cancer, including both primary lung cancer and metastatic disease to the lung, is a common cause of hemoptysis in developed countries.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "fever_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about the fever temperature from the NHS video with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "A fever is defined as a temperature of 38 °C (centigrade) or higher.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "cold_flu_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about how flu symptoms differ from a cold with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Influenza typically produces more systemic symptoms.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "These systemic symptoms include fever, body aches, and pains.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "A common cold usually presents with local upper-airway symptoms.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "These local symptoms include a runny nose, sore throat, and sometimes a cough.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "rash_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about emergency symptoms with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "According to the adult rash video, you should seek emergency medical care if a rash is accompanied by trouble breathing or swallowing.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "According to the adult rash video, you should seek emergency medical care if a rash is accompanied by swelling of the eyes and/or lips.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "These symptoms indicate that the rash may be part of a serious condition requiring urgent attention.",
+          "verdict": "borderline",
+          "reason": "The statement is generic and does not specify which symptoms require emergency care, only that symptoms indicate seriousness, so it is only supporting information."
+        }
+      ]
+    },
+    "validation_cough_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about the medication-class switch for a suspected ACE inhibitor cough with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Switch the patient from an ACE inhibitor to an angiotensin‑receptor blocker (ARB).",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "validation_dyspnea_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about respiratory compensation for metabolic acidosis with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Respiratory compensation in metabolic acidosis is a reflex.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "The reflex increases ventilation (respiratory drive).",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Increased ventilation blows off CO₂.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Blowing off CO₂ lowers arterial CO₂ below normal.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Lowering arterial CO₂ partially corrects the lowered pH.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "validation_acute_abdominal_01": {
+      "status": "evaluated",
+      "score": 0.0,
+      "reason": "The score is 0.00 because the response failed to provide the requested physical examination finding for Murphy's sign and only claimed insufficient information, making it completely irrelevant to the question.",
+      "passed": false,
+      "statement_verdicts": [
+        {
+          "statement": "I don't have enough information in the provided medical sources.",
+          "verdict": "no",
+          "reason": "The statement does not provide the requested physical examination finding for Murphy's sign; it only claims insufficient information."
+        }
+      ]
+    },
+    "validation_hemoptysis_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about chest CT and cancer without any irrelevant material.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "A normal chest CT does not necessarily rule out cancer in a patient with hemoptysis.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "validation_chronic_abdominal_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about the test for diagnosing gastroparesis with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The lecture states that gastroparesis is diagnosed with a gastric emptying scan.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Gastroparesis is diagnosed with a gastric emptying scan.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "The test involves the patient eating radioactive food and measuring the time it takes for the radioactivity to leave the stomach.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "validation_fever_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about dehydration signs from the NHS childhood fever video with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The video lists the following signs that a child with fever may be becoming dehydrated.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Dry mouth.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Crying only a few tears or no tears at all.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Eyes that look sunken.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "A sunken fontanelle (the soft spot on a baby’s head).",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "A general appearance of looking unwell.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "validation_cold_flu_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about self‑care measures from the cold‑versus‑flu video with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The video recommends the following self‑care measures for a common cold.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Get plenty of rest.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Drink plenty of fluids.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Use symptomatic relief such as ibuprofen or acetaminophen to ease discomfort while the body fights the virus.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "validation_rash_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about signs of an infected rash with no irrelevant content, demonstrating perfect relevance.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "Presence of pus or yellow/golden crusts may indicate infection.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Pain, swelling, or warmth around the rash may indicate infection.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "The surrounding skin looks red, purple, or brown may indicate infection.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Feeling very hot or cold, and/or having a fever may indicate infection.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "These symptoms suggest the rash has become infected.",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    },
+    "validation_dandruff_01": {
+      "status": "evaluated",
+      "score": 1.0,
+      "reason": "The score is 1.00 because the response directly answered the question about the active ingredients suggested in the dandruff video, with no irrelevant content.",
+      "passed": true,
+      "statement_verdicts": [
+        {
+          "statement": "The video recommends looking for a dandruff shampoo that contains one of the following active ingredients.",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Zinc pyrithione",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Salicylic acid",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Sulfur",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Selenium sulfide",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Ketoconazole",
+          "verdict": "yes",
+          "reason": null
+        },
+        {
+          "statement": "Coal tar",
+          "verdict": "yes",
+          "reason": null
+        }
+      ]
+    }
+  },
+  "review_status": "automated_unreviewed",
+  "run_status": "completed",
+  "summary": {
+    "pilot": {
+      "selected": 20,
+      "eligible": 20,
+      "evaluated": 20,
+      "skipped_generation_errors": 0,
+      "errors": 0,
+      "pending": 0,
+      "mean_score": 1.0
+    },
+    "validation": {
+      "selected": 10,
+      "eligible": 9,
+      "evaluated": 9,
+      "skipped_generation_errors": 1,
+      "errors": 0,
+      "pending": 0,
+      "mean_score": 0.8888888888888888
+    }
+  },
+  "updated_at_utc": "2026-10-23T09:09:25.075288+00:00",
+  "retry_history": [
+    {
+      "case_id": "cough_05",
+      "previous_result": {
+        "status": "evaluation_error",
+        "error_type": "RateLimitError",
+        "detail": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `[redacted]` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199581, Requested 863. Please try again in 3m11.808s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "retry_after": "192"
+      },
+      "recorded_at_utc": "2026-10-22T15:34:44.542549+00:00",
+      "checkpoint_sha256": "b810b60a1dcaa46ea35310300946c33fead4593ae602e11f1c96964f96015b5e"
+    }
+  ]
+}
