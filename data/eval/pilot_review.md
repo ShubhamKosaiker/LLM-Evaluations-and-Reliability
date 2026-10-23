@@ -117,3 +117,19 @@ Report: data/eval/deepeval_answer_relevance_baseline_v1.json
 - Both smoke results were reused unchanged. The daily-token-limit
   interruption is retained in retry_history.
 - These are automated observations, not verified accuracy.
+
+## Contextual precision and recall smoke (2026-10-23)
+
+Report: data/eval/deepeval_contextual_quality_smoke_v1.json
+
+- Two cases completed across two metrics: four evaluations, no errors.
+- cough_01: contextual precision 1.0; contextual recall 1.0.
+- validation_acute_abdominal_01: both metrics scored 0.0.
+- Score calculations and precision passage mappings were checked.
+- The first cough passage lists red flags but does not explicitly state
+  the X-ray indication. The judge inferred that connection.
+  Preserve the automated precision score; its relevance judgment
+  remains open to review.
+- Recall assessed one reference sentence per case.
+- References remain draft_assistant_reviewed. This two-case smoke test
+  does not establish evaluator accuracy or dataset-wide performance.

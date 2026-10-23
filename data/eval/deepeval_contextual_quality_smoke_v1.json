@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "run_type": "contextual_quality_smoke",
+  "source_sha256": {
+    "data/eval/rag_baseline_pilot.json": "8b692cb5ae74bb1e08f510b7090cfcfc076f7c491e4edd02b12bcf35d0bedf96",
+    "data/eval/retrieval_goldens.json": "e641c8bbb6a9621a4ab413e18c8bc6a5a84cf088eee2192e4284250317f3824a",
+    "data/eval/rag_baseline_validation.json": "c17935a703699cbc7bb85ab6b087944c08f545e1dc79c039f69e2bef93fa39dd",
+    "data/eval/retrieval_validation_goldens.json": "d83ba72a79a52f7f1996bc47b5c9a8ec15aa81404fdf3930e2f8c190c720e4ec"
+  },
+  "runner_sha256": "634059c717a5f8eddc38929dfd24b01aa9010aba64bd9d2a1f4d2a8b8441533b",
+  "adapter_sha256": "b05b99f8ad2ed2b851adc9536634e2363b93a11e30e13c6b8384a7bee7659235",
+  "configuration": {
+    "metrics": [
+      "ContextualPrecisionMetric",
+      "ContextualRecallMetric"
+    ],
+    "model": "openai/gpt-oss-120b",
+    "threshold": 0.7,
+    "threshold_status": "provisional_not_a_validated_quality_gate",
+    "eval_mode": "llm",
+    "async_mode": false,
+    "strict_mode": false,
+    "include_reason": true,
+    "request_interval_seconds": 60
+  },
+  "package_versions": {
+    "deepeval": "4.2.8",
+    "groq": "1.7.0",
+    "pydantic": "2.14.0"
+  },
+  "selected_case_ids": [
+    "cough_01",
+    "validation_acute_abdominal_01"
+  ],
+  "cases": [
+    {
+      "id": "cough_01",
+      "query": "According to the cough lecture, when should a patient with cough have a chest X-ray?",
+      "contexts": [
+        "What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis. If an X-ray is ordered and found to be abnormal, it should of course be further worked up as indicated. Abnormalities that might be seen include focal alveolar opacifications consistent with pneumonia or aspiration, diffuse interstitial opacities consistent with ILD, hyperinflation and flattening of the diaphragms consistent with COPD, or lung nodule or masses consistent with cancer. For most patients presenting with a cough, particularly most patients with a chronic cough, the chest X-ray will be unremarkable. This will make serious pathology relatively unlikely, not impossible, just unlikely, and even if it's not likely to be serious, it's still important to diagnose correctly. So, work up any other symptoms and signs if they are present, and otherwise consider etiologies listed in this box to the right. Some etiologies that would be placed in this box do have confirmatory diagnostic tests, but in practice, unless otherwise specified, most doctors often instead to recommend a diagnostic trial of empiric treatment for the most likely diagnoses based on the clinically present factors. This is because the empiric treatments in question are usually benign, and the confirmatory diagnostic tests are either cumbersome, expensive, or have suboptimal positive and negative predictive values.",
+        "The most common etiologies of an acute cough are an upper respiratory infection, post-viral cough, acute bronchitis, and pneumonia. The most common etiologies of a chronic cough are upper airway cough syndrome, colloquially known as postnasal drip, cough variant asthma, COPD, laryngopharyngeal reflux / GERD, and an ACE inhibitor side effect. There's a lack of consensus regarding the naming and categorization of many cough ideologies. Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology. If serious pathology is felt to be unlikely, empiric treatment of the most probable diagnosis is an acceptable alternative to cumbersome, costly, insensitive, or non-specific diagnostic testing.",
+        "laryngopharyngeal reflux {slash} GERD, ACE inhibitors, and among smokers, COPD. So next, how do we evaluate a patient presenting with cough? First, consider what's relevant in the history, the duration and timing of the cough. One of the most common characteristics used in describing a cough is productive versus non-productive of phlegm. You should inquire as to the presence of other symptoms, particularly fever, dyspnea, chest pain, hemoptysis, heartburn, rhinorrhea, nasal congestion, and weight loss. Ask the patient about a history of chronic lung disease, immunosuppression, smoking, and use of an ACE inhibitor. Beyond the history, obviously assess the vitals. H E E N T and pulmonary exams will obviously be relevant, as well cardiac auscultation and assessment of the JVP. Lab tests are usually not helpful in most causes of a cough, particularly a chronic one, but consider checking a CBC if any form of infection is being considered. And last, consider a chest x-ray. With all this information, we enter the diagnostic algorithm with an initial question of whether or not to order an x-ray. Ordering an x-ray in a patient presenting with a cough depends on two very general factors. Is the cough chronic, and are there any red flags for serious pathology present? If yes to either of these, a chest x-ray is warranted. What are the red flags in a patient with cough? Well, concurrent dyspnea, hemoptysis, chest pain, weight loss, immunosuppression, a significant smoking history, if the patient is elderly or otherwise at risk of aspiration, if they have tachypnea, hypoxemia, and or an abnormal cardiac or pulmonary exam, or if they are presenting with sepsis."
+      ],
+      "retrieved_ids": [
+        "LDMEtNXik-A_5",
+        "LDMEtNXik-A_9",
+        "LDMEtNXik-A_4"
+      ],
+      "reference_answer": "A chronic cough or any red flag for serious pathology warrants a chest X-ray.",
+      "reference_evidence": [
+        {
+          "chunk_id": "LDMEtNXik-A_4",
+          "text_excerpt": "If yes to either of these, a chest x-ray is warranted."
+        },
+        {
+          "chunk_id": "LDMEtNXik-A_9",
+          "text_excerpt": "Patients presenting with a cough should have a chest x-ray if either the cough is chronic"
+        }
+      ],
+      "reference_status": "draft_assistant_reviewed",
+      "hypothesis": "Reference facts are present; expect high recall."
+    },
+    {
+      "id": "validation_acute_abdominal_01",
+      "query": "According to the acute abdominal pain lecture, what physical examination finding is called Murphy's sign?",
+      "contexts": [
+        "accompanied by a constellation of flushing diarrhea rhinorrhea bronchoconstriction presyncope and hypotension that's highly suggestive of a mast cell disorder which can be diagnosed by comparing a baseline serum tryptase with one drawn shortly after onset of an episode so that's an overview of the etiologies and evaluation of chronic abdominal pain it's not going to explain every single patient presentation but it hopefully gives you a place to start one final point to make many cases of chronic abdominal pain start with a presentation of acute abdominal pain in other words the first one or two or more episodes of an eventually chronic disease are already severe enough to bring a patient in to seek medical attention unfortunately because there is so little overlap between the etiologies of chronic abdominal pain and the classically taught etiologies of acute abdominal pain most of these will be misdiagnosed sometimes it's because clinicians make a legitimate preventable mistake sometimes it's because the clinician wasn't taught the actual etiology during training because as i mentioned before many causes of chronic pain are underemphasized in school but i think that most often these diagnoses are just hard to make until there has been a sufficient amount of time to have elapsed before a pattern to the pain becomes evident or for additional symptoms to have developed this is a large part of the frustration with chronic abdominal pain that both clinicians and patients have like but you know i think the take-home message is that for any patients watching this if the cause of your pain hasn't been figured out yet you know don't despair or give up just because you haven't gotten a diagnosis yet doesn't mean that the correct diagnosis is not forthcoming the key takeaway points of the video common etiologies of chronic abdominal pain that are in the gi system include gastritis peptic ulcer disease constipation and ibs and those in the female reproductive",
+        "don't despair or give up just because you haven't gotten a diagnosis yet doesn't mean that the correct diagnosis is not forthcoming the key takeaway points of the video common etiologies of chronic abdominal pain that are in the gi system include gastritis peptic ulcer disease constipation and ibs and those in the female reproductive system include endometriosis ovarian cysts menstrual cramps and ovulation pain the history is the most important part of the evaluation but most patients will also receive ct and or ultrasound plus egd and or colonoscopy among patients lacking a diagnosis after routine labs imaging and endoscopy the history and rarely the exam will provide clues for additional specialized testing and last most patients with chronic abdominal pain will start with one or more presentations to the healthcare system for acute abdominal pain which will often be misdiagnosed until the chronicity pattern of episodes and associated symptoms are more clearly established that's it for this video on an approach to chronic abdominal pain consider checking out the accompanying video on an approach to acute abdominal pain and consider subscribing for more videos on a variety of medical topics",
+        "but less discussed findings such as Rob Zing's so s and obturator signs patients are often febrile and once again peritoneal signs suggest perforation significant labs in Penta situs include high white counts and an elevated CRP while an elevated CRP would be expected in some other abdominal diseases such as peritonitis and acute cholecystitis for some reason it's more discussed as a feature of appendicitis specifically there is also a clinical prediction rule called the Alvarado score which assigns points to various historical exam and lab features to give an overall probability of the diagnosis any patient with suspected appendicitis should undergo imaging which can be either CT or ultrasound the choice of which is institution clinician and situation dependent and then there is pancreatitis in which patients present with epigastric pain radiating to the back that's exacerbated by eating and relieved by sitting up and leaning forward it's usually associated with nausea and vomiting this mia is a more commonly associated symptom in pancreatitis than with the other diagnoses in this chart risk factors or ideologies for pancreatitis include alcohol and gall stones which together account for the majority of cases less common causes include ERCP hypertriglyceridemia and a variety of medications on exam severe cases can present with shock and parry umbilical or flank ecchymosis suggests hemorrhage secondary to pancreatic necrosis a particularly worrisome sign the most notable abnormal lab is in very elevated lipase typically more than three times the upper limit of normal while a CT scan is not considered necessary for the diagnosis it can assess for complications and help identify gall stones in the pancreatic duct as a potential causative factor now let's run through the illness scripts of four particularly important causes of right upper quadrant pain biliary colic acute cholecystitis acute cholangitis and acute hepatitis in biliary colic caused by gall stones within the gallbladder the pain is typically episodic lasting 30 minutes to"
+      ],
+      "retrieved_ids": [
+        "qfVHJQu-dfw_13",
+        "qfVHJQu-dfw_14",
+        "_PDOXlVGeuY_8"
+      ],
+      "reference_answer": "Increased right upper quadrant tenderness during inspiration as the diaphragm pushes the liver and gallbladder into the examiner's stationary hands.",
+      "reference_evidence": [
+        {
+          "chunk_id": "_PDOXlVGeuY_9",
+          "text_excerpt": "an increase in right upper quadrant tenderness on inspiration when the diaphragm descends pushing the liver and gallbladder into the examiners stationary hands this is known as Murphy's sign"
+        }
+      ],
+      "reference_status": "draft_assistant_reviewed",
+      "hypothesis": "Requested definition is absent; expect low recall and precision."
+    }
+  ],
+  "results": {
+    "cough_01": {
+      "contextual_precision": {
+        "status": "evaluated",
+        "score": 1.0,
+        "reason": "The score is 1.00 because the top three nodes are all relevant: node 1 states \"The passage states that \\\"for most patients presenting with a cough, particularly most patients with a chronic cough\\\" and discusses red flags, indicating that a chronic cough or red‑flag symptoms warrant a chest X‑ray.\", node 2 says \"It explicitly says \\\"Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology,\\\" directly matching the expected answer.\", and node 3 notes \"The text notes that ordering an X‑ray depends on \\\"Is the cough chronic, and are there any red flags for serious pathology present? If yes to either of these, a chest x-ray is warranted,\\\" which aligns with the required output. No irrelevant nodes appear, giving perfect contextual precision.",
+        "passed": true,
+        "verdicts": [
+          {
+            "verdict": "yes",
+            "reason": "The passage states that \"for most patients presenting with a cough, particularly most patients with a chronic cough\" and discusses red flags, indicating that a chronic cough or red‑flag symptoms warrant a chest X‑ray.",
+            "rank": 1,
+            "context_id": "LDMEtNXik-A_5"
+          },
+          {
+            "verdict": "yes",
+            "reason": "It explicitly says \"Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology,\" directly matching the expected answer.",
+            "rank": 2,
+            "context_id": "LDMEtNXik-A_9"
+          },
+          {
+            "verdict": "yes",
+            "reason": "The text notes that ordering an X‑ray depends on \"Is the cough chronic, and are there any red flags for serious pathology present? If yes to either of these, a chest x-ray is warranted,\" which aligns with the required output.",
+            "rank": 3,
+            "context_id": "LDMEtNXik-A_4"
+          }
+        ]
+      },
+      "contextual_recall": {
+        "status": "evaluated",
+        "score": 1.0,
+        "reason": "The score is 1.00 because sentence 1 is directly supported by node 2 in the retrieval context, which explicitly states that a chronic cough or red‑flag symptoms warrant a chest X‑ray.",
+        "passed": true,
+        "verdicts": [
+          {
+            "verdict": "yes",
+            "reason": "2nd node: \"Patients presenting with a cough should have a chest x-ray if either the cough is chronic or if it's associated with a red flag for serious pathology...\"",
+            "verdict_index": 1
+          }
+        ]
+      }
+    },
+    "validation_acute_abdominal_01": {
+      "contextual_precision": {
+        "status": "evaluated",
+        "score": 0,
+        "reason": "The score is 0.00 because the top‑ranked nodes are all irrelevant: node 1's reason says \"The first document discusses chronic abdominal pain, mast cell disorders, and general etiologies, with no mention of Murphy's sign, right upper quadrant tenderness, or gallbladder examination.\", node 2's reason says \"The second document also focuses on chronic abdominal pain, diagnostic work‑up, and general gastrointestinal conditions, without referencing Murphy's sign or the specific physical finding described.\", and node 3's reason says \"The third document mentions \\\"right upper quadrant pain\\\" and conditions like biliary colic and acute cholecystitis, but it does not describe the physical examination maneuver known as Murphy's sign (increased RUQ tenderness on inspiration).\" Since none of the retrieved nodes contain the requested information, the contextual precision cannot be higher.",
+        "passed": false,
+        "verdicts": [
+          {
+            "verdict": "no",
+            "reason": "The first document discusses chronic abdominal pain, mast cell disorders, and general etiologies, with no mention of Murphy's sign, right upper quadrant tenderness, or gallbladder examination.",
+            "rank": 1,
+            "context_id": "qfVHJQu-dfw_13"
+          },
+          {
+            "verdict": "no",
+            "reason": "The second document also focuses on chronic abdominal pain, diagnostic work‑up, and general gastrointestinal conditions, without referencing Murphy's sign or the specific physical finding described.",
+            "rank": 2,
+            "context_id": "qfVHJQu-dfw_14"
+          },
+          {
+            "verdict": "no",
+            "reason": "The third document mentions \"right upper quadrant pain\" and conditions like biliary colic and acute cholecystitis, but it does not describe the physical examination maneuver known as Murphy's sign (increased RUQ tenderness on inspiration).",
+            "rank": 3,
+            "context_id": "_PDOXlVGeuY_8"
+          }
+        ]
+      },
+      "contextual_recall": {
+        "status": "evaluated",
+        "score": 0.0,
+        "reason": "The score is 0.00 because the sole sentence (sentence 1) about inspiration‑related right upper quadrant tenderness and diaphragm pressure on the liver/gallbladder cannot be linked to any node in retrieval context (nodes 1‑3 lack any mention of inspiration or diaphragm effects).",
+        "passed": false,
+        "verdicts": [
+          {
+            "verdict": "no",
+            "reason": "None of the 3 retrieval nodes mention inspiration‑related right upper quadrant tenderness or diaphragm pressure on liver/gallbladder (e.g., node 3 only notes right upper quadrant pain).",
+            "verdict_index": 1
+          }
+        ]
+      }
+    }
+  },
+  "review_status": "automated_unreviewed",
+  "run_status": "completed",
+  "summary": {
+    "selected_cases": 2,
+    "metric_evaluations": 4,
+    "evaluated": 4,
+    "errors": 0,
+    "pending": 0
+  },
+  "updated_at_utc": "2026-10-23T10:12:57.469954+00:00"
+}
