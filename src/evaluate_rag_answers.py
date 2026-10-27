@@ -496,5 +496,237 @@ def main():
     print(f'Saved: {args.output}')
 
 
+APPLICATION_VERSION = 'application_smoke_v1'
+APPLICATION_IDS = ['cough_05', 'dyspnea_01', 'dandruff_01']
+APPLICATION_RUBRIC = COMMON_RULES + '''
+Assess completeness and clarity independently. Use only the question, answer,
+draft reference and reference evidence. Do not assume the reference is exhaustive.
+Completeness: complete = all requested essential facts are included with their
+conditions, negations and exceptions preserved; partial = some essential facts
+are answered but others are missing or materially changed; missing = no requested
+facts are answered. Naming an assessment but making it optional can materially
+change the answer. Harmless paraphrases are acceptable. Identify specific issues.
+Clarity: clear = direct, understandable and organised; needs_improvement = still
+understandable but unnecessarily confusing, repetitive or poorly organised;
+unclear = difficult to understand. Do not reduce clarity because an answer is
+incorrect or a refusal. A clear refusal can be missing the entire requested answer.
+Identify whether the answer refuses to supply the requested information.
+Do not judge refusal appropriateness here: retrieved passages are not supplied.
+Return exactly this JSON schema:
+{"completeness":"complete|partial|missing","completeness_reason":"explanation",
+"missing_or_altered_facts":["specific issue, if any"],
+"clarity":"clear|needs_improvement|unclear","clarity_reason":"explanation",
+"is_refusal":true or false,"review_needed":true or false}
+'''
+APPLICATION_REFUSAL_RUBRIC = COMMON_RULES + '''
+Assess a refusal ONLY against the question and retrieved_passages. Do not use
+outside knowledge. A topic match alone does not make context sufficient.
+context_sufficient=true only when the passages support all essential requested
+facts. For this conservative source-only assistant, refusal_appropriate is the
+inverse of context_sufficient. This assesses the generator's decision with the
+supplied context, not whether retrieval or the overall application succeeded.
+Return exactly:
+{"context_sufficient":true or false,"refusal_appropriate":true or false,
+"reason":"specific explanation of available or missing evidence",
+"review_needed":true or false}
+'''
+
+
+def validate_application(data, answer):
+    fields = {'completeness', 'completeness_reason', 'missing_or_altered_facts',
+              'clarity', 'clarity_reason', 'is_refusal', 'review_needed'}
+    if not isinstance(data, dict) or set(data) != fields:
+        raise ValueError('Application judgment has missing or unexpected fields')
+    if data['completeness'] not in {'complete', 'partial', 'missing'}:
+        raise ValueError('Invalid completeness label')
+    if data['clarity'] not in {'clear', 'needs_improvement', 'unclear'}:
+        raise ValueError('Invalid clarity label')
+    for key in ['completeness_reason', 'clarity_reason']:
+        if not isinstance(data[key], str) or not data[key].strip():
+            raise ValueError('Missing application explanation')
+    for key in ['is_refusal', 'review_needed']:
+        if type(data[key]) is not bool:
+            raise ValueError('Invalid application boolean')
+    issues = data['missing_or_altered_facts']
+    if not isinstance(issues, list) or not all(isinstance(x, str) and x.strip() for x in issues):
+        raise ValueError('Invalid application issue list')
+    if (data['completeness'] == 'complete') != (not issues):
+        raise ValueError('Completeness and issue list disagree')
+    if normalized(answer) == normalized(REFUSAL_TEXT) and not data['is_refusal']:
+        raise ValueError('Configured refusal was not recognized')
+    if data['is_refusal'] and data['completeness'] != 'missing':
+        raise ValueError('Refusal must not count as a completed answer')
+    return data
+
+
+def validate_application_refusal(data):
+    if not isinstance(data, dict) or set(data) != {
+            'context_sufficient', 'refusal_appropriate', 'reason', 'review_needed'}:
+        raise ValueError('Invalid refusal judgment fields')
+    for key in ['context_sufficient', 'refusal_appropriate', 'review_needed']:
+        if type(data[key]) is not bool:
+            raise ValueError('Invalid refusal boolean')
+    if data['context_sufficient'] == data['refusal_appropriate']:
+        raise ValueError('Refusal appropriateness conflicts with sufficiency')
+    if not isinstance(data['reason'], str) or not data['reason'].strip():
+        raise ValueError('Missing refusal explanation')
+    return data
+
+
+def application_call(client, rubric, payload, row, stage, checkpoint, pacer):
+    pacer.wait()
+    response = client.chat.completions.create(
+        model=JUDGE_MODEL, temperature=0, reasoning_effort='low',
+        max_completion_tokens=2048, response_format={'type': 'json_object'},
+        messages=[{'role': 'system', 'content': rubric},
+                  {'role': 'user', 'content': json.dumps(payload, ensure_ascii=False)}])
+    content = response.choices[0].message.content
+    row['judge_outputs'][stage] = {
+        'content': content, 'finish_reason': response.choices[0].finish_reason,
+        'response_model': response.model,
+        'usage': response.usage.model_dump() if response.usage is not None else None}
+    checkpoint()
+    if response.choices[0].finish_reason != 'stop' or not isinstance(content, str) or not content.strip():
+        raise ValueError('Application judge output empty or incomplete')
+    return json.loads(content)
+
+
+def evaluate_application_case(case, row, client, checkpoint, pacer):
+    # Isolate draft references from the separate retrieved-context refusal check.
+    if 'quality' not in row:
+        row['quality'] = validate_application(application_call(
+            client, APPLICATION_RUBRIC, {
+                'question': case['query'], 'answer': case['answer'],
+                'draft_reference_answer': case['reference_answer'],
+                'reference_evidence': case['reference_evidence']},
+            row, 'quality', checkpoint, pacer), case['answer'])
+        checkpoint()
+    if row['quality']['is_refusal']:
+        if 'refusal' not in row:
+            row['refusal'] = validate_application_refusal(application_call(
+                client, APPLICATION_REFUSAL_RUBRIC, {
+                    'question': case['query'], 'answer': case['answer'],
+                    'retrieved_passages': [{'id': cid, 'text': text} for cid, text in
+                                          zip(case['retrieved_ids'], case['contexts'])]},
+                row, 'refusal', checkpoint, pacer))
+    else:
+        row['refusal'] = None
+    row['status'] = 'evaluated'
+    checkpoint()
+
+
+def application_main():
+    parser = argparse.ArgumentParser(description='Three-case application evaluation of preserved answers.')
+    parser.add_argument('--application-smoke', action='store_true', required=True)
+    parser.add_argument('--preview', action='store_true')
+    parser.add_argument('--resume', action='store_true')
+    parser.add_argument('--max-cases', type=int, default=3)
+    parser.add_argument('--request-interval', type=float, default=60)
+    parser.add_argument('--output', type=Path, default=Path('data/eval/application_quality_smoke_v1.json'))
+    args = parser.parse_args()
+    if args.max_cases < 1 or not 0 <= args.request_interval < float('inf'):
+        parser.error('Use positive --max-cases and finite nonnegative --request-interval')
+    source_path = Path('data/eval/rag_baseline_pilot.json')
+    source, source_hash = load_report(source_path)
+    by_id = {c['id']: c for c in source['cases']}
+    cases = [by_id[cid] for cid in APPLICATION_IDS]
+    if any(c['status'] != 'success' or not c.get('reference_evidence') for c in cases):
+        raise ValueError('Smoke cases require saved answers and reference evidence')
+    identity = {
+        'run_type': 'application_quality_smoke', 'rubric_version': APPLICATION_VERSION,
+        'input_report_sha256': source_hash,
+        'evaluator_source_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'rubrics': {'quality': APPLICATION_RUBRIC, 'refusal': APPLICATION_REFUSAL_RUBRIC},
+        'judge_configuration': {'model': JUDGE_MODEL, 'temperature': 0,
+            'reasoning_effort': 'low', 'max_completion_tokens': 2048, 'max_retries': 0},
+        'cases': cases}
+    report = {**identity, 'results': {}, 'run_status': 'prepared',
+              'review_status': 'proposed_labels_awaiting_human_review',
+              'limitations': ['Three development examples are not evaluator accuracy.',
+                  'Draft references may omit facts or contain errors.',
+                  'Generator and judge share the GPT-OSS model family.',
+                  'Refusal appropriateness is relative to retrieved context, not overall success.']}
+    if args.output.exists():
+        if not args.resume:
+            raise FileExistsError('Output exists; use --resume with unchanged code and inputs')
+        report = json.loads(args.output.read_text(encoding='utf-8'))
+        if any(report.get(k) != v for k, v in identity.items()):
+            raise ValueError('Resume requires identical source, code, rubric and judge configuration')
+        if set(report['results']) - set(APPLICATION_IDS):
+            raise ValueError('Unexpected saved application case')
+        for cid, row in report['results'].items():
+            if row['status'] not in {'evaluated', 'in_progress'}:
+                raise ValueError('Prior judge error needs review; no automatic retry')
+            if 'quality' in row:
+                validate_application(row['quality'], by_id[cid]['answer'])
+            if row['status'] == 'evaluated':
+                if row.get('quality') is None or 'refusal' not in row:
+                    raise ValueError('Incomplete saved application judgment')
+                if row['quality']['is_refusal']:
+                    validate_application_refusal(row['refusal'])
+                elif row['refusal'] is not None:
+                    raise ValueError('Non-refusal has a refusal judgment')
+    elif args.resume:
+        raise FileNotFoundError('--resume requires an existing report')
+    pending = [c for c in cases if report['results'].get(c['id'], {}).get('status') != 'evaluated']
+    print('Application smoke: completeness, clarity and context-relative refusal.')
+    print(f'Selected: 3; completed: {3 - len(pending)}; pending: {len(pending)}')
+    for c in cases:
+        print(f"{c['id']}: {c['query']}")
+    print('Output:', args.output)
+    if args.preview:
+        print('PREVIEW: no judge client, API calls or report writes.')
+        return
+    if not pending:
+        print('Already completed; no API calls.')
+        return
+    from dotenv import load_dotenv
+    from groq import Groq
+    load_dotenv(Path('.env'))
+    client = Groq(api_key=os.environ['GROQ_API_KEY'], max_retries=0)
+    if not args.output.exists():
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        with args.output.open('x', encoding='utf-8'):
+            pass
+    def checkpoint():
+        report['updated_at_utc'] = datetime.now(timezone.utc).isoformat()
+        save_report(args.output, report)
+    report['run_status'] = 'in_progress'
+    report.setdefault('runs', []).append({'request_interval_seconds': args.request_interval,
+        'max_cases': args.max_cases, 'started_at_utc': datetime.now(timezone.utc).isoformat()})
+    checkpoint()
+    pacer = RequestPacer(args.request_interval)
+    try:
+        for case in pending[:args.max_cases]:
+            row = report['results'].setdefault(case['id'], {'status': 'in_progress', 'judge_outputs': {}})
+            evaluate_application_case(case, row, client, checkpoint, pacer)
+            print(f"{case['id']}: {row['quality']['completeness']}; clarity={row['quality']['clarity']}", flush=True)
+            print('  Why:', row['quality']['completeness_reason'])
+            print('  Clarity:', row['quality']['clarity_reason'])
+            if row['refusal'] is not None:
+                print('  Refusal appropriate:', row['refusal']['refusal_appropriate'])
+                print('  Why:', row['refusal']['reason'])
+        report['run_status'] = ('completed' if all(r.get('status') == 'evaluated'
+            for r in report['results'].values()) and len(report['results']) == 3 else 'paused_batch_limit')
+    except KeyboardInterrupt:
+        report['run_status'] = 'paused_user'
+    except Exception as exc:
+        row['status'] = 'evaluation_error'
+        row['error'] = {'type': type(exc).__name__}
+        if isinstance(exc, ValueError):
+            row['error']['detail'] = str(exc)
+        report['run_status'] = 'stopped_evaluation_error'
+        print('EVALUATION ERROR:', row['error'])
+    finally:
+        checkpoint()
+    print('Run status:', report['run_status'])
+    print('Automated judgments require review. Saved:', args.output)
+
+
 if __name__ == '__main__':
-    main()
+    import sys
+    if '--application-smoke' in sys.argv:
+        application_main()
+    else:
+        main()
+

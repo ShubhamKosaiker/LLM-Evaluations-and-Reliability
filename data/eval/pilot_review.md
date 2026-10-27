@@ -152,3 +152,18 @@ Report: data/eval/deepeval_contextual_quality_baseline_v1.json
   to be a reference-fragmentation/grading artifact requiring review.
 - Preserve automated scores. Draft references and judge limitations
   prevent interpreting these results as verified accuracy.
+
+## Application quality smoke evaluation
+
+Report: data/eval/application_quality_smoke_v1.json
+
+- Completed three saved-answer evaluations.
+- cough_05: complete and clear, matching the proposed review labels.
+- dyspnea_01: judged complete and clear, but missed the qualification
+  "chest X-ray (if available)". Proposed review label remains partial:
+  the source applies availability to heart ultrasound, not chest X-ray.
+- dandruff_01: missing answer and clear refusal. Refusal was appropriate
+  given unrelated retrieved passages; the overall system still failed.
+- The file-access interruption and recovery are retained in the report.
+- Preserve automated results. This smoke test exposed a qualifier-checking
+  limitation and does not establish evaluator accuracy.
