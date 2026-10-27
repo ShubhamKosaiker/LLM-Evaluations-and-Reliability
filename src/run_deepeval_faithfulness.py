@@ -13,6 +13,7 @@ import hashlib
 import json
 import math
 import re
+from types import SimpleNamespace
 from importlib.metadata import version
 from datetime import datetime, timezone
 from pathlib import Path
@@ -766,12 +767,23 @@ CONTEXTUAL_QUALITY_SELECTION = (
 )
 
 
-def contextual_quality_cases():
+def contextual_quality_cases(full=False):
     """Reuse saved passages and matching draft reference annotations."""
     cases = []
-    for saved_path, golden_path, cid in CONTEXTUAL_QUALITY_SELECTION:
-        saved = json.loads(Path(saved_path).read_text(encoding="utf-8-sig"))
-        goldens = json.loads(Path(golden_path).read_text(encoding="utf-8-sig"))
+    paths = [p for saved, golden, _ in CONTEXTUAL_QUALITY_SELECTION for p in (saved, golden)]
+    inputs = {p: json.loads(Path(p).read_text(encoding="utf-8-sig")) for p in paths}
+    selection = CONTEXTUAL_QUALITY_SELECTION
+    if full:
+        selection = [(saved, golden, c["id"])
+                     for saved, golden, _ in CONTEXTUAL_QUALITY_SELECTION
+                     for c in inputs[saved]["cases"]]
+        if len(selection) != 30 or len({cid for _, _, cid in selection}) != 30:
+            raise ValueError("Expected the preserved 30 unique retrieval cases")
+        for saved, golden, _ in CONTEXTUAL_QUALITY_SELECTION:
+            if {c["id"] for c in inputs[saved]["cases"]} != {c["id"] for c in inputs[golden]["cases"]}:
+                raise ValueError("Saved dataset and reference case IDs differ")
+    for saved_path, golden_path, cid in selection:
+        saved, goldens = inputs[saved_path], inputs[golden_path]
         matches = [c for c in saved["cases"] if c["id"] == cid]
         references = [c for c in goldens["cases"] if c["id"] == cid]
         if len(matches) != 1 or len(references) != 1:
@@ -792,9 +804,10 @@ def contextual_quality_cases():
                       "retrieved_ids": ids, "reference_answer": reference["reference_answer"],
                       "reference_evidence": reference["evidence"],
                       "reference_status": goldens.get("status"),
-                      "hypothesis": ("Reference facts are present; expect high recall."
-                                     if cid == "cough_01" else
-                                     "Requested definition is absent; expect low recall and precision.")})
+                      "hypothesis": {
+                          "cough_01": "Reference facts are present; expect high recall.",
+                          "validation_acute_abdominal_01": "Requested definition is absent; expect low recall and precision.",
+                      }.get(cid, "No per-case score predeclared; descriptive baseline.")})
     return cases
 
 
@@ -831,20 +844,76 @@ def contextual_quality_verdicts(metric, case, metric_name):
     return rows
 
 
-def save_contextual_quality(report):
+def save_contextual_quality(report, output=CONTEXTUAL_QUALITY_OUTPUT):
     rows = [r for case in report["results"].values() for r in case.values()]
     report["summary"] = {
-        "selected_cases": 2, "metric_evaluations": 4,
+        "selected_cases": len(report["cases"]), "metric_evaluations": 2 * len(report["cases"]),
         "evaluated": sum(r["status"] == "evaluated" for r in rows),
         "errors": sum(r["status"] == "evaluation_error" for r in rows),
-        "pending": 4 - len(rows),
+        "pending": 2 * len(report["cases"]) - len(rows),
     }
-    save(report, CONTEXTUAL_QUALITY_OUTPUT)
+    if report["run_type"] == "contextual_quality_baseline":
+        grouped = {}
+        for dataset, validation in (("pilot", False), ("validation", True)):
+            grouped[dataset] = {}
+            ids = [c["id"] for c in report["cases"] if c["id"].startswith("validation_") == validation]
+            for name in ("contextual_precision", "contextual_recall"):
+                records = [report["results"][cid][name] for cid in ids
+                           if name in report["results"].get(cid, {})]
+                scores = [r["score"] for r in records if r["status"] == "evaluated"]
+                grouped[dataset][name] = {
+                    "selected": len(ids), "evaluated": len(scores),
+                    "errors": sum(r["status"] == "evaluation_error" for r in records),
+                    "pending": len(ids) - len(records),
+                    "mean_score": sum(scores) / len(scores) if scores else None,
+                }
+        report["summary"]["by_dataset"] = grouped
+    save(report, output)
 
 
-def run_contextual_quality_smoke(preview=False):
+CONTEXTUAL_QUALITY_BASELINE_OUTPUT = Path("data/eval/deepeval_contextual_quality_baseline_v1.json")
+
+
+def contextual_quality_seed(cases, configuration, packages):
+    """Verify the four completed smoke results before reusing them."""
+    smoke = json.loads(CONTEXTUAL_QUALITY_OUTPUT.read_text(encoding="utf-8"))
+    ids = [cid for _, _, cid in CONTEXTUAL_QUALITY_SELECTION]
+    expected = [next(c for c in cases if c["id"] == cid) for cid in ids]
+    paths = [p for saved, golden, _ in CONTEXTUAL_QUALITY_SELECTION for p in (saved, golden)]
+    if (smoke.get("run_type") != "contextual_quality_smoke" or smoke.get("run_status") != "completed"
+            or smoke.get("source_sha256") != {p: file_sha256(Path(p)) for p in paths}
+            or smoke.get("adapter_sha256") != file_sha256(Path(__file__).with_name("deepeval_groq_adapter.py"))
+            or smoke.get("configuration") != configuration or smoke.get("package_versions") != packages
+            or smoke.get("cases") != expected or smoke.get("selected_case_ids") != ids
+            or set(smoke.get("results", {})) != set(ids)):
+        raise ValueError("Smoke inputs, configuration or adapter differ; cannot reuse")
+    for case in expected:
+        results = smoke["results"][case["id"]]
+        if set(results) != {"contextual_precision", "contextual_recall"}:
+            raise ValueError("Incomplete cached contextual quality metrics")
+        for name, result in results.items():
+            if result.get("status") != "evaluated":
+                raise ValueError("Cached contextual quality result is not evaluated")
+            cached = SimpleNamespace(score=result["score"], verdicts=[
+                SimpleNamespace(verdict=v["verdict"], reason=v["reason"])
+                for v in result["verdicts"]])
+            rebuilt = contextual_quality_verdicts(cached, case, name)
+            if rebuilt != result["verdicts"] or result.get("passed") != (result["score"] >= configuration["threshold"]):
+                raise ValueError("Cached verdict mappings or threshold result differ")
+    return smoke["results"], {
+        "report": CONTEXTUAL_QUALITY_OUTPUT.as_posix(),
+        "report_sha256": file_sha256(CONTEXTUAL_QUALITY_OUTPUT),
+        "original_runner_sha256": smoke["runner_sha256"], "case_ids": ids,
+        "metric_evaluations": 4,
+    }
+
+
+def run_contextual_quality_smoke(preview=False, full=False, max_metrics=None):
     """Run precision and recall for two preserved retrieval snapshots."""
-    cases = contextual_quality_cases()
+    if max_metrics is not None and max_metrics < 1:
+        raise ValueError("max_metrics must be positive")
+    cases = contextual_quality_cases(full=full)
+    output = CONTEXTUAL_QUALITY_BASELINE_OUTPUT if full else CONTEXTUAL_QUALITY_OUTPUT
     packages = {name: version(name) for name in ("deepeval", "groq", "pydantic")}
     if packages["deepeval"] != "4.2.8":
         raise ValueError("This experiment requires DeepEval 4.2.8")
@@ -859,15 +928,19 @@ def run_contextual_quality_smoke(preview=False):
     }
     paths = [p for saved, golden, _ in CONTEXTUAL_QUALITY_SELECTION for p in (saved, golden)]
     identity = {
-        "schema_version": 1, "run_type": "contextual_quality_smoke",
+        "schema_version": 1, "run_type": "contextual_quality_baseline" if full else "contextual_quality_smoke",
         "source_sha256": {p: file_sha256(Path(p)) for p in paths},
         "runner_sha256": file_sha256(Path(__file__)),
         "adapter_sha256": file_sha256(Path(__file__).with_name("deepeval_groq_adapter.py")),
         "configuration": configuration, "package_versions": packages,
         "selected_case_ids": [c["id"] for c in cases], "cases": cases,
     }
-    if CONTEXTUAL_QUALITY_OUTPUT.exists():
-        report = json.loads(CONTEXTUAL_QUALITY_OUTPUT.read_text(encoding="utf-8"))
+    seeded = {}
+    if full:
+        seeded, provenance = contextual_quality_seed(cases, configuration, packages)
+        identity["reused_smoke"] = provenance
+    if output.exists():
+        report = json.loads(output.read_text(encoding="utf-8"))
         if any(report.get(k) != value for k, value in identity.items()):
             raise ValueError("Inputs, code or configuration changed; refusing to resume")
         results = report.get("results")
@@ -877,26 +950,39 @@ def run_contextual_quality_smoke(preview=False):
         if any(r.get("status") != "evaluated" for v in results.values() for r in v.values()):
             raise ValueError("Prior evaluation error needs review; no automatic retry")
     else:
-        report = {**identity, "results": {}, "review_status": "automated_unreviewed"}
+        report = {**identity, "results": seeded, "review_status": "automated_unreviewed"}
     done = sum(len(v) for v in report["results"].values())
-    print(f"Contextual quality smoke: 2 cases; 4 metric evaluations; {done} already evaluated.", flush=True)
-    for case in cases:
+    label = "baseline" if full else "smoke"
+    print(f"Contextual quality {label}: {len(cases)} cases; {2 * len(cases)} metric evaluations; {done} already evaluated.", flush=True)
+    print("Pending metric evaluations:", 2 * len(cases) - done, flush=True)
+    if full:
+        print("Reused smoke cases:", ", ".join(provenance["case_ids"]), flush=True)
+        print("Includes validation_headache_01: retrieval succeeded despite generation failure.", flush=True)
+        print("Reference annotations remain draft_assistant_reviewed.", flush=True)
+    for case in ([] if full else cases):
         print(f"{case['id']}:\n  Question: {case['query']}\n  Reference: {case['reference_answer']}", flush=True)
         print("  Retrieved IDs:", ", ".join(case["retrieved_ids"]), flush=True)
         print("  Hypothesis:", case["hypothesis"], flush=True)
         print("  Reference status:", case["reference_status"], flush=True)
-    print("Output:", CONTEXTUAL_QUALITY_OUTPUT, flush=True)
+    print("Output:", output, flush=True)
     if preview:
         print("PREVIEW: no judge client, API calls or report writes.", flush=True)
         return
     report["run_status"] = "in_progress"
-    save_contextual_quality(report)
+    save_contextual_quality(report, output)
     judge = None
+    attempted = 0
     for case in cases:
         for name, metric_class in metrics.items():
             if name in report["results"].get(case["id"], {}):
                 print("Skipping completed metric:", case["id"], name, flush=True)
                 continue
+            if max_metrics is not None and attempted >= max_metrics:
+                report["run_status"] = "paused_batch_limit"
+                save_contextual_quality(report, output)
+                print("Run status: paused_batch_limit. Completed metrics saved.", flush=True)
+                return
+            attempted += 1
             try:
                 if judge is None:
                     judge = GroqDeepEvalJudge(model=configuration["model"], interval=REQUEST_INTERVAL)
@@ -910,7 +996,7 @@ def run_contextual_quality_smoke(preview=False):
                     "status": "evaluated", "score": metric.score, "reason": metric.reason,
                     "passed": metric.is_successful(), "verdicts": rows,
                 }
-                save_contextual_quality(report)
+                save_contextual_quality(report, output)
                 print(f"{case['id']} / {name}: score={metric.score:.4f}; provisional_pass={metric.is_successful()}", flush=True)
                 print("  Why:", metric.reason, flush=True)
                 for row in rows:
@@ -925,16 +1011,16 @@ def run_contextual_quality_smoke(preview=False):
                     print("  Retry-after:", error["retry_after"], flush=True)
                 report["results"].setdefault(case["id"], {})[name] = error
                 report["run_status"] = "stopped_evaluation_error"
-                save_contextual_quality(report)
+                save_contextual_quality(report, output)
                 print(f"{case['id']} / {name}: EVALUATION ERROR ({type(exc).__name__}); stopped.", flush=True)
                 return
             except KeyboardInterrupt:
                 report["run_status"] = "paused_user"
-                save_contextual_quality(report)
+                save_contextual_quality(report, output)
                 print("Interrupted; completed metric results saved.", flush=True)
                 return
     report["run_status"] = "completed"
-    save_contextual_quality(report)
+    save_contextual_quality(report, output)
     print("Run status: completed. Automated judgments require review.", flush=True)
 
 
@@ -946,7 +1032,7 @@ def main():
     parser.add_argument(
         "--mode",
         choices=["baseline", "calibration", "contextual-relevance-smoke",
-                 "contextual-relevance-baseline", "answer-relevance-smoke", "answer-relevance-baseline", "contextual-quality-smoke"],
+                 "contextual-relevance-baseline", "answer-relevance-smoke", "answer-relevance-baseline", "contextual-quality-smoke", "contextual-quality-baseline"],
         required=True,
         help="Explicitly select the evaluation workflow.",
     )
@@ -955,17 +1041,22 @@ def main():
                         help="Inspect relevance inputs without API calls.")
     parser.add_argument("--max-cases", type=int, default=None,
                         help="Limit new relevance evaluations; rerun the same command to resume.")
+    parser.add_argument("--max-metrics", type=int, default=None,
+                        help="Limit new precision/recall metric evaluations in the contextual quality baseline.")
     args = parser.parse_args()
+    if args.max_metrics is not None and (args.mode != "contextual-quality-baseline" or args.max_metrics < 1):
+        parser.error("--max-metrics requires contextual-quality-baseline and a positive integer")
     contextual_mode = args.mode.startswith("contextual-relevance-")
-    relevance_mode = contextual_mode or args.mode.startswith("answer-relevance-") or args.mode == "contextual-quality-smoke"
+    relevance_mode = contextual_mode or args.mode.startswith("answer-relevance-") or args.mode.startswith("contextual-quality-")
     if (args.preview or args.max_cases is not None) and not relevance_mode:
         parser.error("--preview and --max-cases require a relevance mode")
     if args.max_cases is not None and args.max_cases < 1:
         parser.error("--max-cases must be positive")
-    if args.mode == "contextual-quality-smoke":
+    if args.mode.startswith("contextual-quality-"):
         if args.max_cases is not None:
-            parser.error("--max-cases is not used by the two-case contextual quality smoke")
-        run_contextual_quality_smoke(preview=args.preview)
+            parser.error("Use --max-metrics rather than --max-cases for contextual quality")
+        run_contextual_quality_smoke(preview=args.preview, full=args.mode == "contextual-quality-baseline",
+                                     max_metrics=args.max_metrics)
         return
     if args.mode.startswith("answer-relevance-"):
         run_answer_relevance_smoke(preview=args.preview, max_cases=args.max_cases,
@@ -985,6 +1076,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 

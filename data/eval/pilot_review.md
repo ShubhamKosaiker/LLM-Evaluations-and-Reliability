@@ -133,3 +133,22 @@ Report: data/eval/deepeval_contextual_quality_smoke_v1.json
 - Recall assessed one reference sentence per case.
 - References remain draft_assistant_reviewed. This two-case smoke test
   does not establish evaluator accuracy or dataset-wide performance.
+
+## Contextual precision and recall baseline (2026-10-27)
+
+Report: data/eval/deepeval_contextual_quality_baseline_v1.json
+
+- Completed 60 metric evaluations across 30 saved retrieval cases.
+- No pending evaluations or current evaluation errors.
+- Pilot means: precision 0.8458; recall 0.9250.
+- Validation means: precision 0.8500; recall 0.8667.
+- Score calculations and passage mappings were checked.
+- Four smoke evaluations were reused unchanged.
+- Two daily-token-limit interruptions remain in retry_history.
+- validation_chronic_abdominal_01 scored precision 0.5 and recall 1.0:
+  the required information was present, but its passage ranked second.
+- validation_hemoptysis_01 recall scored 0.6667 after the judge marked
+  the standalone reference sentence "No." unsupported. This appears
+  to be a reference-fragmentation/grading artifact requiring review.
+- Preserve automated scores. Draft references and judge limitations
+  prevent interpreting these results as verified accuracy.
