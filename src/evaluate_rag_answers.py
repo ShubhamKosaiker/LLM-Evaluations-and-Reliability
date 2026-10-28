@@ -723,10 +723,178 @@ def application_main():
     print('Automated judgments require review. Saved:', args.output)
 
 
+QUALIFIER_FACTS = {
+    'vitals': 'Assessment of vital signs as part of the initial minimum assessment.',
+    'exam': 'A thorough examination of the cardiac, pulmonary and extremity systems.',
+    'xray': 'A chest X-ray as part of the initial minimum assessment.'}
+QUALIFIER_RUBRIC = COMMON_RULES + '''
+Compare the answer with the supplied source for EACH required fact. Check the
+complete assertion, not just whether its topic is mentioned. Preserve negations,
+exceptions, obligations and conditions. Determine which action a condition in
+the source modifies; do not transfer conditions between adjacent actions.
+preserved = requested fact and its material conditions retain the source meaning.
+altered = the answer mentions the fact but changes its meaning or conditions.
+missing = the answer does not supply the fact.
+Quote a contiguous source substring establishing each fact AND its conditions.
+Quote the complete relevant answer phrase, including any qualification. For a
+missing fact use answer_quote=null. Never paraphrase inside evidence quotes.
+Assess each answer independently, without assuming it contains an error.
+Return exactly:
+{"checks":[{"fact_id":"one supplied fact ID","verdict":"preserved|altered|missing",
+"answer_quote":"exact substring or null","source_quote":"exact substring",
+"reason":"specific explanation"}],"review_needed":true or false}
+Return exactly one check for each supplied fact ID. Do not assign an overall score.
+'''
+
+
+def validate_qualifier(data, answer, evidence):
+    if not isinstance(data, dict) or set(data) != {'checks', 'review_needed'}:
+        raise ValueError('Invalid fact-check fields')
+    if type(data['review_needed']) is not bool or not isinstance(data['checks'], list):
+        raise ValueError('Invalid fact-check types')
+    checks = data['checks']
+    if (len(checks) != len(QUALIFIER_FACTS) or
+            any(not isinstance(c, dict) or set(c) != {
+                'fact_id', 'verdict', 'answer_quote', 'source_quote', 'reason'} for c in checks)):
+        raise ValueError('Expected exactly three complete fact checks')
+    if sorted(c['fact_id'] for c in checks) != sorted(QUALIFIER_FACTS):
+        raise ValueError('Missing, duplicate or unexpected fact ID')
+    for check in checks:
+        if check['verdict'] not in {'preserved', 'altered', 'missing'}:
+            raise ValueError('Invalid fact verdict')
+        for key in ['source_quote', 'reason']:
+            if not isinstance(check[key], str) or not check[key].strip():
+                raise ValueError('Missing evidence or explanation')
+        if normalized(check['source_quote']) not in normalized(evidence):
+            raise ValueError('Source quote is not in supplied evidence')
+        quote = check['answer_quote']
+        if check['verdict'] == 'missing':
+            if quote is not None:
+                raise ValueError('Missing fact must have null answer quote')
+        elif not isinstance(quote, str) or not normalized(quote) or normalized(quote) not in normalized(answer):
+            raise ValueError('Answer quote is not in the actual answer')
+    preserved = sum(c['verdict'] == 'preserved' for c in checks)
+    label = 'complete' if preserved == len(checks) else 'partial' if preserved else 'missing'
+    return {**data, 'completeness': label}
+
+
+def qualifier_main():
+    parser = argparse.ArgumentParser(description='Two-answer qualifier calibration; saved data only.')
+    parser.add_argument('--qualifier-calibration', action='store_true', required=True)
+    parser.add_argument('--preview', action='store_true')
+    parser.add_argument('--resume', action='store_true')
+    args = parser.parse_args()
+    path = Path('data/eval/application_qualifier_calibration.json')
+    raw = path.read_bytes()
+    fixture = json.loads(raw)
+    source_path = Path('data/eval/rag_baseline_pilot.json')
+    source, source_hash = load_report(source_path)
+    case = next(c for c in source['cases'] if c['id'] == 'dyspnea_01')
+    variants = fixture['variants']
+    evidence = fixture['evidence']['text']
+    cid = fixture['evidence']['context_id']
+    if (fixture['experiment'] != 'application_qualifier_calibration_v1'
+            or fixture['source_sha256'] != source_hash or fixture['source_case_id'] != case['id']
+            or fixture['question'] != case['query'] or fixture['reference_answer'] != case['reference_answer']
+            or cid not in case['retrieved_ids'] or evidence != case['contexts'][case['retrieved_ids'].index(cid)]
+            or [v['id'] for v in variants] != ['original', 'corrected']
+            or variants[0]['answer'] != case['answer']
+            or case['answer'].count(' (if available)') != 1
+            or variants[1]['answer'] != case['answer'].replace(' (if available)', '', 1)
+            or [v['expected_completeness'] for v in variants] != ['partial', 'complete']):
+        raise ValueError('Fixture no longer matches the preserved two-answer experiment')
+    output = Path('data/eval/application_qualifier_calibration_v1.json')
+    identity = {'run_type': 'application_qualifier_calibration', 'rubric_version': 'qualifier_facts_v1',
+        'fixture_sha256': hashlib.sha256(raw).hexdigest(), 'fixture': fixture,
+        'evaluator_source_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'rubric': QUALIFIER_RUBRIC, 'required_facts': QUALIFIER_FACTS,
+        'judge_configuration': {'model': JUDGE_MODEL, 'temperature': 0, 'reasoning_effort': 'low',
+            'max_completion_tokens': 2048, 'max_retries': 0, 'request_interval_seconds': 60}}
+    report = {**identity, 'results': {}, 'run_status': 'prepared',
+        'limitations': ['Two development variants do not establish evaluator accuracy.',
+            'Compared with the earlier smoke test, both evidence detail and judgment structure change.',
+            'Agreement with proposed labels does not establish generalisation or clinical validity.']}
+    if output.exists():
+        if not args.resume:
+            raise FileExistsError('Report exists; use --resume with identical inputs and code')
+        report = json.loads(output.read_text(encoding='utf-8'))
+        if any(report.get(k) != v for k, v in identity.items()):
+            raise ValueError('Resume requires unchanged fixture, source, code and configuration')
+        if set(report['results']) - {'original', 'corrected'}:
+            raise ValueError('Unknown saved variant')
+        for variant in variants:
+            row = report['results'].get(variant['id'])
+            if row is not None:
+                if row['status'] != 'evaluated':
+                    raise ValueError('Prior interruption needs review; no automatic retry')
+                judgment = row['judgment']
+                rebuilt = validate_qualifier({k: judgment[k] for k in ['checks', 'review_needed']},
+                                            variant['answer'], evidence)
+                if rebuilt != judgment or row['matches_proposed_label'] != (
+                        rebuilt['completeness'] == variant['expected_completeness']):
+                    raise ValueError('Saved verdict or comparison is inconsistent')
+    elif args.resume:
+        raise FileNotFoundError('--resume requires an existing report')
+    pending = [v for v in variants if v['id'] not in report['results']]
+    print(f'Qualifier calibration: 2 variants; completed: {2 - len(pending)}; pending: {len(pending)}')
+    print('Only answer text changes between variants; the judge does not receive expected labels.')
+    print('Output:', output)
+    if args.preview:
+        print('PREVIEW: no judge client, API calls or report writes.')
+        return
+    if not pending:
+        print('Already completed; no API calls.')
+        return
+    from dotenv import load_dotenv
+    from groq import Groq
+    load_dotenv(Path('.env'))
+    client = Groq(api_key=os.environ['GROQ_API_KEY'], max_retries=0)
+    if not output.exists():
+        with output.open('x', encoding='utf-8'):
+            pass
+    def checkpoint():
+        report['updated_at_utc'] = datetime.now(timezone.utc).isoformat()
+        save_report(output, report)
+    report['run_status'] = 'in_progress'
+    checkpoint()
+    pacer = RequestPacer(60)
+    try:
+        for variant in pending:
+            row = {'status': 'in_progress', 'judge_outputs': {}}
+            report['results'][variant['id']] = row
+            payload = {'question': fixture['question'], 'answer': variant['answer'],
+                       'required_facts': QUALIFIER_FACTS, 'source_evidence': evidence}
+            data = application_call(client, QUALIFIER_RUBRIC, payload, row, 'fact_check', checkpoint, pacer)
+            row['judgment'] = validate_qualifier(data, variant['answer'], evidence)
+            row['matches_proposed_label'] = row['judgment']['completeness'] == variant['expected_completeness']
+            row['status'] = 'evaluated'
+            checkpoint()
+            print(variant['id'], ':', row['judgment']['completeness'], flush=True)
+            for check in row['judgment']['checks']:
+                print(' ', check['fact_id'], check['verdict'], '-', check['reason'], flush=True)
+        report['run_status'] = 'completed'
+    except KeyboardInterrupt:
+        report['run_status'] = 'paused_user'
+    except Exception as exc:
+        row['status'] = 'evaluation_error'
+        row['error'] = {'type': type(exc).__name__}
+        if isinstance(exc, (ValueError, OSError)):
+            row['error']['detail'] = str(exc)
+        report['run_status'] = 'stopped_evaluation_error'
+        print('EVALUATION ERROR:', row['error'])
+    finally:
+        checkpoint()
+    print('Run status:', report['run_status'])
+    print('Proposed reference labels and automated judgments require review.')
+
+
 if __name__ == '__main__':
     import sys
-    if '--application-smoke' in sys.argv:
+    if '--qualifier-calibration' in sys.argv:
+        qualifier_main()
+    elif '--application-smoke' in sys.argv:
         application_main()
     else:
         main()
+
 

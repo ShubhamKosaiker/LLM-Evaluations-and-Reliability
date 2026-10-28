@@ -167,3 +167,21 @@ Report: data/eval/application_quality_smoke_v1.json
 - The file-access interruption and recovery are retained in the report.
 - Preserve automated results. This smoke test exposed a qualifier-checking
   limitation and does not establish evaluator accuracy.
+
+## Qualifier calibration findings
+
+Report: data/eval/application_qualifier_calibration_v1.json
+
+- Compared the original dyspnea answer with a version removing only
+  "(if available)" from the chest X-ray requirement.
+- Proposed completeness labels: original partial; corrected complete.
+- The judge labelled both answers complete.
+- For the original answer, it quoted "A chest X-ray (if available)"
+  but still marked the fact preserved.
+- Its source quote, "and the chest x-ray", omitted surrounding context.
+- Fuller evidence and structured fact checks did not catch this issue
+  in this run. Both changed relative to the earlier smoke experiment,
+  so their individual effects cannot be isolated.
+- Preserve both automated results and the file-save recovery history.
+- This narrow development test does not establish evaluator accuracy.
+  Qualifier-sensitive judgments require review.

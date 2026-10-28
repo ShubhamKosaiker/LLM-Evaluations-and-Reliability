@@ -1,0 +1,26 @@
+{
+  "experiment": "application_qualifier_calibration_v1",
+  "source_sha256": "8b692cb5ae74bb1e08f510b7090cfcfc076f7c491e4edd02b12bcf35d0bedf96",
+  "source_case_id": "dyspnea_01",
+  "question": "According to the acute dyspnea lecture, what minimum objective assessment is recommended initially?",
+  "reference_answer": "Vital signs; examination of the lungs, heart and extremities; and a chest X-ray.",
+  "evidence": {
+    "context_id": "xNJ8ALMjZ7A_7",
+    "text": "significant part of our framework but it turns out to be minimally diagnostically helpful since most causes of dyspnea can present either with or without hypoxemia you should never be saying to yourself this patient can't have such and such diagnosis because their Oh too sad is normal that is a common and dangerous fallacy however the opposite can be true where some diagnoses can be ruled out because they do not cause the low to sat's that are observed for instance anemia metabolic acidosis and of course anxiety finally keep in mind that acute dismay up is one of a handful of symptoms that always warrants emergent evaluation because of the significant frequency of imminently life-threatening diagnoses which are most notably a PE MI pneumothorax and tamponade so in summary ideologies of acute dyspnea can be categorized either by organ system in which case the lungs and heart are the most common general categories or by pathophysiologic mechanism in which case hypoxemia is the most common all patients presenting with acute dyspnea warrant assessment of their vitals a thorough cardiac pulmonary and extremity exam and the chest x-ray most but not all will also need some basic blood tests an ECG and the bedside ultrasound of the heart if available less frequently required tests include a CT scan either a conventional CT thorax looking for ILD or a CT angiogram if looking for a pulmonary embolism despite it being the most common mechanism leading to dis Nia the presence or absence of hypoxemia usually has minimal impact on the differential diagnosis and imminently life-threatening diagnoses that frequently present with acute dyspnea most notably include PE and an acute MI but also includes tamponade and a pneumothorax you"
+  },
+  "annotation_status": "proposed_awaiting_review",
+  "variants": [
+    {
+      "id": "original",
+      "answer": "The lecture recommends that the first objective assessment for any patient with acute dyspnea includes:\n\n1. **Vital signs** (heart rate, blood pressure, respiratory rate, oxygen saturation, temperature).  \n2. **A thorough physical exam** focusing on the cardiac, pulmonary, and extremity systems.  \n3. **A chest X‑ray** (if available).  \n\nThese steps constitute the minimum objective work‑up that should be performed initially.",
+      "expected_completeness": "partial",
+      "reason": "Availability is incorrectly applied to chest X-ray."
+    },
+    {
+      "id": "corrected",
+      "answer": "The lecture recommends that the first objective assessment for any patient with acute dyspnea includes:\n\n1. **Vital signs** (heart rate, blood pressure, respiratory rate, oxygen saturation, temperature).  \n2. **A thorough physical exam** focusing on the cardiac, pulmonary, and extremity systems.  \n3. **A chest X‑ray**.  \n\nThese steps constitute the minimum objective work‑up that should be performed initially.",
+      "expected_completeness": "complete",
+      "reason": "All three required assessments retain their conditions."
+    }
+  ]
+}
