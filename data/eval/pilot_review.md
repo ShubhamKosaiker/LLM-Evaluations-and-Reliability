@@ -185,3 +185,17 @@ Report: data/eval/application_qualifier_calibration_v1.json
 - Preserve both automated results and the file-save recovery history.
 - This narrow development test does not establish evaluator accuracy.
   Qualifier-sensitive judgments require review.
+
+## GEval application smoke evaluation
+
+Report: data/eval/deepeval_application_smoke_v1.json
+
+- Completed five metric evaluations across two saved answers.
+- cough_05: correctness 1.0, completeness 1.0, clarity/style 0.9.
+- dandruff_01: completeness 0.0, clarity/style 0.9.
+- Pure-refusal factual correctness was marked not applicable.
+- Results matched the pre-run expectations for these examples.
+- Completeness measures coverage separately from factual correctness.
+- Groq custom-model schema scoring was used without logprob weighting.
+- These two examples do not establish evaluator accuracy.
+- Previous qualifier-checking failures remain unresolved.
