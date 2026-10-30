@@ -1025,6 +1025,7 @@ def run_contextual_quality_smoke(preview=False, full=False, max_metrics=None):
 
 
 APPLICATION_GEVAL_OUTPUT = Path('data/eval/deepeval_application_smoke_v1.json')
+APPLICATION_GEVAL_BASELINE_OUTPUT = Path('data/eval/deepeval_application_baseline_v1.json')
 APPLICATION_GEVAL_IDS = ['cough_05', 'dandruff_01']
 APPLICATION_GEVAL_REFUSAL = "I don't have enough information in the provided medical sources."
 APPLICATION_GEVAL_SPECS = {
@@ -1069,19 +1070,27 @@ APPLICATION_GEVAL_SPECS = {
 }
 
 
-def application_geval_cases():
-    source = Path(SOURCES[0])
-    data = json.loads(source.read_text(encoding='utf-8-sig'))
+def application_geval_cases(full=False):
     cases = []
-    for cid in APPLICATION_GEVAL_IDS:
-        matches = [c for c in data['cases'] if c['id'] == cid]
-        if len(matches) != 1 or matches[0]['status'] != 'success':
-            raise ValueError('Expected preserved successful application smoke cases')
-        case = matches[0]
-        if any(not isinstance(case.get(k), str) or not case[k].strip()
-               for k in ['query', 'answer', 'reference_answer']):
-            raise ValueError('Application case is missing text')
-        cases.append({k: case[k] for k in ['id', 'query', 'answer', 'reference_answer']})
+    for path in (SOURCES if full else SOURCES[:1]):
+        data = json.loads(Path(path).read_text(encoding='utf-8-sig'))
+        if data.get('run_type') != 'baseline_rag_answer_collection' or data.get('run_status') != 'completed':
+            raise ValueError('Expected completed saved answer collection')
+        selected = data['cases'] if full else [
+            next(c for c in data['cases'] if c['id'] == cid) for cid in APPLICATION_GEVAL_IDS]
+        for case in selected:
+            if case['status'] not in {'success', 'error'} or any(
+                    not isinstance(case.get(k), str) or not case[k].strip()
+                    for k in ['id', 'query', 'reference_answer']):
+                raise ValueError('Application case is invalid')
+            if case['status'] == 'success' and (not isinstance(case.get('answer'), str) or not case['answer'].strip()):
+                raise ValueError('Successful application case has no answer')
+            row = {k: case[k] for k in ['id', 'query', 'answer', 'reference_answer']}
+            if case['status'] == 'error':
+                row['generation_error'] = case['error']
+            cases.append(row)
+    if len({c['id'] for c in cases}) != len(cases) or len(cases) != (30 if full else 2):
+        raise ValueError('Expected unique preserved application cases')
     return cases
 
 
@@ -1100,18 +1109,92 @@ def make_application_geval(name, judge):
                  model=judge, threshold=THRESHOLD, async_mode=False, strict_mode=False)
 
 
-def save_application_geval(report):
+def validate_application_geval_row(row):
+    score = row['score']
+    raw = row.get('judge_outputs', [])
+    if (row['status'] != 'evaluated' or type(score) not in (int, float)
+            or not math.isfinite(score) or not 0 <= score <= 1
+            or type(row['passed']) is not bool or row['passed'] != (score >= THRESHOLD)
+            or len(raw) != 1 or type(raw[0].get('score')) not in (int, float)
+            or score != raw[0]['score'] / 10 or row['reason'] != raw[0]['reason']
+            or not isinstance(row['reason'], str) or not row['reason'].strip()):
+        raise ValueError('Invalid saved GEval result')
+
+
+def seed_application_geval(cases, identity):
+    smoke = json.loads(APPLICATION_GEVAL_OUTPUT.read_text(encoding='utf-8'))
+    expected = [next(c for c in cases if c['id'] == cid) for cid in APPLICATION_GEVAL_IDS]
+    if (smoke.get('run_type') != 'deepeval_application_smoke' or smoke.get('run_status') != 'completed'
+            or smoke.get('rubric_version') != identity['rubric_version']
+            or smoke.get('source_sha256') != {SOURCES[0]: identity['source_sha256'][SOURCES[0]]}
+            or any(smoke.get(k) != identity[k] for k in ['configuration', 'package_versions', 'adapter_sha256'])
+            or smoke.get('cases') != expected
+            or set(smoke.get('results', {})) != set(APPLICATION_GEVAL_IDS)):
+        raise ValueError('Completed smoke inputs or scoring configuration differ; cannot reuse')
+    for case in expected:
+        metrics = smoke['results'][case['id']]
+        if set(metrics) != set(APPLICATION_GEVAL_SPECS):
+            raise ValueError('Incomplete smoke metrics')
+        for name, row in metrics.items():
+            if name == 'correctness' and case['answer'].strip() == APPLICATION_GEVAL_REFUSAL:
+                if row != application_geval_exclusions([case])[case['id']][name]:
+                    raise ValueError('Invalid cached refusal exclusion')
+            else:
+                validate_application_geval_row(row)
+    return smoke['results'], {
+        'report': str(APPLICATION_GEVAL_OUTPUT.as_posix()),
+        'report_sha256': file_sha256(APPLICATION_GEVAL_OUTPUT),
+        'original_runner_sha256': smoke['runner_sha256'],
+        'case_ids': APPLICATION_GEVAL_IDS, 'evaluated_metrics': 5}
+
+
+def application_geval_exclusions(cases):
+    results = {}
+    for case in cases:
+        if 'generation_error' in case:
+            results[case['id']] = {name: {
+                'status': 'skipped_generation_error', 'score': None, 'passed': None,
+                'reason': 'No generated answer; excluded from answer-quality scores.',
+                'generation_error': case['generation_error']}
+                for name in APPLICATION_GEVAL_SPECS}
+        elif case['answer'].strip() == APPLICATION_GEVAL_REFUSAL:
+            results[case['id']] = {'correctness': {
+                'status': 'not_applicable', 'score': None, 'passed': None,
+                'reason': 'Configured pure refusal has no factual answer claims; assess coverage separately.'}}
+    return results
+
+
+def save_application_geval(report, output=APPLICATION_GEVAL_OUTPUT):
     import time
     rows = [r for v in report['results'].values() for r in v.values()]
     report['summary'] = {
-        'metric_slots': 6,
+        'metric_slots': 3 * len(report['cases']),
         'evaluated': sum(r['status'] == 'evaluated' for r in rows),
         'not_applicable': sum(r['status'] == 'not_applicable' for r in rows),
+        'skipped_generation_error': sum(r['status'] == 'skipped_generation_error' for r in rows),
+        'in_progress': sum(r['status'] == 'in_progress' for r in rows),
         'errors': sum(r['status'] == 'evaluation_error' for r in rows),
-        'pending': 6 - len(rows)}
+        'pending': 3 * len(report['cases']) - len(rows)}
+    if report['run_type'] == 'deepeval_application_baseline':
+        grouped = {}
+        for dataset, validation in [('pilot', False), ('validation', True)]:
+            grouped[dataset] = {}
+            ids = [c['id'] for c in report['cases'] if c['id'].startswith('validation_') == validation]
+            for name in APPLICATION_GEVAL_SPECS:
+                records = [report['results'][cid][name] for cid in ids if name in report['results'].get(cid, {})]
+                scores = [r['score'] for r in records if r['status'] == 'evaluated']
+                grouped[dataset][name] = {
+                    'selected': len(ids), 'evaluated': len(scores),
+                    'not_applicable': sum(r['status'] == 'not_applicable' for r in records),
+                    'skipped_generation_error': sum(r['status'] == 'skipped_generation_error' for r in records),
+                    'errors': sum(r['status'] == 'evaluation_error' for r in records),
+                    'in_progress': sum(r['status'] == 'in_progress' for r in records),
+                    'pending': len(ids) - len(records),
+                    'mean_score': sum(scores) / len(scores) if scores else None}
+        report['summary']['by_dataset'] = grouped
     for attempt in range(6):
         try:
-            save(report, APPLICATION_GEVAL_OUTPUT)
+            save(report, output)
             return
         except PermissionError:
             if attempt == 5:
@@ -1119,17 +1202,19 @@ def save_application_geval(report):
             time.sleep(min(0.2 * 2 ** attempt, 2.0))
 
 
-def run_application_geval(preview=False, max_metrics=None):
+def run_application_geval(preview=False, max_metrics=None, full=False):
     if max_metrics is not None and max_metrics < 1:
         raise ValueError('max_metrics must be positive')
     packages = {n: version(n) for n in ['deepeval', 'groq', 'pydantic']}
     if packages['deepeval'] != '4.2.8':
         raise ValueError('This experiment requires DeepEval 4.2.8')
-    cases = application_geval_cases()
+    cases = application_geval_cases(full=full)
+    output = APPLICATION_GEVAL_BASELINE_OUTPUT if full else APPLICATION_GEVAL_OUTPUT
     # JSON round-trip makes tuples in rubric configuration stable across resume.
     identity = json.loads(json.dumps({
-        'run_type': 'deepeval_application_smoke', 'rubric_version': 'geval_application_v1',
-        'source_sha256': {SOURCES[0]: file_sha256(Path(SOURCES[0]))},
+        'run_type': 'deepeval_application_baseline' if full else 'deepeval_application_smoke',
+        'rubric_version': 'geval_application_v1',
+        'source_sha256': {p: file_sha256(Path(p)) for p in (SOURCES if full else SOURCES[:1])},
         'runner_sha256': file_sha256(Path(__file__)),
         'adapter_sha256': file_sha256(Path(__file__).with_name('deepeval_groq_adapter.py')),
         'package_versions': packages, 'cases': cases,
@@ -1139,9 +1224,14 @@ def run_application_geval(preview=False, max_metrics=None):
             'scoring_path': 'custom_model_schema_fallback_without_logprob_weighting',
             'metric_specs': APPLICATION_GEVAL_SPECS,
             'pure_refusal_literal': APPLICATION_GEVAL_REFUSAL}}))
-    report = {**identity, 'results': {}, 'run_status': 'prepared',
+    exclusions = application_geval_exclusions(cases)
+    seeded = {}
+    if full:
+        seeded, provenance = seed_application_geval(cases, identity)
+        identity['reused_smoke'] = provenance
+    report = {**identity, 'results': exclusions, 'run_status': 'prepared',
         'review_status': 'automated_unreviewed',
-        'limitations': ['Two development cases do not establish evaluator accuracy.',
+        'limitations': ['Development cases and automated scores do not establish evaluator accuracy.',
             'Rubrics are inspired by CampusX, not identical benchmarks or comparable scores.',
             'Completeness measures coverage separately from correctness.',
             'Short draft references are not exhaustive or verified medical truth.',
@@ -1149,41 +1239,39 @@ def run_application_geval(preview=False, max_metrics=None):
             'Clarity does not establish usefulness or appropriate refusal.',
             'Prior custom-judge qualifier failures remain unresolved.',
             'Generator and judge share the GPT-OSS model family.']}
-    for case in cases:
-        if case['answer'].strip() == APPLICATION_GEVAL_REFUSAL:
-            report['results'][case['id']] = {'correctness': {
-                'status': 'not_applicable', 'score': None, 'passed': None,
-                'reason': 'Configured pure refusal has no factual answer claims; assess coverage separately.'}}
-    if APPLICATION_GEVAL_OUTPUT.exists():
-        prior = json.loads(APPLICATION_GEVAL_OUTPUT.read_text(encoding='utf-8'))
+    # Copy cached rows so later checkpoints cannot mutate the source smoke report.
+    report['results'].update(json.loads(json.dumps(seeded)))
+    if output.exists():
+        prior = json.loads(output.read_text(encoding='utf-8'))
         if any(prior.get(k) != v for k, v in identity.items()):
             raise ValueError('Changed code, inputs or configuration; refusing to resume')
-        if set(prior['results']) - set(APPLICATION_GEVAL_IDS):
+        if set(prior['results']) - {c['id'] for c in cases}:
             raise ValueError('Unexpected saved application case')
         for cid, metrics in prior['results'].items():
             if set(metrics) - set(APPLICATION_GEVAL_SPECS):
                 raise ValueError('Unexpected application metric')
             for name, row in metrics.items():
                 if row['status'] == 'evaluated':
-                    score = row['score']
-                    raw = row.get('judge_outputs', [])
-                    if (type(score) not in (int, float) or not math.isfinite(score) or not 0 <= score <= 1
-                            or row['passed'] != (score >= THRESHOLD) or len(raw) != 1
-                            or score != raw[0]['score'] / 10 or row['reason'] != raw[0]['reason']):
-                        raise ValueError('Invalid saved GEval result')
+                    validate_application_geval_row(row)
                 elif row != report['results'].get(cid, {}).get(name):
                     raise ValueError('Prior error needs review; no automatic retry')
         for cid, metrics in report['results'].items():
             if any(prior['results'].get(cid, {}).get(n) != r for n, r in metrics.items()):
-                raise ValueError('Refusal applicability changed')
+                raise ValueError('Cached result or exclusion changed')
         report = prior
     jobs = [(case, name) for case in cases for name in APPLICATION_GEVAL_SPECS
             if name not in report['results'].get(case['id'], {})]
     done = sum(r['status'] == 'evaluated' for v in report['results'].values() for r in v.values())
-    print(f'GEval application smoke: 2 cases; 6 metric slots; {done} evaluated; 1 not applicable; {len(jobs)} pending.')
+    na = sum(r['status'] == 'not_applicable' for v in report['results'].values() for r in v.values())
+    skipped = sum(r['status'] == 'skipped_generation_error' for v in report['results'].values() for r in v.values())
+    label = 'baseline' if full else 'smoke'
+    print(f'GEval application {label}: {len(cases)} cases; {3 * len(cases)} metric slots; {done} evaluated; {na} not applicable; {skipped} skipped generation-error slots; {len(jobs)} pending.')
+    if full:
+        print('Reused smoke scores: 5; skipped generation-error case: validation_headache_01.')
+        print('References remain draft development annotations; scores are provisional.')
     print('Metrics: correctness, completeness, clarity/style; normalized score range: 0 to 1.')
     print('Pure-refusal correctness is not applicable; completeness and clarity are still judged.')
-    print('Output:', APPLICATION_GEVAL_OUTPUT)
+    print('Output:', output)
     if preview:
         print('PREVIEW: no judge client, API calls or report writes.')
         return
@@ -1201,12 +1289,12 @@ def run_application_geval(preview=False, max_metrics=None):
             return answer
     judge = None
     report['run_status'] = 'in_progress'
-    save_application_geval(report)
+    save_application_geval(report, output)
     attempted = 0
     for case, name in jobs:
         if max_metrics is not None and attempted >= max_metrics:
             report['run_status'] = 'paused_batch_limit'
-            save_application_geval(report)
+            save_application_geval(report, output)
             print('Run status: paused_batch_limit. Completed metrics saved.')
             return
         attempted += 1
@@ -1216,7 +1304,7 @@ def run_application_geval(preview=False, max_metrics=None):
             if judge is None:
                 judge = RecordingJudge(model='openai/gpt-oss-120b', interval=REQUEST_INTERVAL)
             judge.record = row['judge_outputs']
-            judge.checkpoint = lambda: save_application_geval(report)
+            judge.checkpoint = lambda: save_application_geval(report, output)
             metric = make_application_geval(name, judge)
             kwargs = {'input': case['query'], 'actual_output': case['answer']}
             if APPLICATION_GEVAL_SPECS[name]['reference']:
@@ -1229,7 +1317,7 @@ def run_application_geval(preview=False, max_metrics=None):
                 raise ValueError('Invalid normalized GEval score or unexpected judge call count')
             row.update(status='evaluated', score=metric.score, reason=metric.reason,
                        passed=metric.is_successful())
-            save_application_geval(report)
+            save_application_geval(report, output)
             print(f"{case['id']} / {name}: score={metric.score:.4f}; provisional_pass={row['passed']}", flush=True)
             print('  Why:', metric.reason, flush=True)
         except (Exception, KeyboardInterrupt) as exc:
@@ -1241,11 +1329,11 @@ def run_application_geval(preview=False, max_metrics=None):
                 response = getattr(exc, 'response', None)
                 row['retry_after'] = response.headers.get('retry-after') if response is not None else None
             report['run_status'] = 'stopped_evaluation_error'
-            save_application_geval(report)
+            save_application_geval(report, output)
             print('EVALUATION ERROR:', type(exc).__name__, row.get('detail', ''), flush=True)
             return
     report['run_status'] = 'completed'
-    save_application_geval(report)
+    save_application_geval(report, output)
     print('Run status: completed. Automated scores require review.')
 
 
@@ -1257,7 +1345,7 @@ def main():
     parser.add_argument(
         "--mode",
         choices=["baseline", "calibration", "contextual-relevance-smoke",
-                 "contextual-relevance-baseline", "answer-relevance-smoke", "answer-relevance-baseline", "contextual-quality-smoke", "contextual-quality-baseline", "application-smoke"],
+                 "contextual-relevance-baseline", "answer-relevance-smoke", "answer-relevance-baseline", "contextual-quality-smoke", "contextual-quality-baseline", "application-smoke", "application-baseline"],
         required=True,
         help="Explicitly select the evaluation workflow.",
     )
@@ -1269,10 +1357,10 @@ def main():
     parser.add_argument("--max-metrics", type=int, default=None,
                         help="Limit new precision/recall metric evaluations in the contextual quality baseline.")
     args = parser.parse_args()
-    if args.mode == 'application-smoke':
+    if args.mode in {'application-smoke', 'application-baseline'}:
         if args.max_cases is not None or (args.max_metrics is not None and args.max_metrics < 1):
-            parser.error('Application smoke uses positive --max-metrics, not --max-cases')
-        run_application_geval(preview=args.preview, max_metrics=args.max_metrics)
+            parser.error('Application evaluation uses positive --max-metrics, not --max-cases')
+        run_application_geval(preview=args.preview, max_metrics=args.max_metrics, full=args.mode == 'application-baseline')
         return
     if args.max_metrics is not None and (args.mode != "contextual-quality-baseline" or args.max_metrics < 1):
         parser.error("--max-metrics requires contextual-quality-baseline and a positive integer")
@@ -1306,6 +1394,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 

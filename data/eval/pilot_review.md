@@ -199,3 +199,22 @@ Report: data/eval/deepeval_application_smoke_v1.json
 - Groq custom-model schema scoring was used without logprob weighting.
 - These two examples do not establish evaluator accuracy.
 - Previous qualifier-checking failures remain unresolved.
+
+## GEval application baseline
+
+Report: data/eval/deepeval_application_baseline_v1.json
+
+- Completed 85 scores: five reused smoke scores and 80 new evaluations.
+- Two pure-refusal correctness slots were not applicable.
+- One generation failure excluded three metric slots.
+- No pending metrics or current evaluation errors.
+- Pilot means: correctness 1.0000 (n=19), completeness 0.9350 (n=20),
+  clarity/style 0.9050 (n=20).
+- Validation means: correctness 1.0000 (n=8), completeness 0.8556 (n=9),
+  clarity/style 0.9333 (n=9).
+- dyspnea_01 still received correctness 1.0 despite the known misplaced
+  availability qualification. Perfect judge scores are not verified accuracy.
+- Two completeness scores of 0.7 require review of whether the omitted
+  reference details were essential to the questions.
+- Preserve automated scores. References are draft development annotations;
+  this is not a clinical benchmark or untouched holdout evaluation.
