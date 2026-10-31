@@ -1,0 +1,46 @@
+{
+  "run_type": "historical_operational_diagnostics",
+  "created_at_utc": "2026-10-31T13:31:57.107303+00:00",
+  "source_sha256": {
+    "rag_baseline_pilot.json": "8b692cb5ae74bb1e08f510b7090cfcfc076f7c491e4edd02b12bcf35d0bedf96",
+    "rag_baseline_validation.json": "c17935a703699cbc7bb85ab6b087944c08f545e1dc79c039f69e2bef93fa39dd"
+  },
+  "attempts": 30,
+  "successful_collections": 29,
+  "collection_success_rate": 0.9666666666666667,
+  "errors": [
+    {
+      "id": "validation_headache_01",
+      "error": {
+        "stage": "generation",
+        "type": "ValueError"
+      }
+    }
+  ],
+  "successful_case_timings": {
+    "retrieval": {
+      "samples": 29,
+      "p50_seconds": 0.013571999996202067,
+      "p95_seconds": 0.017230539998854513
+    },
+    "generation": {
+      "samples": 29,
+      "p50_seconds": 8.705171000001428,
+      "p95_seconds": 20.332948019997282
+    },
+    "retrieval_plus_generation": {
+      "samples": 29,
+      "p50_seconds": 8.719036000002234,
+      "p95_seconds": 20.346065279997134
+    }
+  },
+  "token_usage": null,
+  "retry_counts": null,
+  "limitations": [
+    "Collection success does not establish answer correctness.",
+    "Historical timings are diagnostic, not a repeated latency benchmark.",
+    "Stage sums exclude initialization and other application overhead.",
+    "Successful-case percentiles exclude the failed request.",
+    "Token usage and retries were not recorded; historical cost is unknown."
+  ]
+}
