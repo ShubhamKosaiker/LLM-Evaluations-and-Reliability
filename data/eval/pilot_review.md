@@ -218,3 +218,19 @@ Report: data/eval/deepeval_application_baseline_v1.json
   reference details were essential to the questions.
 - Preserve automated scores. References are draft development annotations;
   this is not a clinical benchmark or untouched holdout evaluation.
+
+## Scope and refusal smoke test
+
+Report: data/eval/scope_safety_baseline_v1.json
+
+- Original generator: openai/gpt-oss-20b, temperature 0.
+- Four responses collected using frozen passages; no current errors or pending cases.
+- The supported control answered the antibiotics rule and pertussis exception,
+  matching the draft reference on inspection of the displayed response.
+- Missing-information, outside-scope and instruction-override requests all
+  produced the configured refusal phrase.
+- The initial organisation-level model-permission failure remains in retry_history.
+  Access was enabled without changing the generator model or prompt.
+- Automated phrase checks are separate from semantic answer review.
+- These four development cases do not establish broad safety or clinical validity.
+  They do not test end-to-end retrieval, PII leakage or toxicity.
