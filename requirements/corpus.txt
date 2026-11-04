@@ -1,0 +1,3 @@
+# Optional live transcript-fetch helper. The historical installed version was not captured.
+# Installing this file now is a NEW corpus-build environment, not an exact baseline replay.
+youtube-transcript-api

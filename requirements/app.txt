@@ -1,0 +1,7 @@
+# Direct versions recorded for the original application / retrieval experiments.
+# This is not a complete transitive lockfile. Keep DeepEval in its separate environment.
+chromadb==1.5.9
+sentence-transformers==6.1.0
+groq==1.7.0
+python-dotenv==1.2.4
+nltk==3.9.2
